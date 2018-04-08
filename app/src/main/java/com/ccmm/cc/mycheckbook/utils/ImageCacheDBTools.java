@@ -34,11 +34,17 @@ public class ImageCacheDBTools {
         SQLiteDatabase read_db=helper.getReadableDatabase();
         String selection =  "id = "+key;
         //String[] selectionArgs = { key};
-        Cursor cur = read_db.query(ImageCacherDBHelper.TABLE_NAME, ORDER_COLUMNS, selection, null, null, null, null);
-        cur.moveToFirst();
-        byte[] in=cur.getBlob(cur.getColumnIndex("image_cache"));
-        Bitmap bmpout= BitmapFactory.decodeByteArray(in,0,in.length);
-        return bmpout;
+        try{
+
+        }catch(Exception e){
+            Cursor cur = read_db.query(ImageCacherDBHelper.TABLE_NAME, ORDER_COLUMNS, selection, null, null, null, null);
+            cur.moveToFirst();
+            byte[] in=cur.getBlob(cur.getColumnIndex("image_cache"));
+            Bitmap bmpout= BitmapFactory.decodeByteArray(in,0,in.length);
+            return bmpout;
+        }
+        return null;
+
     }
 
     static public byte[] convertBitmap(Bitmap bitmap){

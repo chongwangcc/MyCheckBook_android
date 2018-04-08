@@ -176,6 +176,13 @@ public class SpentTypeEnum {
         }
         return Len;
     }
+
+    public static void clearAllDrawableColor(){
+        for(String str : drawableMap.keySet()){
+
+        }
+    }
+
     public class SpendTypeEntity{
         String name;
         Drawable pic;
