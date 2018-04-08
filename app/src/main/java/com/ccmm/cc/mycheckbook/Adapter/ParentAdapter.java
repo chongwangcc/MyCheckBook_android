@@ -1,7 +1,6 @@
 package com.ccmm.cc.mycheckbook.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.ccmm.cc.mycheckbook.MyControl.ChildLiistView;
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.models.DetailBean;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
 import java.util.List;
@@ -69,8 +68,8 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
         childListViewItem.text_date.setText("  "+list.get(position).getDay()+"-"+list.get(position).getWeek());
         childListViewItem.text_sumMoney.setText("支出："+list.get(position).getTotal_spent()+" 收入："+list.get(position).getTotal_income()+"  ");
 
-        int z = ((List<DetailBean>)list.get(position).getData()).size();
-        daAdapter.addAll(((List<DetailBean>)list.get(position).getData()));
+        int z = ((List<CheckDetailBean>)list.get(position).getData()).size();
+        daAdapter.addAll(((List<CheckDetailBean>)list.get(position).getData()));
         childListViewItem.parent_lv.setAdapter(daAdapter);
         childListViewItem.parent_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

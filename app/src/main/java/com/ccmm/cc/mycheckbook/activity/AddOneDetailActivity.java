@@ -1,13 +1,10 @@
 package com.ccmm.cc.mycheckbook.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,17 +22,13 @@ import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.AdapterViewpager;
 import com.ccmm.cc.mycheckbook.Enum.SpentTypeEnum;
-import com.ccmm.cc.mycheckbook.MyControl.SelfDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.TwoTuple;
 
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,7 +42,7 @@ import java.util.Map;
 
 public class AddOneDetailActivity extends AppCompatActivity {
     private final String[] lis = {"收入","支出","内部转账"};
-    private ChoiceStatus status = new ChoiceStatus();
+    private CheckDetailBean status = new CheckDetailBean();
     private CategoriesChoice categoriesChoice ;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>();
 
@@ -64,12 +57,15 @@ public class AddOneDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String selectDate=sdf.format(dt);
+        status.setDate(selectDate);
         setContentView(R.layout.activity_add_one_detail);
         for(String name:lis){
             CategoriesChoice cc = new CategoriesChoice(this,SpentTypeEnum.getAllCategoryNames(name));
             categoryMap.put(name,cc);
-            if(name.equals(status.getSpendType_status())){
+            if(name.equals(status.getIncomeType())){
                 categoriesChoice = cc;
             }
         }
@@ -98,6 +94,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
         //2.添加选择日期按钮
         button_selectData = (Button) findViewById(R.id.select_date);
+        button_selectData.setText(status.getDate());
         button_selectData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +199,10 @@ public class AddOneDetailActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                if(newMoney.length()-money.indexOf(".")>10){
+                    newMoney=money;
+                }
                 money_textView11.setText(newMoney);
             }
         };
@@ -224,7 +225,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //1.获得money，保存到状态数据中
                 String money=money_textView11.getText().toString();
-                status.setMoney(money);
+                status.setMoneyStr(money);
 
                 //2. 显示记录数据
                 Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
@@ -263,8 +264,8 @@ public class AddOneDetailActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 String date = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
-                status.setSelectDate(date);
-                button_selectData.setText(status.getSelectDate());
+                status.setDate(date);
+                button_selectData.setText(status.getDate());
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -282,10 +283,10 @@ public class AddOneDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                status.setSpendType_status(cities[which]);
-                spendType_View.setText(status.getSpendType_status());
+                status.setIncomeType(cities[which]);
+                spendType_View.setText(status.getIncomeType());
                 //updateViewPager();
-                categoriesChoice=categoryMap.get(status.getSpendType_status());
+                categoriesChoice=categoryMap.get(status.getIncomeType());
                 mAdapter = new AdapterViewpager(categoriesChoice.getAList());
                 vpager_one.setAdapter(mAdapter);
             }
@@ -315,8 +316,8 @@ public class AddOneDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                status.setAccountName(cities[which]);
-                button_account.setText(status.getAccountName());
+                status.setAccount(cities[which]);
+                button_account.setText(status.getAccount());
             }
         });
         builder.show();
@@ -324,95 +325,20 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
     private void showDescriptionDialog(){
         final EditText et = new EditText(this);
-        et.setText(status.getDesciption());
+        et.setText(status.getDescription());
         new AlertDialog.Builder(this).setTitle("备注")
                 .setView(et)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String input = et.getText().toString();
-                        status.setDesciption(input);
-                        Toast.makeText(getApplicationContext(),  status.getDesciption(), Toast.LENGTH_SHORT).show();
+                        status.setDescription(input);
+                        Toast.makeText(getApplicationContext(),  status.getDescription(), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("取消", null)
                 .show();
     }
 
-    /***
-     * 内部类，明细状态，要获得的明细数据
-     */
-    private class ChoiceStatus{
-        private String spendType_status="支出"; //收入，支出，内部转账
-        private String selectDetailsType="一般"; //一般，餐饮，购物，服饰
-        private String accountName="Inbox";//花销-生活费-现金，投资-股票，投资-货币基金
-        private String selectDate="";//2018-04-07
-        private String desciption=""; //备注信息
-        private String money="0"; //钱100.00
-
-        public void ChoiceStatus(){
-            Date dt = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            selectDate=sdf.format(dt);
-        }
-
-        public String getSpendType_status() {
-            return spendType_status;
-        }
-
-        public void setSpendType_status(String spendType_status) {
-            this.spendType_status = spendType_status;
-        }
-
-        public String getSelectDetailsType() {
-            return selectDetailsType;
-        }
-
-        public void setSelectDetailsType(String selectDetailsType) {
-            this.selectDetailsType = selectDetailsType;
-        }
-
-        public String getAccountName() {
-            return accountName;
-        }
-
-        public void setAccountName(String accountName) {
-            this.accountName = accountName;
-        }
-
-        public String getSelectDate() {
-            return selectDate;
-        }
-
-        public void setSelectDate(String selectDate) {
-            this.selectDate = selectDate;
-        }
-
-        public String getDesciption() {
-            return desciption;
-        }
-
-        public void setDesciption(String desciption) {
-            this.desciption = desciption;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
-        }
-        public String toString(){
-            String str="";
-            str+=selectDate+",";
-            str+=spendType_status+",";
-            str+=money+",";
-            str+=selectDetailsType+",";
-            str+=accountName+",";
-            str+=desciption+",";
-            return str;
-        }
-    }
 
     /***
      * 内部类，类别的选择，居家，零食，娱乐等
@@ -512,7 +438,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
                             v.setImageDrawable(drawable);
                         }
                         Drawable drawable = ((ImageView)view).getDrawable().mutate();
-                        switch (status.getSpendType_status()){
+                        switch (status.getIncomeType()){
                             case "收入":
                                 drawable.setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
                                 ((ImageView)view).setImageDrawable(drawable);
@@ -522,7 +448,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
                                 ((ImageView)view).setImageDrawable(drawable);
                                 break;
                         }
-                        status.setSelectDetailsType(textView.getText().toString());
+                        status.setBuyType(textView.getText().toString());
                     }
                 });
             }

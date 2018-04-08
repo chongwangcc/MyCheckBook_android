@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.models.DetailBean;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by cc on 2018/4/6.
  */
 public class ChildAdapter extends BaseAdapter {
-    private List<DetailBean> list;
+    private List<CheckDetailBean> list;
     private Context context;
     private LayoutInflater inflater;
 
@@ -25,7 +25,7 @@ public class ChildAdapter extends BaseAdapter {
         super();
         this.context = context;
     }
-    public void addAll(List<DetailBean> list) {
+    public void addAll(List<CheckDetailBean> list) {
         this.list=list;
         notifyDataSetChanged();
     }

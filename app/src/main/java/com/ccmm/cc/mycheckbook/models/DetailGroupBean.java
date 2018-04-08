@@ -16,7 +16,7 @@ public class DetailGroupBean {
     private float total_spent; //支出总计
     private String incomeType;// 收入，支出，内部转账
     private String buyType; //零食，居家，娱乐
-    private  List<DetailBean> data;
+    private  List<CheckDetailBean> data;
 
 
     public String getYear() {
@@ -91,11 +91,11 @@ public class DetailGroupBean {
         this.buyType = buyType;
     }
 
-    public List<DetailBean> getData() {
+    public List<CheckDetailBean> getData() {
         return data;
     }
 
-    public void setData(List<DetailBean> data) {
+    public void setData(List<CheckDetailBean> data) {
         this.data = data;
     }
 }

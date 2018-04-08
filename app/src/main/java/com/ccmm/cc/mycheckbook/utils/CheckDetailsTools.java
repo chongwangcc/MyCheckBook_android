@@ -1,6 +1,6 @@
 package com.ccmm.cc.mycheckbook.utils;
 
-import com.ccmm.cc.mycheckbook.models.DetailBean;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by cc on 2018/4/6.
  */
 
-public class DetailsTools {
+public class CheckDetailsTools {
 
     /**
      * 获得明细的分组结果，按天获得组
@@ -22,9 +22,9 @@ public class DetailsTools {
         for(int j=0;j<3;j++){
             DetailGroupBean groupBean = new DetailGroupBean();
 
-            List<DetailBean> DetailBeanList = new LinkedList<>();
+            List<CheckDetailBean> DetailBeanList = new LinkedList<>();
             for(int i=0;i<10;i++){
-                DetailBean bean = new DetailBean();
+                CheckDetailBean bean = new CheckDetailBean();
                 bean.setIncomeType("零食");
                 bean.setMoney((float)10.24);
                 bean.setDescription("随便买点小吃的");
@@ -41,5 +41,12 @@ public class DetailsTools {
 
         return list;
 
+    }
+
+
+    public static boolean addOneCheckDetails(CheckDetailBean checkDetailsBean){
+        boolean b=true;
+
+        return b;
     }
 }

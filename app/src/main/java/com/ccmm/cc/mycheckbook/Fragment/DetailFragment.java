@@ -8,17 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.ccmm.cc.mycheckbook.Adapter.ParentAdapter;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.AddOneDetailActivity;
-import com.ccmm.cc.mycheckbook.activity.ChooseCheckbookActivity;
-import com.ccmm.cc.mycheckbook.activity.LoginActivity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
-import com.ccmm.cc.mycheckbook.utils.DetailsTools;
+import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 
 import java.util.List;
 
@@ -54,7 +50,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         join_checkbook_button.setOnClickListener(this);
         view_join=view;
         //3.设定List源
-        List<DetailGroupBean> ll =  DetailsTools.getDetailGroupByDay();
+        List<DetailGroupBean> ll =  CheckDetailsTools.getDetailGroupByDay();
         ParentAdapter adapter = new ParentAdapter(ll,this.getContext());
         ListView listView = (ListView) view.findViewById(R.id.details_listview);
         listView.setAdapter(adapter);
