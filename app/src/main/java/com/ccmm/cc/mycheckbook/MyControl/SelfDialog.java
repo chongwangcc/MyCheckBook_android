@@ -25,9 +25,14 @@ public class SelfDialog extends Dialog {
     private TextView month_messageTv;//消息提示文本
     private String yearStr;//从外界设置的title文本
     private String monthStr;//从外界设置的消息文本
+    private Button year_add;//年-增加按钮
+    private Button year_sub;//年-减少按钮
+    private Button month_add;//月-增加按钮
+    private Button month_sub;//月-减少按钮
 
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
+
 
     /**
      * 设置取消按钮的显示内容和监听
@@ -91,6 +96,50 @@ public class SelfDialog extends Dialog {
                 }
             }
         });
+        year_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String year_str = year_messageTv.getText().toString();
+                int year = Integer.parseInt(year_str);
+                year=year+1;
+                year_str=year+"";
+                year_messageTv.setText(year_str);
+            }
+        });
+        year_sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String year_str = year_messageTv.getText().toString();
+                int year = Integer.parseInt(year_str);
+                year=year-1;
+                year_str=year+"";
+                year_messageTv.setText(year_str);
+            }
+        });
+        month_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String month_str = month_messageTv.getText().toString();
+                int month = Integer.parseInt(month_str);
+                month=month+1;
+                if(month<1)month=1;
+                if(month>12) month=12;
+                month_str=month+"";
+                month_messageTv.setText(month_str);
+            }
+        });
+        month_sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String month_str = month_messageTv.getText().toString();
+                int month = Integer.parseInt(month_str);
+                month=month-1;
+                if(month<1)month=1;
+                if(month>12) month=12;
+                month_str=month+"";
+                month_messageTv.setText(month_str);
+            }
+        });
     }
 
     /**
@@ -112,6 +161,11 @@ public class SelfDialog extends Dialog {
     private void initView() {
         yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
+        year_add = (Button) findViewById(R.id.button3);
+        year_sub = (Button) findViewById(R.id.button4);
+        month_add = (Button) findViewById(R.id.button5);
+        month_sub = (Button) findViewById(R.id.button6);
+
         year_messageTv = (TextView) findViewById(R.id.year_message);
         month_messageTv = (TextView) findViewById(R.id.month_message);
     }
