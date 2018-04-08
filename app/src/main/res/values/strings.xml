@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">记账本</string>
+    <string name="background_">半透明背景图片</string>
+    <string name="join">加入</string>
+    <string name="New">新建</string>
+    <string name="add">添加</string>
+    <string name="invitationcode">邀请码</string>
+    <string name="description">简介</string>
+    <string name="generation">生成</string>
+    <string name="local_checkbook">本地记账本</string>
+    <string name="checkbook_name">记账本名称</string>
+    <string name="head_image">头像</string>
+    <drawable name="darkgray">#808080</drawable>
+</resources>

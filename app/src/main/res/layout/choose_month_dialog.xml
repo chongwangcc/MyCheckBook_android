@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#11ffffff">
+
+    <LinearLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/free_dialog_bg"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:gravity="left"
+            android:text="选择月份"
+            android:textColor="#38ADFF"
+            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorPrimaryDark" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#11ffffff">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="42dp"
+                android:text="+" />
+
+            <TextView
+                android:id="@+id/year_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/button3"
+                android:layout_alignStart="@+id/button3"
+                android:layout_below="@+id/button3"
+                android:gravity="center"
+                android:text="2018" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignStart="@+id/button3"
+                android:layout_below="@+id/year_message"
+                android:text="-" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="7dp"
+                android:layout_toEndOf="@+id/button3"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/button4"
+                android:layout_alignStart="@+id/month_message"
+                android:layout_below="@+id/month_message"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/month_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/button5"
+                android:layout_alignStart="@+id/button5"
+                android:layout_below="@+id/button5"
+                android:gravity="center"
+                android:text="4月" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="15dp"
+            android:background="#E4E4E4" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/no"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="取消"
+                android:textColor="#7D7D7D"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#E4E4E4" />
+
+            <Button
+                android:id="@+id/yes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="确定"
+                android:textColor="#38ADFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
