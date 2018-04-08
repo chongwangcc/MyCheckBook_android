@@ -177,6 +177,25 @@ public class SpentTypeEnum {
         return Len;
     }
 
+    public static List<List<String>> getAllCategoryNames(String type){
+        List<List<String>> namesList = new LinkedList<>();
+        for(int i=0;i<getLengthType(type);i++){
+            List<String> names=new LinkedList<>();
+            switch (type){
+                case "收入":
+                    names =getIncomeType(i);
+                    break;
+                case "支出":
+                    names =getSpentType(i);
+                    break;
+                case "内部转账":
+                    break;
+            }
+            namesList.add(names);
+        }
+        return namesList;
+    }
+
     public static void clearAllDrawableColor(){
         for(String str : drawableMap.keySet()){
 
