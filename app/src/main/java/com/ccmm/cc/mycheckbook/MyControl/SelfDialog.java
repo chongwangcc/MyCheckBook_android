@@ -23,6 +23,8 @@ public class SelfDialog extends Dialog {
     private Button no;//取消按钮
     private TextView year_messageTv;//消息提示文本
     private TextView month_messageTv;//消息提示文本
+
+
     private String yearStr;//从外界设置的title文本
     private String monthStr;//从外界设置的消息文本
     private Button year_add;//年-增加按钮
@@ -99,45 +101,45 @@ public class SelfDialog extends Dialog {
         year_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String year_str = year_messageTv.getText().toString();
-                int year = Integer.parseInt(year_str);
+                yearStr = year_messageTv.getText().toString();
+                int year = Integer.parseInt(yearStr);
                 year=year+1;
-                year_str=year+"";
-                year_messageTv.setText(year_str);
+                yearStr=year+"";
+                year_messageTv.setText(yearStr);
             }
         });
         year_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String year_str = year_messageTv.getText().toString();
-                int year = Integer.parseInt(year_str);
+                yearStr = year_messageTv.getText().toString();
+                int year = Integer.parseInt(yearStr);
                 year=year-1;
-                year_str=year+"";
-                year_messageTv.setText(year_str);
+                yearStr=year+"";
+                year_messageTv.setText(yearStr);
             }
         });
         month_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String month_str = month_messageTv.getText().toString();
-                int month = Integer.parseInt(month_str);
+                monthStr = month_messageTv.getText().toString();
+                int month = Integer.parseInt(monthStr);
                 month=month+1;
                 if(month<1)month=1;
                 if(month>12) month=12;
-                month_str=month+"";
-                month_messageTv.setText(month_str);
+                monthStr=month+"";
+                month_messageTv.setText(monthStr);
             }
         });
         month_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String month_str = month_messageTv.getText().toString();
-                int month = Integer.parseInt(month_str);
+                monthStr = month_messageTv.getText().toString();
+                int month = Integer.parseInt(monthStr);
                 month=month-1;
                 if(month<1)month=1;
                 if(month>12) month=12;
-                month_str=month+"";
-                month_messageTv.setText(month_str);
+                monthStr=month+"";
+                month_messageTv.setText(monthStr);
             }
         });
     }
@@ -170,24 +172,21 @@ public class SelfDialog extends Dialog {
         month_messageTv = (TextView) findViewById(R.id.month_message);
     }
 
-    /**
-     * 从外界Activity为Dialog设置标题
-     *
-     * @param year
-     */
-    public void setYear(String year) {
-        yearStr = year;
+    public String getYearStr() {
+        return yearStr;
     }
 
-    /**
-     * 从外界Activity为Dialog设置dialog的message
-     *
-     * @param month
-     */
-    public void setMonth(String month) {
-        monthStr = month;
+    public void setYearStr(String yearStr) {
+        this.yearStr = yearStr;
     }
 
+    public String getMonthStr() {
+        return monthStr;
+    }
+
+    public void setMonthStr(String monthStr) {
+        this.monthStr = monthStr;
+    }
     /**
      * 设置确定按钮和取消被点击的接口
      */

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.DetailFragmentPagerAdapter;
@@ -15,6 +16,7 @@ import com.ccmm.cc.mycheckbook.MyControl.SelfDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class CheckbookMainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private TextView year_TextView ;
+    private Button month_button ;
     DetailFragmentPagerAdapter pagerAdapter;
     SelfDialog selfDialog;
     List<DetailGroupBean> list;
@@ -52,6 +56,17 @@ public class CheckbookMainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
+        //5.设置年，月显示功能
+        year_TextView = (TextView) findViewById(R.id.textView6);
+        month_button = (Button) findViewById(R.id.select_date);
+        year_TextView.setText(CheckDetailsTools.getDetails_year());
+        month_button.setText(CheckDetailsTools.getDetals_month());
+
+    }
+
+    private void updateData(){
+        year_TextView.setText(CheckDetailsTools.getDetails_year());
+        month_button.setText(CheckDetailsTools.getDetals_month());
     }
 
     private void settingToolBar(CheckbookEntity checkbook){
@@ -78,20 +93,26 @@ public class CheckbookMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selfDialog = new SelfDialog(v.getContext());
-                selfDialog.setYear("2018");
-                selfDialog.setMonth("4");
+                selfDialog.setYearStr(CheckDetailsTools.getDetails_year());
+                selfDialog.setMonthStr(CheckDetailsTools.getDetals_month());
                 selfDialog.show();
                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                     @Override
                     public void onYesClick() {
-                        Toast.makeText(selfDialog.getContext(),"点击了--确定--按钮",Toast.LENGTH_LONG).show();
+                        //1.更新数据
+                        CheckDetailsTools.setDetails_year(selfDialog.getYearStr());
+                        CheckDetailsTools.setDetals_month(selfDialog.getMonthStr());
+                        //2.更新控件上显示
+                        updateData();
+                        //3.关闭对话框
                         selfDialog.dismiss();
+
                     }
                 });
                 selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
                     @Override
                     public void onNoClick() {
-                        Toast.makeText(selfDialog.getContext(),"点击了--取消--按钮",Toast.LENGTH_LONG).show();
+                        ////Toast.makeText(selfDialog.getContext(),"点击了--取消--按钮",Toast.LENGTH_LONG).show();
                         selfDialog.dismiss();
                     }
                 });

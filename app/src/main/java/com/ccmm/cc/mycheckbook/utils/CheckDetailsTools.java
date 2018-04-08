@@ -3,6 +3,8 @@ package com.ccmm.cc.mycheckbook.utils;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +13,15 @@ import java.util.List;
  */
 
 public class CheckDetailsTools {
-
+    public static String details_year="";
+    public static String detals_month="";
+    static{
+        Date dt = new Date();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
+        details_year=sdf1.format(dt);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
+        detals_month=sdf2.format(dt);
+    }
     /**
      * 获得明细的分组结果，按天获得组
      * @return
@@ -48,5 +58,21 @@ public class CheckDetailsTools {
         boolean b=true;
 
         return b;
+    }
+
+    public static String getDetails_year() {
+        return details_year;
+    }
+
+    public static void setDetails_year(String details_year) {
+        CheckDetailsTools.details_year = details_year;
+    }
+
+    public static String getDetals_month() {
+        return detals_month;
+    }
+
+    public static void setDetals_month(String detals_month) {
+        CheckDetailsTools.detals_month = detals_month;
     }
 }

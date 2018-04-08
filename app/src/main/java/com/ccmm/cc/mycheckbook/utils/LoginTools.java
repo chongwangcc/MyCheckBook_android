@@ -15,7 +15,7 @@ public class LoginTools {
      */
     public static boolean checkDefaultLoginInfo(){
         boolean b=true;
-        //1.读数据库检查登陆信息
+        //1.TODO 读数据库检查登陆信息
 
 
         //2.创建全局的user实体
