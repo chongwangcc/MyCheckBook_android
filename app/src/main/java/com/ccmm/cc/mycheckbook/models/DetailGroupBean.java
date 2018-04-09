@@ -1,5 +1,7 @@
 package com.ccmm.cc.mycheckbook.models;
 
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,13 +13,47 @@ public class DetailGroupBean {
     private String month;
     private String day;
     private String week; //星期几
-    private float total_income; //收入总计
+    private float total_income=0; //收入总计
     private String date; //日期
-    private float total_spent; //支出总计
+    private float total_spent=0; //支出总计
     private String incomeType;// 收入，支出，内部转账
     private String buyType; //零食，居家，娱乐
-    private  List<CheckDetailBean> data;
+    private  List<CheckDetailBean> data=new LinkedList<>();
 
+
+    /***
+     * 已第一个的值填写统计值
+     * @param detail
+     * @return
+     */
+    public boolean addOneDetailBean(CheckDetailBean detail){
+        if(year==null)
+            year=detail.getYear();
+        if(month==null)
+            month=detail.getMonth();
+        if(day==null)
+            day=detail.getDay();
+        if(date==null)
+            date=detail.getDate();
+        if(week==null){
+            //TODO 待核查计算week字符串
+//            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//            week = sdf.format(date);
+        }
+        if(detail.getIncomeType().equals("收入")){
+            total_income+=detail.getMoney();
+        }else{
+            total_spent+=detail.getMoney();
+        }
+        if(incomeType==null)
+            incomeType=detail.getIncomeType();
+        if(buyType==null)
+            buyType=detail.getBuyType();
+
+        data.add(detail);
+
+        return true;
+    }
 
     public String getYear() {
         return year;

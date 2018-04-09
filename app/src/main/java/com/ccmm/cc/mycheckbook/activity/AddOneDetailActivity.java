@@ -25,6 +25,7 @@ import com.ccmm.cc.mycheckbook.Enum.SpentTypeEnum;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
+import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.TwoTuple;
 
@@ -229,7 +230,12 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
                 //2. 显示记录数据
                 Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
-                //TODO 保存一条明细记录
+
+                //3.保存一条明细记录
+                CheckDetailsTools.addOneCheckDetails(status);
+
+                //4.退回上一个Activity
+                finish();
             }
         };
         View.OnClickListener button__delete_listener = new View.OnClickListener() {

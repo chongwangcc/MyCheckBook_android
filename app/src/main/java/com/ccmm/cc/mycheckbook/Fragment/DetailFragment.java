@@ -13,8 +13,10 @@ import android.widget.ListView;
 import com.ccmm.cc.mycheckbook.Adapter.ParentAdapter;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.AddOneDetailActivity;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
+import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 
 import java.util.List;
 
@@ -50,7 +52,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         join_checkbook_button.setOnClickListener(this);
         view_join=view;
         //3.设定List源
-        List<DetailGroupBean> ll =  CheckDetailsTools.getDetailGroupByDay();
+        List<CheckDetailBean> llBan =CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                                               CheckDetailsTools.getDetails_year(),
+                                               CheckDetailsTools.getDetals_month());
+        List<DetailGroupBean> ll =  CheckDetailsTools.detailsGroupByDay(llBan);
         ParentAdapter adapter = new ParentAdapter(ll,this.getContext());
         ListView listView = (ListView) view.findViewById(R.id.details_listview);
         listView.setAdapter(adapter);
