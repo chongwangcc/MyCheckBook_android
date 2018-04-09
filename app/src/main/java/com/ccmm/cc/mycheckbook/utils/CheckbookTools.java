@@ -186,6 +186,21 @@ public class CheckbookTools {
     }
 
     /***
+     * 删除sqlite中一个记账本
+     * @return
+     */
+    static public boolean deleteCheckbookByID(){
+        //1.自己是笔记本的创造者
+        //TODO 删除本地记账本，
+        //TODO 删除云端记账本
+        //TODO 通知其他用户删除他们本地的副本
+        //2.如果自己只是加入一个记账本中
+        //TODO 删除checkbook和用户的对应关系
+
+        return true;
+    }
+
+    /***
      * 保存记账本到数据库中，返回数据库中的ID
      * @param checkbook
      * @return
@@ -204,7 +219,6 @@ public class CheckbookTools {
         checkbook.setCheckbookID(strid);
         return strid;
     }
-
 
     static public Bitmap getBitmapFromCacher(CheckbookEntity checkbook){
         byte[] bb =getCheckbookByID(checkbook.getCheckbookID()).getPic();
