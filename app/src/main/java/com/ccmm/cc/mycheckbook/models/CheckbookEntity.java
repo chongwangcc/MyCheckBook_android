@@ -13,8 +13,8 @@ public class CheckbookEntity implements Serializable {
     private int checkbookID;
     private String title;
     private String description;
-    private Bitmap pic;  //记账本对应的头像
-    private boolean isLocal;
+    private byte[] pic;  //记账本对应的头像
+    private int isLocal;
     private UserEntity owner;
 
     public String getDescription() {
@@ -41,19 +41,19 @@ public class CheckbookEntity implements Serializable {
         this.title = title;
     }
 
-    public Bitmap getPic() {
+    public byte[] getPic() {
         return pic;
     }
 
-    public void setPic(Bitmap pic) {
+    public void setPic(byte[] pic) {
         this.pic = pic;
     }
 
-    public boolean isLocal() {
+    public int isLocal() {
         return isLocal;
     }
 
-    public void setLocal(boolean local) {
+    public void setLocal(int local) {
         isLocal = local;
     }
 

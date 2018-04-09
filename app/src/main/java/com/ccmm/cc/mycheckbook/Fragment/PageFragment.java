@@ -27,7 +27,6 @@ import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.MainActivity;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
-import com.ccmm.cc.mycheckbook.utils.ImageCacheDBTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 import java.io.File;

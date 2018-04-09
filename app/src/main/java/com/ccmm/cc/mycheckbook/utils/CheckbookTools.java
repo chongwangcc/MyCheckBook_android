@@ -1,11 +1,18 @@
 package com.ccmm.cc.mycheckbook.utils;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 
+import com.ccmm.cc.mycheckbook.Enum.SqliteTableName;
+import com.ccmm.cc.mycheckbook.MyApplication;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.UserEntity;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,10 +24,15 @@ import java.util.Map;
  */
 
 public class CheckbookTools {
-    private static int id=0;
-    private static CheckbookEntity selectedCheckbook=null;
+    static private DBHelper helper=new DBHelper(MyApplication.getContext());
+    static private SQLiteDatabase write_db=helper.getWritableDatabase();   //写数据库
+    static private SQLiteDatabase read_db=helper.getReadableDatabase();   //读数据库
+
+
     //记账本的Map,保存用户名与其所有的记账本
     private static Map<UserEntity,List<CheckbookEntity>> checkbookMap=new HashMap<>();
+    //选中的记账本
+    private static CheckbookEntity selectedCheckbook=null;
 
     /***
      * 获得用户加入的所有记账本清单
@@ -28,9 +40,26 @@ public class CheckbookTools {
      * @return
      */
     static public List<CheckbookEntity> fetchAllCheckbook(UserEntity user){
+        //1.TODO 联网，根据用户名获得他加入的所有记账本
         List<CheckbookEntity> result=checkbookMap.get(user);
         if(result==null)
             result = new LinkedList<>();
+        result.clear();
+
+        //2.查询SQLlite，获得所有记账本
+        String sql="select * from "+SqliteTableName.UserCheckbookMap+" where user_name='"+user.getName()+"'";
+        try{
+            Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
+            while (userCheckbookMapCursor.moveToNext()){
+                int id = userCheckbookMapCursor.getInt(userCheckbookMapCursor.getColumnIndex("account_id"));
+                CheckbookEntity entity = getCheckbookByID(id);
+                result.add(entity);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+
         return result;
     }
 
@@ -43,15 +72,28 @@ public class CheckbookTools {
     static public boolean addOneCheckbook(UserEntity user,CheckbookEntity checkbook){
         if(user==null || checkbook==null) return false;
 
+        //1.保存Checkbook实体 到数据库
+        int id=saveCheckbookToSqllite(checkbook);
+        checkbook.setCheckbookID(id);
+
+        //2.建立checkbook和User的对应管理
+        ContentValues values_r = new ContentValues();
+        values_r.put("user_name",user.getName());
+        values_r.put("account_id",id);
+        values_r.put("permission",1);
+        values_r.put("description","");
+        write_db.insert(SqliteTableName.UserCheckbookMap,null,values_r);
+
+        //3.保存到内存中对象
         List<CheckbookEntity> checkbooklist = checkbookMap.get(user);
         if(checkbooklist==null){
             checkbooklist = new LinkedList<>();
             checkbookMap.put(user,checkbooklist);
         }
         checkbooklist.add(checkbook);
-        if(checkbook.getPic()!=null){
-            ImageCacheDBTools.saveImage(checkbook.getCheckbookID()+"", checkbook.getPic());
-        }
+
+        //4.TODO 远程同步  记账本数据
+
         return true;
     }
 
@@ -65,18 +107,22 @@ public class CheckbookTools {
         if(invitation==null) return null;
         CheckbookEntity checkbook=null;
         if(invitation.equals("test")){
+
+            //1.获得记账本
             checkbook = new CheckbookEntity();
             checkbook.setCheckbookID(1);
             checkbook.setDescription("测试用");
-            checkbook.setLocal(false);
+            checkbook.setLocal(0);
             checkbook.setOwner(user);
             checkbook.setTitle("邀请码测试记账本");
+
+            //2.将记账本保存到本地数据库中
         }
         return checkbook;
     }
 
     /***
-     * 新建一个记账本实体
+     * 新建一个记账本实体,不填写ID字段
      * @param user
      * @param title
      * @param description
@@ -87,16 +133,24 @@ public class CheckbookTools {
     static public CheckbookEntity newChechbook(UserEntity user,String title, String description, boolean islocal, Bitmap pic){
         CheckbookEntity checkbook = new CheckbookEntity();
         //1.获得id
-
-        checkbook.setCheckbookID(id++);
+        int isLocal_int = 0;
+        if(islocal)
+            isLocal_int=1;
         checkbook.setTitle(title);
         checkbook.setDescription(description);
-        checkbook.setLocal(islocal);
-        checkbook.setPic(pic);
+        checkbook.setLocal(isLocal_int);
+        checkbook.setPic(bitmapConvertToByte(pic));
         checkbook.setOwner(user);
         return checkbook;
     }
-    static public CheckbookEntity getChecckbookByIndex(UserEntity user,int index){
+
+    /***
+     * 获得列表框中的第i个记账本
+     * @param user
+     * @param index
+     * @return
+     */
+    static public CheckbookEntity getCheckbookByIndex(UserEntity user,int index){
         CheckbookEntity entity = null;
         try{
             List<CheckbookEntity> checkbooklist = checkbookMap.get(user);
@@ -108,10 +162,53 @@ public class CheckbookTools {
 
     }
 
+    /***
+     * 通过ID从本地数据中读取记账本数据
+     * @param id
+     * @return
+     */
+    static public CheckbookEntity getCheckbookByID(int id){
+        String sql_2="select * from " +SqliteTableName.CheckbookInfo+" where id="+id;
+        Cursor tempCursor = read_db.rawQuery(sql_2,null);
+        while (tempCursor.moveToNext()){
+            //1.获得记账本实体
+            CheckbookEntity checkbookEntity = new CheckbookEntity();
+            checkbookEntity.setCheckbookID(tempCursor.getInt(tempCursor.getColumnIndex("id")));
+            checkbookEntity.setTitle(tempCursor.getString(tempCursor.getColumnIndex("name")));
+            checkbookEntity.setDescription(tempCursor.getString(tempCursor.getColumnIndex("description")));
+            checkbookEntity.setLocal(tempCursor.getInt(tempCursor.getColumnIndex("islocal")));
+            byte[] in=tempCursor.getBlob(tempCursor.getColumnIndex("coverImage"));
+            checkbookEntity.setPic(in);
+            //加入到返回的列表中
+            return checkbookEntity;
+        }
+        return null;
+    }
+
+    /***
+     * 保存记账本到数据库中，返回数据库中的ID
+     * @param checkbook
+     * @return
+     */
+    static public int saveCheckbookToSqllite(CheckbookEntity checkbook){
+        ContentValues values = new ContentValues();
+        values.put("coverImage",checkbook.getPic());
+        values.put("islocal",(checkbook.isLocal()));
+        values.put("description",checkbook.getDescription());
+        values.put("name",checkbook.getTitle());
+        write_db.insert(SqliteTableName.CheckbookInfo,null,values);
+        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckbookInfo,null);
+        int strid=-1;
+        if(cursor.moveToFirst())
+            strid = cursor.getInt(0);
+        checkbook.setCheckbookID(strid);
+        return strid;
+    }
+
 
     static public Bitmap getBitmapFromCacher(CheckbookEntity checkbook){
-        Bitmap bitmap =ImageCacheDBTools.getImage(checkbook.getCheckbookID()+"");
-        return bitmap;
+        byte[] bb =getCheckbookByID(checkbook.getCheckbookID()).getPic();
+        return byteConvertToBitmap(bb);
     }
 
     public static CheckbookEntity getSelectedCheckbook() {
@@ -122,5 +219,16 @@ public class CheckbookTools {
         CheckbookTools.selectedCheckbook = selectedCheckbook;
     }
 
+    public static byte[] bitmapConvertToByte(Bitmap bitmap){
+        if(bitmap==null) return null;
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+        return os.toByteArray();
+    }
 
+    public static Bitmap byteConvertToBitmap( byte[] in){
+        if(in==null) return null;
+        Bitmap bmpout= BitmapFactory.decodeByteArray(in,0,in.length);
+        return bmpout;
+    }
 }

@@ -88,7 +88,7 @@ public class ChooseCheckbookActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(ChooseCheckbookActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
                 //1.获得记账本信息
-                CheckbookEntity checkbook =  CheckbookTools.getChecckbookByIndex(LoginTools.getLoginUser(),position);
+                CheckbookEntity checkbook =  CheckbookTools.getCheckbookByIndex(LoginTools.getLoginUser(),position);
                 //view.findViewById()
                 //2.跳转
                 Intent intent = new Intent();
@@ -98,9 +98,6 @@ public class ChooseCheckbookActivity extends Activity {
                 startActivity(intent);
             }
         });
-        //5.新建一个默认记账本
-        CheckbookEntity checkbook = CheckbookTools.checkInvitation(LoginTools.getLoginUser(),"test");
-        CheckbookTools.addOneCheckbook(LoginTools.getLoginUser(),checkbook);
     }
 
     @Override
