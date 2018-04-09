@@ -43,6 +43,7 @@ public class LoginActivity extends Activity {
                 String password =  editText_password.getText().toString();
                 //2.检查用户名密码是否正确
                 if(LoginTools.checkPassword(username,password)){
+                    LoginTools.setLoginUser(username,password);
                     //跳转到选择记账本界面
                     Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, ChooseCheckbookActivity.class);

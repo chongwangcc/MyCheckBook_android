@@ -1,5 +1,8 @@
 package com.ccmm.cc.mycheckbook.utils;
 
+import android.database.sqlite.SQLiteDatabase;
+
+import com.ccmm.cc.mycheckbook.MyApplication;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
@@ -13,8 +16,13 @@ import java.util.List;
  */
 
 public class CheckDetailsTools {
-    public static String details_year="";
-    public static String detals_month="";
+    static private DBHelper helper=new DBHelper(MyApplication.getContext());
+    SQLiteDatabase write_db=helper.getWritableDatabase();   //写数据库
+    SQLiteDatabase read_db=helper.getReadableDatabase();   //读数据库
+
+    private static String details_year="";
+    private static String detals_month="";
+
     static{
         Date dt = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
@@ -22,6 +30,19 @@ public class CheckDetailsTools {
         SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
         detals_month=sdf2.format(dt);
     }
+
+    public static boolean updateYear(String year,String month){
+        details_year=year;
+        detals_month=month;
+
+        boolean b=false;
+        //1.读数据库获得此月份的所有数据
+
+
+        return b;
+    }
+
+
     /**
      * 获得明细的分组结果，按天获得组
      * @return

@@ -1,6 +1,8 @@
 package com.ccmm.cc.mycheckbook.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -8,10 +10,12 @@ import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 public class MainActivity extends AppCompatActivity {
+    static public SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("userStatus", Context.MODE_PRIVATE);
         //1.检查登陆信息
         boolean isLogin = LoginTools.checkDefaultLoginInfo();
         Intent intent = new Intent();

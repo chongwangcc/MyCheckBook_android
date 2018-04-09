@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class CheckbookTools {
     private static int id=0;
-    private static ImageCache imageCache = new ImageCache();
     private static CheckbookEntity selectedCheckbook=null;
     //记账本的Map,保存用户名与其所有的记账本
     private static Map<UserEntity,List<CheckbookEntity>> checkbookMap=new HashMap<>();

@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyCheckBook_android.iml" filepath="$PROJECT_DIR$/MyCheckBook_android.iml" />
-      <module fileurl="file://D:\project\CM\MyCheckBook_android\MyCheckBook_android.iml" filepath="D:\project\CM\MyCheckBook_android\MyCheckBook_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\project\CM\MyCheckBook_android\app\app.iml" filepath="D:\project\CM\MyCheckBook_android\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -30,6 +30,4 @@ public class ImageCacherDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(sql);
         onCreate(sqLiteDatabase);
     }
-
-
 }

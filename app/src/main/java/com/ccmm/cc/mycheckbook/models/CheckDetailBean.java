@@ -14,6 +14,8 @@ public class CheckDetailBean implements Serializable {
     private String date ="";//2018-04-07
     private String description =""; //备注信息
     private String moneyStr ="0"; //钱100.00
+
+
     private float money=0;
 
     public void ChoiceStatus(){
