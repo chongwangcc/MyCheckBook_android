@@ -42,8 +42,10 @@ public class CheckbookTools {
     static public List<CheckbookEntity> fetchAllCheckbook(UserEntity user){
         //1.TODO 联网，根据用户名获得他加入的所有记账本
         List<CheckbookEntity> result=checkbookMap.get(user);
-        if(result==null)
+        if(result==null){
             result = new LinkedList<>();
+            checkbookMap.put(user,result);
+        }
         result.clear();
 
         //2.查询SQLlite，获得所有记账本
@@ -156,7 +158,7 @@ public class CheckbookTools {
             List<CheckbookEntity> checkbooklist = checkbookMap.get(user);
             entity=checkbooklist.get(index);
         }catch ( Exception e){
-
+            e.printStackTrace();
         }
         return entity;
 

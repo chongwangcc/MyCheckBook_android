@@ -103,6 +103,10 @@ public class ChooseCheckbookActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        updateCheckbookData();
+    }
+
+    public void updateCheckbookData(){
         //1.更新listView中的数据
         List<CheckbookEntity> checkbookList=CheckbookTools.fetchAllCheckbook(LoginTools.getLoginUser());
         mList.clear();
