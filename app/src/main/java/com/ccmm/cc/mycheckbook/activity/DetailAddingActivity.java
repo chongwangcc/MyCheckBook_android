@@ -30,7 +30,6 @@ import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
-import com.ccmm.cc.mycheckbook.utils.DateTools;
 import com.ccmm.cc.mycheckbook.utils.TwoTuple;
 
 import java.util.Calendar;
@@ -47,7 +46,7 @@ public class DetailAddingActivity extends AppCompatActivity {
     private final List<String> lis = BalanceName.getALlNames();
     private CheckDetailBean status = null;
     private CategoriesChoice categoriesChoice ;
-    private Map<String,CategoriesChoice> categoryMap=new HashMap<>();
+    private Map<String,CategoriesChoice> categoryMap=new HashMap<>(); //
     private boolean newOrModefy=true; //false--新建，true==修改
 
     private Toolbar toolbar;
@@ -56,7 +55,7 @@ public class DetailAddingActivity extends AppCompatActivity {
     private Button button_selectData;
     private Button button_account;
     private Button button_Note;
-    private TextView spendType_View;
+    private TextView balanceType_View;
     private TextView money_textView11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class DetailAddingActivity extends AppCompatActivity {
 
         //3.设置toolbar
         settingToolBar(CheckbookTools.getSelectedCheckbook());
-        spendType_View= findViewById(R.id.spend_type_TextView);
+        balanceType_View = findViewById(R.id.spend_type_TextView);
 
         //4.选择账户按钮
         button_account =  findViewById(R.id.button_account);
@@ -113,7 +112,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         money_textView11= findViewById(R.id.textView11);
         settingMoneyButtons();
 
-        //TODO 根据status显示数据
+        // 根据status显示数据
         money_textView11.setText(status.getMoneyStr());
         button_selectData.setText(status.getDate());
         if(status.getAccount()==null || status.getAccount().isEmpty()){
@@ -125,10 +124,12 @@ public class DetailAddingActivity extends AppCompatActivity {
             CategoriesChoice cc =categoryMap.get(name);
             if(name.equals(status.getBalanceType())){
                 categoriesChoice = cc;
-                categoriesChoice.setSelectCategory(name);
+                categoriesChoice.setSelectCategory(status.getCategory());
+                balanceType_View.setText(status.getBalanceType());
             }
         }
-
+        //TODO ListView显示有问题
+        //TODO BUG 支出，收入，图标同时选中的问题
         //1.设置ViewPage页面
         vpager_one =  findViewById(R.id.viewpager_type);
         mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
@@ -349,7 +350,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which)
             {
                 status.setBalanceType(balances[which]);
-                spendType_View.setText(status.getBalanceType());
+                balanceType_View.setText(status.getBalanceType());
                 categoriesChoice=categoryMap.get(status.getBalanceType());
                 mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
                 vpager_one.setAdapter(mAdapter);
