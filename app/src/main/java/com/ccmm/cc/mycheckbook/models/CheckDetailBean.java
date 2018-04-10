@@ -1,6 +1,7 @@
 package com.ccmm.cc.mycheckbook.models;
 
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+import com.ccmm.cc.mycheckbook.utils.DateTools;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -25,14 +26,12 @@ public class CheckDetailBean implements Serializable {
     private String year="";
     private String month="";
     private String day="";
-    private String account ="Inbox";//花销-生活费-现金，投资-股票，投资-货币基金
+    private String account ="";//花销-生活费-现金，投资-股票，投资-货币基金
     private String date ="";//2018-04-07
 
 
-    public void ChoiceStatus(){
-        Date dt = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String selectDate=sdf.format(dt);
+    public  CheckDetailBean(){
+        setDate(DateTools.getNowDateStr());
     }
 
     public String getBalanceType() {

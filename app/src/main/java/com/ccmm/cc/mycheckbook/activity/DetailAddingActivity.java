@@ -45,9 +45,10 @@ import java.util.Map;
 
 public class DetailAddingActivity extends AppCompatActivity {
     private final List<String> lis = BalanceName.getALlNames();
-    private CheckDetailBean status = new CheckDetailBean();
+    private CheckDetailBean status = null;
     private CategoriesChoice categoriesChoice ;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>();
+    private boolean newOrModefy=true; //false--新建，true==修改
 
     private Toolbar toolbar;
     private ViewPager vpager_one;
@@ -60,7 +61,6 @@ public class DetailAddingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        status.setDate(DateTools.getNowDateStr());
         setContentView(R.layout.activity_add_one_detail);
 
         //0.获得数据
@@ -68,15 +68,15 @@ public class DetailAddingActivity extends AppCompatActivity {
         status = (CheckDetailBean)intent.getSerializableExtra("detailBean");
         if(status ==null){
             status = new CheckDetailBean();
+            newOrModefy=false;
+        }else{
+            newOrModefy=true;
         }
-
 
         for(String name:lis){
             CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
             categoryMap.put(name,cc);
         }
-
-
 
         //2.添加选择日期按钮
         button_selectData = findViewById(R.id.select_date);
@@ -116,7 +116,11 @@ public class DetailAddingActivity extends AppCompatActivity {
         //TODO 根据status显示数据
         money_textView11.setText(status.getMoneyStr());
         button_selectData.setText(status.getDate());
-        button_account.setText(status.getAccount());
+        if(status.getAccount()==null || status.getAccount().isEmpty()){
+            button_account.setText("选择账户");
+        }else{
+            button_account.setText(status.getAccount());
+        }
         for(String name:categoryMap.keySet()){
             CategoriesChoice cc =categoryMap.get(name);
             if(name.equals(status.getBalanceType())){
@@ -146,7 +150,6 @@ public class DetailAddingActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     /***
@@ -255,19 +258,34 @@ public class DetailAddingActivity extends AppCompatActivity {
                 if(status.getCategory()==null || status.getCategory().isEmpty()){
                     status.setCategory("一般");
                 }
+                if(status.getAccount()==null || status.getAccount().isEmpty()){
+                    status.setAccount("Inbox");
+                }
                 //2. 显示记录数据
-                Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
 
                 //3.保存一条明细记录
-                if(status.getMoney()>0){
-                    if(status.getDescription()==null || status.getDescription().isEmpty()){
-                        status.setDescription(status.getCategory());
+                if(!newOrModefy){
+                    //新建一条记录
+                    if(status.getMoney()>0){
+                        CheckDetailsTools.addOneCheckDetails(status);
                     }
-                    CheckDetailsTools.addOneCheckDetails(status);
+                }else{
+                    //修改一条记录
+                    if(status.getMoney()>0){
+                        CheckDetailsTools.modifyOneCheckDetails(status);
+                    }else{
+                        CheckDetailsTools.deleteCheckDetail(status);
+                    }
                 }
 
                 //4.退回上一个Activity
+
+                Intent intent = new Intent();
+                intent.putExtra("detailBean",status);
+                DetailAddingActivity.this.setResult(RESULT_OK, intent);
                 finish();
+
             }
         };
         View.OnClickListener button__delete_listener = new View.OnClickListener() {

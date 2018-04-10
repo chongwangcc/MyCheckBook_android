@@ -67,7 +67,11 @@ public class DetailsInnerListAdapter extends BaseAdapter {
             parentListItem = (InnerListItem) convertView.getTag();
         }
         //2.设置控件文本内容
-        parentListItem.text_description.setText(data_list.get(position).getDescription());
+        String desciption=data_list.get(position).getDescription();
+        if(desciption==null || desciption.isEmpty()){
+            desciption=data_list.get(position).getCategory();
+        }
+        parentListItem.text_description.setText(desciption);
         parentListItem.text_money.setText(data_list.get(position).getMoney()+"");
         Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getCategory()));
 

@@ -28,15 +28,19 @@ public class DetailInfoActivity extends AppCompatActivity {
     ImageView iv_iorn;
     CheckDetailBean bean;
     ConstraintLayout layout;
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_info);
-
+        //1.获得数据
         Intent intent = getIntent();
-        String title = (String)intent.getStringExtra("title");
+        title = (String)intent.getStringExtra("title");
         if(title ==null) title = "详情";
         bean = (CheckDetailBean)intent.getSerializableExtra("detailBean");
+        if(bean ==null){
+            finish();
+        }
         //1.初始化view
         toolbar = findViewById(R.id.toolbar2);
         tv_date = findViewById(R.id.textView12);
@@ -45,18 +49,7 @@ public class DetailInfoActivity extends AppCompatActivity {
         ev_description = findViewById(R.id.editText);
         iv_iorn = findViewById(R.id.imageView3);
         layout = findViewById(R.id.constraintLayout);
-        //2.设置要显示的数据
-        String date_Str=bean.getYear()+"-"+bean.getMonth()+"-"+bean.getDay();
-        tv_date.setText("  "+date_Str+"-"+ DateTools.getDateStrWeek(date_Str));
-        tv_category.setText(bean.getCategory());
-        tv_money.setText(bean.getMoneyStr());
-        ev_description.setText(bean.getDescription());
 
-        Drawable drawable = getDrawable(CategoriesIconTool.getDrawableIndex(bean.getCategory()));
-        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, bean.getBalanceType());
-        iv_iorn.setImageDrawable(drawable);;
-        //3.设置处理事件
-        toolbar.setTitle(title);
         setSupportActionBar(toolbar);//设置导航图标要在setSupportActionBar方法之后
         toolbar.setNavigationIcon(R.mipmap.ic_drawer_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -72,19 +65,53 @@ public class DetailInfoActivity extends AppCompatActivity {
             }
         });
 
-
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 添加跳转到指定activity功能
+                // 跳转activity
                 Intent intent = new Intent();
                 intent.setClass(DetailInfoActivity.this, DetailAddingActivity.class);
                 intent.putExtra("detailBean",bean);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
+    }
 
+    @Override
+    protected void onResume() {
 
+        super.onResume();
+        update();
+
+    }
+
+    public void update(){
+
+        //2.设置要显示的数据
+        String date_Str=bean.getYear()+"-"+bean.getMonth()+"-"+bean.getDay();
+        tv_date.setText("  "+date_Str+"-"+ DateTools.getDateStrWeek(date_Str));
+        tv_category.setText(bean.getCategory());
+        tv_money.setText(bean.getMoneyStr());
+        ev_description.setText(bean.getDescription());
+        Drawable drawable = getDrawable(CategoriesIconTool.getDrawableIndex(bean.getCategory()));
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, bean.getBalanceType());
+        iv_iorn.setImageDrawable(drawable);;
+        //3.设置处理事件
+        toolbar.setTitle(title);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        switch (resultCode) {
+            case RESULT_OK:
+                title = (String)intent.getStringExtra("title");
+                if(title ==null) title = "详情";
+                bean = (CheckDetailBean)intent.getSerializableExtra("detailBean");
+                update();
+                break;
+
+            default:
+                break;
+        }
     }
 }

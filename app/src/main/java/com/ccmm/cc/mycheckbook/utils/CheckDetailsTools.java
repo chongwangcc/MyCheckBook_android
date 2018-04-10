@@ -183,12 +183,7 @@ public class CheckDetailsTools {
         // 添加更新日期
         values.put("updateTime",new Date().getTime());
         values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
-        write_db.update(SqliteTableName.CheckDetails,values,"id=?",new String[]{""+checkDetailsBean.getId()});
-        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckDetails,null);
-        int strid=-1;
-        if(cursor.moveToFirst())
-            strid = cursor.getInt(0);
-        checkDetailsBean.setId(strid);
+        write_db.update(SqliteTableName.CheckDetails,values,"id="+checkDetailsBean.getId(),null);
         return b;
     }
 
