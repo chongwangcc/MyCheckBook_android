@@ -418,6 +418,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             this.m_categoriesChoice.setSelectCategory(null);
         }
         this.m_categoriesChoice = m_categoriesChoice;
+        this.m_categoriesChoice.setIndicatorPostion(0);
     }
 
     /***
