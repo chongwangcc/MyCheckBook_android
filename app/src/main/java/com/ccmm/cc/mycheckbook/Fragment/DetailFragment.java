@@ -30,10 +30,10 @@ import java.util.List;
  */
 
 public class DetailFragment extends Fragment implements View.OnClickListener{
-    View view_detail; //明细的视图
-    ListView detail_listView ; //明细列表
-    DetailsOuterListAdapter detail_adapter; //明细数据适配器
-    List<DetailGroupBean> detail_data; //明细数据
+    private View view_detail; //明细的视图
+    private ListView detail_listView ; //明细列表
+    private DetailsOuterListAdapter detail_adapter; //明细数据适配器
+    private List<DetailGroupBean> detail_data; //明细数据
     protected boolean isCreated = false;
 
     public static DetailFragment newInstance() {
@@ -108,7 +108,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
             List<CheckDetailBean> llBan = CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
                     CheckDetailsTools.getDetails_year(),
                     CheckDetailsTools.getDetals_month());
+            CheckDetailsTools.setAllDetails(llBan);
             detail_data = CheckDetailsTools.detailsGroupByDay(llBan);
+            CheckDetailsTools.setDetailGroup_byDay(detail_data);
             detail_adapter = new DetailsOuterListAdapter(detail_data,getContext());
             detail_listView.setAdapter(detail_adapter);
             detail_adapter.notifyDataSetChanged();
@@ -146,6 +148,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
         }
         return super.onContextItemSelected(item);
+    }
+
+    public List<DetailGroupBean> getDetail_data() {
+        return detail_data;
     }
 }
 

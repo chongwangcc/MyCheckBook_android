@@ -31,6 +31,11 @@ public class CheckDetailsTools {
 
     private static CheckDetailBean deleteDetails_cacher=null;
 
+
+
+    private static List<CheckDetailBean> allDetails=null;
+    private static List<DetailGroupBean> detailGroup_byDay=null;
+
     static{
         Date dt = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
@@ -227,5 +232,21 @@ public class CheckDetailsTools {
         CheckDetailsTools.deleteDetails_cacher = deleteDetails_cacher;
     }
 
+    public static List<CheckDetailBean> getAllDetails() {
+        return allDetails;
+    }
 
+    public static void setAllDetails(List<CheckDetailBean> allDetails) {
+        CheckDetailsTools.allDetails = allDetails;
+    }
+
+    public static List<DetailGroupBean> getDetailGroup_byDay() {
+        if(detailGroup_byDay==null)
+            return new LinkedList<>();
+        return detailGroup_byDay;
+    }
+
+    public static void setDetailGroup_byDay(List<DetailGroupBean> detailGroup_byDay) {
+        CheckDetailsTools.detailGroup_byDay = detailGroup_byDay;
+    }
 }

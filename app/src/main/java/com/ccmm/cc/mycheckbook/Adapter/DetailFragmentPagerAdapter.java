@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 
 import com.ccmm.cc.mycheckbook.Fragment.DetailFragment;
+import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -74,4 +75,5 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
         this.fragmentList = fragments;
         notifyDataSetChanged();
     }
+
 }

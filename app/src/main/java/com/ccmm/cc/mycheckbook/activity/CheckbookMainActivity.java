@@ -12,8 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.DetailFragmentPagerAdapter;
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.MyControl.ChooseMonthDialog;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
@@ -29,9 +31,12 @@ public class CheckbookMainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TextView year_TextView ;
+    private TextView tv_totalIncome ;
+    private TextView tv_totalSpend ;
     private Button month_button ;
     private DetailFragmentPagerAdapter pagerAdapter;
     private ChooseMonthDialog selfDialog;
+    CheckbookEntity checkbook;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,12 +44,14 @@ public class CheckbookMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkbook_main);
 
         //1.获得传递过来的checkbook数据
-        CheckbookEntity checkbook = CheckbookTools.getSelectedCheckbook();
+        checkbook = CheckbookTools.getSelectedCheckbook();
 
         //2.设置ToolBar
         settingToolBar(checkbook);
 
         //3.设置概况栏
+        tv_totalIncome=findViewById(R.id.textView9);
+        tv_totalSpend=findViewById(R.id.textView10);
 
         //4.设置明细Fragment
         pagerAdapter = new DetailFragmentPagerAdapter(getSupportFragmentManager(), this);
@@ -60,6 +67,8 @@ public class CheckbookMainActivity extends AppCompatActivity {
         month_button =  findViewById(R.id.select_date);
         year_TextView.setText(CheckDetailsTools.getDetails_year());
         month_button.setText(CheckDetailsTools.getDetals_month());
+
+
 
     }
 
@@ -77,6 +86,24 @@ public class CheckbookMainActivity extends AppCompatActivity {
         month_button.setText(CheckDetailsTools.getDetals_month());
 
         pagerAdapter.notifyDataSetChanged();
+
+        List<CheckDetailBean> goupbean = CheckDetailsTools.getAllDetailsInMonth(checkbook.getCheckbookID(),
+                                                                              year_TextView.getText().toString(),
+                                                                              month_button.getText().toString());
+        float total_income=0;
+        float total_spent=0;
+        for(CheckDetailBean group:goupbean){
+            switch (group.getBalanceType()){
+                case BalanceName.Income:
+                    total_income+=group.getMoney();
+                    break;
+                case BalanceName.Expend:
+                    total_spent+=group.getMoney();
+                    break;
+            }
+        }
+        tv_totalIncome.setText("+"+total_income);
+        tv_totalSpend.setText("-"+total_spent);
     }
 
     /***
