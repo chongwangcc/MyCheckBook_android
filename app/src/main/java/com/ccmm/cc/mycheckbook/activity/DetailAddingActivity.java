@@ -45,7 +45,7 @@ import java.util.Map;
 public class DetailAddingActivity extends AppCompatActivity {
     private final List<String> lis = BalanceName.getALlNames();
     private CheckDetailBean status = null;
-    private CategoriesChoice categoriesChoice ;
+    private CategoriesChoice m_categoriesChoice;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>(); //
     private boolean newOrModefy=true; //false--新建，true==修改
 
@@ -123,8 +123,8 @@ public class DetailAddingActivity extends AppCompatActivity {
         for(String name:categoryMap.keySet()){
             CategoriesChoice cc =categoryMap.get(name);
             if(name.equals(status.getBalanceType())){
-                categoriesChoice = cc;
-                categoriesChoice.setSelectCategory(status.getCategory());
+                setM_categoriesChoice(cc);
+                m_categoriesChoice.setSelectCategory(status.getCategory());
                 balanceType_View.setText(status.getBalanceType());
             }
         }
@@ -132,7 +132,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         //TODO BUG 支出，收入，图标同时选中的问题
         //1.设置ViewPage页面
         vpager_one =  findViewById(R.id.viewpager_type);
-        mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
+        mAdapter = new CategoryViewPagerAdapter(m_categoriesChoice.getAList());
         vpager_one.setAdapter(mAdapter);
         vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             //滚动过程中实现
@@ -143,7 +143,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             //滚动成功后实现
             @Override
             public void onPageSelected(int position) {
-                categoriesChoice.setIndicatorPostion(position);
+                m_categoriesChoice.setIndicatorPostion(position);
             }
             //滚动成功前，即手指按下屏幕时
             @Override
@@ -351,8 +351,8 @@ public class DetailAddingActivity extends AppCompatActivity {
             {
                 status.setBalanceType(balances[which]);
                 balanceType_View.setText(status.getBalanceType());
-                categoriesChoice=categoryMap.get(status.getBalanceType());
-                mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
+                setM_categoriesChoice(categoryMap.get(status.getBalanceType()));
+                mAdapter = new CategoryViewPagerAdapter(m_categoriesChoice.getAList());
                 vpager_one.setAdapter(mAdapter);
             }
         });
@@ -411,6 +411,14 @@ public class DetailAddingActivity extends AppCompatActivity {
                 .show();
     }
 
+
+    public void setM_categoriesChoice(CategoriesChoice m_categoriesChoice) {
+        //1.之前的清零
+        if(this.m_categoriesChoice!=null){
+            this.m_categoriesChoice.setSelectCategory(null);
+        }
+        this.m_categoriesChoice = m_categoriesChoice;
+    }
 
     /***
      * 内部类，类别的选择，居家，零食，娱乐等
@@ -532,25 +540,37 @@ public class DetailAddingActivity extends AppCompatActivity {
             this.page_total_num = page_total_num;
         }
 
+
         public List<View> getAList() {
             return AList;
         }
 
+        public void clearStatus(){
+
+        }
+
         public void setSelectCategory(String category){
-            if(category==null) return;
+            if(category==null){
+                category="";
+            }
             int p=0;
             for(View v :AList){
                 p++;
                 List<TwoTuple<ImageView,TextView>> listview = ViewMap.get(v);
                 for(TwoTuple<ImageView,TextView> tump :listview){
                     if(tump.getSecond().getText().toString().equals(category)){
-                        //TODO 更改Image状态
+                        // 更改Image状态
                         ImageView view = tump.getFirst();
                         Drawable drawable = ((ImageView)view).getDrawable().mutate();
                         drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getBalanceType());
                         ((ImageView)view).setImageDrawable(drawable);
                         setIndicatorPostion(p);
-                        return;
+
+                    }else{
+                        ImageView view = tump.getFirst();
+                        Drawable drawable = ((ImageView)view).getDrawable().mutate();
+                        drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,"default");
+                        ((ImageView)view).setImageDrawable(drawable);
                     }
                 }
             }
