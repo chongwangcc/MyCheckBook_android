@@ -1,6 +1,8 @@
 package com.ccmm.cc.mycheckbook.models;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,9 +38,17 @@ public class DetailGroupBean {
         if(date==null)
             date=detail.getDate();
         if(week==null){
-            //TODO 待核查计算week字符串
-//            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-//            week = sdf.format(date);
+            //计算week字符串
+            try{
+                String data_Str=year+"-"+month+"-"+day;
+                DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+                Date date = fmt.parse(data_Str);
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+                week = sdf.format(date);
+            }catch (Exception e){
+
+            }
+
         }
         if(detail.getIncomeType().equals("收入")){
             total_income+=detail.getMoney();

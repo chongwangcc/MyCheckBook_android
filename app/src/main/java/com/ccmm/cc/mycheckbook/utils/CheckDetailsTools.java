@@ -60,7 +60,7 @@ public class CheckDetailsTools {
         //0.检查年，月
 
         //1.读数据
-        String sql = "select * from "+ SqliteTableName.CheckDetails+" where checkbook_id="+checkbook_id+" and year='"+year+"' and month='"+month+"'";
+        String sql = "select * from "+ SqliteTableName.CheckDetails+" where checkbook_id="+checkbook_id+" and year='"+year+"' and month='"+month+"' order by createTime DESC";
         Cursor detailsCursor = read_db.rawQuery(sql,null);
         while (detailsCursor.moveToNext()){
             CheckDetailBean entity = new CheckDetailBean();
@@ -111,7 +111,7 @@ public class CheckDetailsTools {
         }
 
         //3.按照日期排序tempMap
-        for(int i=0;i<=32;i++){
+        for(int i=31;i>=0;i--){
             String day_i=i+"";
             if(day_i.length()==1) day_i="0"+day_i;
             DetailGroupBean detailGroup =tempMap.get(day_i);
@@ -145,7 +145,8 @@ public class CheckDetailsTools {
         values.put("Categoryclassification",checkDetailsBean.getBuyType());
         values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
         //TODO 添加更新日期
-        //values.put("updateTime",new Date());
+        values.put("updateTime",new Date().getTime());
+        values.put("createTime",new Date().getTime());
         values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
         write_db.insert(SqliteTableName.CheckDetails,null,values);
         Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckDetails,null);

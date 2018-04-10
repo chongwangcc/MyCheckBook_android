@@ -1,5 +1,4 @@
 
-
 create table AccountInfo (
 account_id           INTEGER                        not null,
 account_name         varchar(64),
@@ -19,6 +18,7 @@ create table CheckDetails (
 id                   INTEGER                        not null,
 checkbook_id         INTEGER                        not null,
 account_id           INTEGER,
+last_update_user_id  int,
 date_str             Text,
 year                 varchar(4),
 month                varchar(2),
@@ -28,8 +28,8 @@ description          varchar(128),
 incomeStatement      varchar(64),
 Categoryclassification varchar(16),
 isCreditcard         bool,
-updateTime           timestamp,
-last_update_user_id  int,
+updateTime           long,
+createTime           long,
 primary key (id),
 foreign key (checkbook_id)
       references CheckbookInfo (id),

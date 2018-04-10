@@ -126,6 +126,7 @@ public class ChooseMonthDialog extends Dialog {
                 if(month<1)month=1;
                 if(month>12) month=12;
                 monthStr=month+"";
+                if(monthStr.length()==1)monthStr="0"+monthStr;
                 month_messageTv.setText(monthStr);
             }
         });
@@ -138,6 +139,7 @@ public class ChooseMonthDialog extends Dialog {
                 if(month<1)month=1;
                 if(month>12) month=12;
                 monthStr=month+"";
+                if(monthStr.length()==1)monthStr="0"+monthStr;
                 month_messageTv.setText(monthStr);
             }
         });
