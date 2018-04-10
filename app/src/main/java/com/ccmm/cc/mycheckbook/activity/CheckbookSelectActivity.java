@@ -85,9 +85,10 @@ public class CheckbookSelectActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(CheckbookSelectActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
+
                 //1.获得记账本信息
                 CheckbookEntity checkbook =  CheckbookTools.getCheckbookByIndex(LoginTools.getLoginUser(),position);
+                Toast.makeText(CheckbookSelectActivity.this,"打开记账本...."+checkbook.getTitle()+"",Toast.LENGTH_SHORT).show();
                 //view.findViewById()
                 //2.跳转
                 Intent intent = new Intent();

@@ -8,11 +8,14 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.MyControl.MyListView;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.activity.CheckbookSelectActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 
 import java.util.List;
 
@@ -56,7 +59,7 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
             convertView = inflater.inflate(R.layout.parentitem, null, false);
             childListViewItem.text_date =  convertView.findViewById(R.id.date);
             childListViewItem.text_sumMoney =  convertView.findViewById(R.id.sum_money);
-            childListViewItem.parent_lv =  convertView.findViewById(R.id.detail_statement);
+            childListViewItem.inner_lv =  convertView.findViewById(R.id.detail_statement);
             convertView.setTag(childListViewItem);
         } else {
             childListViewItem = (ChildListViewItem) convertView.getTag();
@@ -69,14 +72,30 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
         DetailsInnerListAdapter daAdapter  = new DetailsInnerListAdapter(context);
         int z = (list.get(position).getData()).size();
         daAdapter.addAll((list.get(position).getData()));
-        childListViewItem.parent_lv.setAdapter(daAdapter);
-        childListViewItem.parent_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        childListViewItem.inner_lv.setAdapter(daAdapter);
+        childListViewItem.inner_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int arg2, long arg3) {
                 //TODO 点击一条明细时的操作
+                //1.获得明细数据
+                DetailsInnerListAdapter myAdapter = (DetailsInnerListAdapter)arg0.getAdapter();
+                CheckDetailBean bean = myAdapter.getData_list().get(arg2);
+                Toast.makeText(context,"点击明细...."+bean.getId()+"",Toast.LENGTH_SHORT).show();
 
+                //2.打开界面展示明细数据
+            }
+        });
+        childListViewItem.inner_lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //1.获得明细数据,缓存
+                DetailsInnerListAdapter myAdapter = (DetailsInnerListAdapter)adapterView.getAdapter();
+                CheckDetailBean bean = myAdapter.getData_list().get(i);
+                CheckDetailsTools.setDeleteDetails_cacher(bean);
+
+                return false;
             }
         });
         return convertView;
@@ -85,7 +104,7 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
     public class ChildListViewItem {
         TextView text_date;
         TextView text_sumMoney;
-        MyListView parent_lv;
+        MyListView inner_lv;
     }
 
     public void setDetail_data(List<DetailGroupBean> list) {

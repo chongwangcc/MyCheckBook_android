@@ -29,6 +29,8 @@ public class CheckDetailsTools {
     private static String details_year="";
     private static String detals_month="";
 
+    private static CheckDetailBean deleteDetails_cacher=null;
+
     static{
         Date dt = new Date();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
@@ -144,7 +146,7 @@ public class CheckDetailsTools {
         values.put("incomeStatement",checkDetailsBean.getIncomeType());
         values.put("Categoryclassification",checkDetailsBean.getBuyType());
         values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
-        //TODO 添加更新日期
+        // 添加更新日期
         values.put("updateTime",new Date().getTime());
         values.put("createTime",new Date().getTime());
         values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
@@ -156,6 +158,21 @@ public class CheckDetailsTools {
         checkDetailsBean.setId(strid);
         return b;
     }
+
+    /**
+     * 删除一条明细
+     * @param checkDetailsBean
+     * @return
+     */
+    public static boolean deleteCheckDetail(CheckDetailBean checkDetailsBean){
+        if(checkDetailsBean==null) return false;
+        String sql = "delete from "+SqliteTableName.CheckDetails+" where id="+checkDetailsBean.getId();
+        write_db.execSQL(sql);
+        return true;
+    }
+
+
+    /////////////////////////////////SET GET方法///////////////////////////////
 
     public static String getDetails_year() {
         return details_year;
@@ -171,6 +188,14 @@ public class CheckDetailsTools {
 
     public static void setDetals_month(String detals_month) {
         CheckDetailsTools.detals_month = detals_month;
+    }
+
+    public static CheckDetailBean getDeleteDetails_cacher() {
+        return deleteDetails_cacher;
+    }
+
+    public static void setDeleteDetails_cacher(CheckDetailBean deleteDetails_cacher) {
+        CheckDetailsTools.deleteDetails_cacher = deleteDetails_cacher;
     }
 
 

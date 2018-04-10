@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.DetailsOuterListAdapter;
 import com.ccmm.cc.mycheckbook.R;
@@ -66,6 +71,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         detail_listView = view.findViewById(R.id.details_listview);
         detail_listView.setAdapter(detail_adapter);
 
+        this.registerForContextMenu(detail_listView);
         return view;
     }
 
@@ -108,6 +114,38 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
             detail_adapter.notifyDataSetChanged();
             detail_listView.invalidate();
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("你想干啥？");
+        menu.add(0, 0, Menu.NONE, "删除");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
+            AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            //处理菜单的点击事件
+            switch (item.getItemId()) {
+                case 0: //删除对话框
+                    //1.删除数据
+                    CheckDetailBean bean = CheckDetailsTools.getDeleteDetails_cacher();
+                    CheckDetailsTools.deleteCheckDetail(bean);
+                    Toast.makeText(this.getContext(),"删除明细...."+bean.getId()+"",Toast.LENGTH_SHORT).show();
+                    //mTextView.setText(item.getTitle().toString() + menuInfo.position);
+                    //2.更新界面
+                    updateData();
+                    break;
+                default :
+
+            }
+
+        }
+        return super.onContextItemSelected(item);
     }
 }
 

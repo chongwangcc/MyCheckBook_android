@@ -19,7 +19,8 @@ import java.util.List;
  * 明细，里层列表适配器
  */
 public class DetailsInnerListAdapter extends BaseAdapter {
-    private List<CheckDetailBean> list;
+
+    private List<CheckDetailBean> data_list;
     private Context context;
     private LayoutInflater inflater;
 
@@ -28,22 +29,22 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         this.context = context;
     }
     public void addAll(List<CheckDetailBean> list) {
-        this.list=list;
+        this.data_list =list;
         notifyDataSetChanged();
     }
 
     public void clearAll() {
-        this.list.clear();
+        this.data_list.clear();
         notifyDataSetChanged();
     }
     @Override
     public int getCount() {
-        return list.size();
+        return data_list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return data_list.get(position);
     }
 
     @Override
@@ -66,12 +67,12 @@ public class DetailsInnerListAdapter extends BaseAdapter {
             parentListItem = (InnerListItem) convertView.getTag();
         }
         //2.设置控件文本内容
-        parentListItem.text_description.setText(list.get(position).getDescription());
-        parentListItem.text_money.setText(list.get(position).getMoney()+"");
-        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(list.get(position).getBuyType()));
+        parentListItem.text_description.setText(data_list.get(position).getDescription());
+        parentListItem.text_money.setText(data_list.get(position).getMoney()+"");
+        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getBuyType()));
 
         //3.设置图标颜色
-        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable,list.get(position).getIncomeType());
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getIncomeType());
         parentListItem.item_icon.setImageDrawable(drawable);
         return convertView;
     }
@@ -82,6 +83,10 @@ public class DetailsInnerListAdapter extends BaseAdapter {
     public class InnerListItem {
         ImageView item_icon;
         TextView text_description, text_money;
+    }
+
+    public List<CheckDetailBean> getData_list() {
+        return data_list;
     }
 
 }
