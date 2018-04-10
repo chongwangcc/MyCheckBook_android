@@ -14,10 +14,9 @@ import android.widget.TextView;
 import com.ccmm.cc.mycheckbook.R;
 
 /**
- * 创建自定义的dialog，主要学习其实现原理
- * Created by chengguo on 2016/3/22.
+ * 选择日期的对话框
  */
-public class SelfDialog extends Dialog {
+public class ChooseMonthDialog extends Dialog {
 
     private Button yes;//确定按钮
     private Button no;//取消按钮
@@ -56,7 +55,7 @@ public class SelfDialog extends Dialog {
         this.yesOnclickListener = onYesOnclickListener;
     }
 
-    public SelfDialog(Context context) {
+    public ChooseMonthDialog(Context context) {
         super(context, R.style.MyDialog);
     }
 

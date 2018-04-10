@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 
-import com.ccmm.cc.mycheckbook.Fragment.PageFragment;
+import com.ccmm.cc.mycheckbook.Fragment.AddCheckbookFragment;
 
 /**
  * Created by cc on 2018/4/5.
@@ -27,7 +27,7 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position + 1);
+        return AddCheckbookFragment.newInstance(position + 1);
     }
 
     @Override

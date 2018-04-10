@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.DetailFragmentPagerAdapter;
-import com.ccmm.cc.mycheckbook.MyControl.SelfDialog;
+import com.ccmm.cc.mycheckbook.MyControl.ChooseMonthDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
@@ -32,7 +32,7 @@ public class CheckbookMainActivity extends AppCompatActivity {
     private TextView year_TextView ;
     private Button month_button ;
     DetailFragmentPagerAdapter pagerAdapter;
-    SelfDialog selfDialog;
+    ChooseMonthDialog selfDialog;
     List<DetailGroupBean> list;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,8 @@ public class CheckbookMainActivity extends AppCompatActivity {
     private void updateData(){
         year_TextView.setText(CheckDetailsTools.getDetails_year());
         month_button.setText(CheckDetailsTools.getDetals_month());
+
+        pagerAdapter.notifyDataSetChanged();
     }
 
     private void settingToolBar(CheckbookEntity checkbook){
@@ -92,11 +94,11 @@ public class CheckbookMainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selfDialog = new SelfDialog(v.getContext());
+                selfDialog = new ChooseMonthDialog(v.getContext());
                 selfDialog.setYearStr(CheckDetailsTools.getDetails_year());
                 selfDialog.setMonthStr(CheckDetailsTools.getDetals_month());
                 selfDialog.show();
-                selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+                selfDialog.setYesOnclickListener("确定", new ChooseMonthDialog.onYesOnclickListener() {
                     @Override
                     public void onYesClick() {
                         //1.更新数据
@@ -109,7 +111,7 @@ public class CheckbookMainActivity extends AppCompatActivity {
 
                     }
                 });
-                selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                selfDialog.setNoOnclickListener("取消", new ChooseMonthDialog.onNoOnclickListener() {
                     @Override
                     public void onNoClick() {
                         ////Toast.makeText(selfDialog.getContext(),"点击了--取消--按钮",Toast.LENGTH_LONG).show();
@@ -118,5 +120,10 @@ public class CheckbookMainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateData();
     }
 }

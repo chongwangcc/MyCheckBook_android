@@ -2,14 +2,10 @@ package com.ccmm.cc.mycheckbook.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -24,17 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.activity.MainActivity;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
-import java.io.File;
-
 /**
  * Created by cc on 2018/4/5.
  */
-public class PageFragment extends Fragment implements View.OnClickListener{
+public class AddCheckbookFragment extends Fragment implements View.OnClickListener{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     //调用系统相册-选择图片
@@ -42,10 +35,10 @@ public class PageFragment extends Fragment implements View.OnClickListener{
     private int mPage;
     View view_join;
     View view_add;
-    public static PageFragment newInstance(int page) {
+    public static AddCheckbookFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        PageFragment pageFragment = new PageFragment();
+        AddCheckbookFragment pageFragment = new AddCheckbookFragment();
         pageFragment.setArguments(args);
         return pageFragment;
     }

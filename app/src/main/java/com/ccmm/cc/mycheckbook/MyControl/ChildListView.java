@@ -10,19 +10,19 @@ import android.widget.ListView;
  */
 
 
-public class ChildLiistView extends ListView {
+public class ChildListView extends ListView {
 
-    public ChildLiistView(Context context) {
+    public ChildListView(Context context) {
         super(context);
         // TODO Auto-generated constructor stub
     }
 
-    public ChildLiistView(Context context, AttributeSet attrs, int defStyle) {
+    public ChildListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
 
-    public ChildLiistView(Context context, AttributeSet attrs) {
+    public ChildListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // TODO Auto-generated constructor stub
     }

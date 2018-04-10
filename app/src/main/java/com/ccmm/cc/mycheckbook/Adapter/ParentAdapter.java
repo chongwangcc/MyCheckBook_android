@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.ccmm.cc.mycheckbook.MyControl.ChildLiistView;
+import com.ccmm.cc.mycheckbook.MyControl.ChildListView;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
@@ -24,13 +24,12 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
     private List<DetailGroupBean> list;
     private Context context;
     private LayoutInflater inflater;
-    private ChildAdapter daAdapter;
+
 
     public ParentAdapter(List<DetailGroupBean> list, Context context) {
         super();
         this.list = list;
         this.context = context;
-        daAdapter = new ChildAdapter(context);
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -60,7 +59,7 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
             convertView = inflater.inflate(R.layout.parentitem, null, false);
             childListViewItem.text_date = (TextView) convertView.findViewById(R.id.date);
             childListViewItem.text_sumMoney = (TextView) convertView.findViewById(R.id.sum_money);
-            childListViewItem.parent_lv = (ChildLiistView) convertView.findViewById(R.id.parent_lv);
+            childListViewItem.parent_lv = (ChildListView) convertView.findViewById(R.id.detail_statement);
             convertView.setTag(childListViewItem);
         } else {
             childListViewItem = (ChildListViewItem) convertView.getTag();
@@ -68,6 +67,8 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
         childListViewItem.text_date.setText("  "+list.get(position).getDay()+"-"+list.get(position).getWeek());
         childListViewItem.text_sumMoney.setText("支出："+list.get(position).getTotal_spent()+" 收入："+list.get(position).getTotal_income()+"  ");
 
+        //2.显示数据
+        ChildAdapter daAdapter  = new ChildAdapter(context);;
         int z = ((List<CheckDetailBean>)list.get(position).getData()).size();
         daAdapter.addAll(((List<CheckDetailBean>)list.get(position).getData()));
         childListViewItem.parent_lv.setAdapter(daAdapter);
@@ -76,8 +77,7 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int arg2, long arg3) {
-//                Intent intent = new Intent(context, Activity_2.class);
-//                context.startActivity(intent);
+                //TODO 点击一条明细时的操作
 
             }
         });
@@ -87,7 +87,11 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
     public class ChildListViewItem {
         TextView text_date;
         TextView text_sumMoney;
-        ChildLiistView parent_lv;
+        ChildListView parent_lv;
+    }
+
+    public void setDetail_data(List<DetailGroupBean> list) {
+        this.list = list;
     }
 
 }

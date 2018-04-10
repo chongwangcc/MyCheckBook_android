@@ -24,8 +24,8 @@
             android:text="11" />
     </LinearLayout>
 
-    <com.ccmm.cc.mycheckbook.MyControl.ChildLiistView
-        android:id="@+id/parent_lv"
+    <com.ccmm.cc.mycheckbook.MyControl.ChildListView
+        android:id="@+id/detail_statement"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="#00000000"
@@ -35,13 +35,13 @@
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:scrollingCache="false" >
-    </com.ccmm.cc.mycheckbook.MyControl.ChildLiistView>
+    </com.ccmm.cc.mycheckbook.MyControl.ChildListView>
 
     <View
         android:id="@+id/view_line1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/parent_lv"
+        android:layout_below="@+id/detail_statement"
         android:background="#BFBFBF" />
 
 

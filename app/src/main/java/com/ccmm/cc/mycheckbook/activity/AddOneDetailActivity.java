@@ -269,7 +269,11 @@ public class AddOneDetailActivity extends AppCompatActivity {
         new DatePickerDialog(AddOneDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                String date = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+                String monthStr=(monthOfYear+1)+"";
+                String dayStr = dayOfMonth+"";
+                if(monthStr.length()==1) monthStr="0"+monthStr;
+                if(dayStr.length()==1) dayStr="0"+dayStr;
+                String date = year+"-"+monthStr+"-"+dayStr;
                 status.setDate(date);
                 button_selectData.setText(status.getDate());
             }

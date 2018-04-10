@@ -69,7 +69,6 @@ public class ChooseCheckbookActivity extends Activity {
                     Object data,
                     String textRepresentation) {
                 if(view !=null && view instanceof ImageView) {
-
                     if (data!=null && data instanceof Bitmap) {
                         ImageView imageView = (ImageView) view;
                         imageView.setImageDrawable(null);

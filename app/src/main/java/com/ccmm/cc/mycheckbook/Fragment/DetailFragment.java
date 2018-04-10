@@ -25,7 +25,13 @@ import java.util.List;
  */
 
 public class DetailFragment extends Fragment implements View.OnClickListener{
-    View view_join;
+    View view_detail; //明细的视图
+    ListView detail_listView ; //明细列表
+    ParentAdapter detail_adapter; //明细数据适配器
+
+    List<DetailGroupBean> detail_data; //明细数据
+
+    protected boolean isCreated = false;
 
     public static DetailFragment newInstance() {
         Bundle args = new Bundle();
@@ -39,6 +45,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 标记
+        isCreated = true;
     }
 
     @Nullable
@@ -50,18 +58,17 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         //2.设置按钮的点击事件处理方法
         Button join_checkbook_button=(Button)view.findViewById(R.id.add_detail_button);
         join_checkbook_button.setOnClickListener(this);
-        view_join=view;
+        view_detail=view;
         //3.设定List源
         List<CheckDetailBean> llBan =CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
                                                CheckDetailsTools.getDetails_year(),
                                                CheckDetailsTools.getDetals_month());
-        List<DetailGroupBean> ll =  CheckDetailsTools.detailsGroupByDay(llBan);
-        ParentAdapter adapter = new ParentAdapter(ll,this.getContext());
-        ListView listView = (ListView) view.findViewById(R.id.details_listview);
-        listView.setAdapter(adapter);
+        detail_data =  CheckDetailsTools.detailsGroupByDay(llBan);
+        detail_adapter = new ParentAdapter(detail_data,this.getContext());
+        detail_listView = (ListView) view.findViewById(R.id.details_listview);
+        detail_listView.setAdapter(detail_adapter);
 
         return view;
-
     }
 
     @Override
@@ -73,6 +80,32 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                 intent.setClass(this.getActivity(), AddOneDetailActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (!isCreated) {
+            return;
+        }
+
+        if (isVisibleToUser) {
+            updateDate();
+        }
+    }
+
+    public void updateDate(){
+        if(isCreated){
+            List<CheckDetailBean> llBan = CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                    CheckDetailsTools.getDetails_year(),
+                    CheckDetailsTools.getDetals_month());
+            detail_data = CheckDetailsTools.detailsGroupByDay(llBan);
+            detail_adapter = new ParentAdapter(detail_data,getContext());
+            detail_listView.setAdapter(detail_adapter);
+            detail_adapter.notifyDataSetChanged();
+            detail_listView.invalidate();
+            System.out.print("________________Create_________________");
         }
     }
 }
