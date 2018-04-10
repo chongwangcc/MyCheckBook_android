@@ -71,8 +71,8 @@ public class CheckDetailsTools {
             entity.setAccount_id(detailsCursor.getInt(detailsCursor.getColumnIndex("account_id")));
             entity.setIsCreditcard(detailsCursor.getInt(detailsCursor.getColumnIndex("isCreditcard")));
             entity.setLast_update_user_id(detailsCursor.getInt(detailsCursor.getColumnIndex("last_update_user_id")));
-            entity.setIncomeType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
-            entity.setBuyType(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
+            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
+            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
             entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));
             entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
 
@@ -143,8 +143,8 @@ public class CheckDetailsTools {
         values.put("day",checkDetailsBean.getDay());
         values.put("money",checkDetailsBean.getMoney());
         values.put("description",checkDetailsBean.getDescription());
-        values.put("incomeStatement",checkDetailsBean.getIncomeType());
-        values.put("Categoryclassification",checkDetailsBean.getBuyType());
+        values.put("incomeStatement",checkDetailsBean.getBalanceType());
+        values.put("Categoryclassification",checkDetailsBean.getCategory());
         values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
         // 添加更新日期
         values.put("updateTime",new Date().getTime());
@@ -158,6 +158,40 @@ public class CheckDetailsTools {
         checkDetailsBean.setId(strid);
         return b;
     }
+
+    /***
+     * 修改一条明细记录
+     * @param checkDetailsBean
+     * @return
+     */
+    public static boolean modifyOneCheckDetails(CheckDetailBean checkDetailsBean){
+        boolean b=true;
+        CheckbookEntity checkbook = CheckbookTools.getSelectedCheckbook();
+
+        ContentValues values = new ContentValues();
+        values.put("checkbook_id",checkbook.getCheckbookID());
+        values.put("account_id",(checkDetailsBean.getAccount_id()));
+        values.put("date_str",checkDetailsBean.getDate());
+        values.put("year",checkDetailsBean.getYear());
+        values.put("month",checkDetailsBean.getMonth());
+        values.put("day",checkDetailsBean.getDay());
+        values.put("money",checkDetailsBean.getMoney());
+        values.put("description",checkDetailsBean.getDescription());
+        values.put("incomeStatement",checkDetailsBean.getBalanceType());
+        values.put("Categoryclassification",checkDetailsBean.getCategory());
+        values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
+        // 添加更新日期
+        values.put("updateTime",new Date().getTime());
+        values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
+        write_db.update(SqliteTableName.CheckDetails,values,"id=?",new String[]{""+checkDetailsBean.getId()});
+        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckDetails,null);
+        int strid=-1;
+        if(cursor.moveToFirst())
+            strid = cursor.getInt(0);
+        checkDetailsBean.setId(strid);
+        return b;
+    }
+
 
     /**
      * 删除一条明细

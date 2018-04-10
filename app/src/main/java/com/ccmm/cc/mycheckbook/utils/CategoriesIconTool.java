@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.R;
 
 import java.util.HashMap;
@@ -166,13 +167,13 @@ public class CategoriesIconTool {
     public static Integer getLengthType(String type){
         int Len=0;
         switch(type){
-            case "支出":
+            case BalanceName.Expend:
                 Len=4;
                 break;
-            case "收入":
+            case BalanceName.Income:
                 Len=2;
                 break;
-            case "内部转账":
+            case BalanceName.Inner:
                 break;
         }
         return Len;
@@ -183,13 +184,13 @@ public class CategoriesIconTool {
         for(int i=0;i<getLengthType(type);i++){
             List<String> names=new LinkedList<>();
             switch (type){
-                case "收入":
+                case BalanceName.Income:
                     names =getIncomeType(i);
                     break;
-                case "支出":
+                case BalanceName.Expend:
                     names =getSpentType(i);
                     break;
-                case "内部转账":
+                case BalanceName.Inner:
                     break;
             }
             namesList.add(names);
@@ -209,13 +210,13 @@ public class CategoriesIconTool {
         // 改变颜色
         Drawable drawable_temp = drawable.mutate();
         switch (balanceType){
-            case "支出":
+            case BalanceName.Expend:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.RED));
                 break;
-            case "收入":
+            case BalanceName.Income:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GREEN));
                 break;
-            case "内部转账":
+            case BalanceName.Inner:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.BLUE));
                 break;
         }

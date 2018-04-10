@@ -1,5 +1,7 @@
 package com.ccmm.cc.mycheckbook.models;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,8 +15,8 @@ public class CheckDetailBean implements Serializable {
     private int isCreditcard; //这条明细是不是信用账户
     private int last_update_user_id;//最后更新用户的ID
     private int checkbook_id;//对应记账本的ID
-    private String incomeType ="支出"; //收入，支出，内部转账
-    private String buyType ="一般"; //一般，餐饮，购物，服饰
+    private String balanceType = BalanceName.Expend; //收入，支出，内部转账
+    private String category =""; //一般，餐饮，购物，服饰
     private String description =""; //备注信息
     private String moneyStr ="0"; //钱100.00
     private float money=0;
@@ -33,20 +35,20 @@ public class CheckDetailBean implements Serializable {
         String selectDate=sdf.format(dt);
     }
 
-    public String getIncomeType() {
-        return incomeType;
+    public String getBalanceType() {
+        return balanceType;
     }
 
-    public void setIncomeType(String incomeType) {
-        this.incomeType = incomeType;
+    public void setBalanceType(String balanceType) {
+        this.balanceType = balanceType;
     }
 
-    public String getBuyType() {
-        return buyType;
+    public String getCategory() {
+        return category;
     }
 
-    public void setBuyType(String buyType) {
-        this.buyType = buyType;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getAccount() {
@@ -96,9 +98,9 @@ public class CheckDetailBean implements Serializable {
     public String toString(){
         String str="";
         str+= date +",";
-        str+= incomeType +",";
+        str+= balanceType +",";
         str+= moneyStr +",";
-        str+= buyType +",";
+        str+= category +",";
         str+= account +",";
         str+= description;
         return str;

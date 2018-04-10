@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"明细","类别说明","账户"};
+    private String tabTitles[] = new String[]{"明细","类别报表","账户"};
     private Context context;
     private List<Fragment> fragmentList=new LinkedList<>();
     private FragmentManager fm;

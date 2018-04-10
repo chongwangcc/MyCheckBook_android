@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -29,11 +30,10 @@ import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
+import com.ccmm.cc.mycheckbook.utils.DateTools;
 import com.ccmm.cc.mycheckbook.utils.TwoTuple;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 
 public class DetailAddingActivity extends AppCompatActivity {
-    private final String[] lis = {"收入","支出","内部转账"};
+    private final List<String> lis = BalanceName.getALlNames();
     private CheckDetailBean status = new CheckDetailBean();
     private CategoriesChoice categoriesChoice ;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>();
@@ -60,45 +60,26 @@ public class DetailAddingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Date dt = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String selectDate=sdf.format(dt);
-        status.setDate(selectDate);
+        status.setDate(DateTools.getNowDateStr());
         setContentView(R.layout.activity_add_one_detail);
+
+        //0.获得数据
+        Intent intent = getIntent();
+        status = (CheckDetailBean)intent.getSerializableExtra("detailBean");
+        if(status ==null){
+            status = new CheckDetailBean();
+        }
+
+
         for(String name:lis){
             CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
             categoryMap.put(name,cc);
-            if(name.equals(status.getIncomeType())){
-                categoriesChoice = cc;
-            }
         }
-        categoriesChoice.setPage_posion(0);
 
-        //1.设置ViewPage页面
-        vpager_one =  findViewById(R.id.viewpager_type);
-        mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
-        vpager_one.setAdapter(mAdapter);
-        vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            //滚动过程中实现
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-            //滚动成功后实现
-            @Override
-            public void onPageSelected(int position) {
-                categoriesChoice.setPage_posion(position);
-            }
-            //滚动成功前，即手指按下屏幕时
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
         //2.添加选择日期按钮
         button_selectData = findViewById(R.id.select_date);
-        button_selectData.setText(status.getDate());
         button_selectData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +112,41 @@ public class DetailAddingActivity extends AppCompatActivity {
         //6.设置计算用按钮
         money_textView11= findViewById(R.id.textView11);
         settingMoneyButtons();
+
+        //TODO 根据status显示数据
+        money_textView11.setText(status.getMoneyStr());
+        button_selectData.setText(status.getDate());
+        button_account.setText(status.getAccount());
+        for(String name:categoryMap.keySet()){
+            CategoriesChoice cc =categoryMap.get(name);
+            if(name.equals(status.getBalanceType())){
+                categoriesChoice = cc;
+                categoriesChoice.setSelectCategory(name);
+            }
+        }
+
+        //1.设置ViewPage页面
+        vpager_one =  findViewById(R.id.viewpager_type);
+        mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
+        vpager_one.setAdapter(mAdapter);
+        vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            //滚动过程中实现
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+            //滚动成功后实现
+            @Override
+            public void onPageSelected(int position) {
+                categoriesChoice.setIndicatorPostion(position);
+            }
+            //滚动成功前，即手指按下屏幕时
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     /***
@@ -236,18 +252,19 @@ public class DetailAddingActivity extends AppCompatActivity {
                 //1.获得money，保存到状态数据中
                 String money=money_textView11.getText().toString();
                 status.setMoneyStr(money);
-
+                if(status.getCategory()==null || status.getCategory().isEmpty()){
+                    status.setCategory("一般");
+                }
                 //2. 显示记录数据
                 Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
 
                 //3.保存一条明细记录
                 if(status.getMoney()>0){
                     if(status.getDescription()==null || status.getDescription().isEmpty()){
-                        status.setDescription(status.getBuyType());
+                        status.setDescription(status.getCategory());
                     }
                     CheckDetailsTools.addOneCheckDetails(status);
                 }
-
 
                 //4.退回上一个Activity
                 finish();
@@ -313,9 +330,9 @@ public class DetailAddingActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                status.setIncomeType(balances[which]);
-                spendType_View.setText(status.getIncomeType());
-                categoriesChoice=categoryMap.get(status.getIncomeType());
+                status.setBalanceType(balances[which]);
+                spendType_View.setText(status.getBalanceType());
+                categoriesChoice=categoryMap.get(status.getBalanceType());
                 mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
                 vpager_one.setAdapter(mAdapter);
             }
@@ -404,7 +421,6 @@ public class DetailAddingActivity extends AppCompatActivity {
         private List<ImageView> allImageView=new LinkedList<>();
         private Map<View,List<TwoTuple<ImageView,TextView>>> ViewMap=new HashMap<>();
         private LinearLayout lltPageIndicator;
-        private int page_position=0; //滑动到了第几个页码上了
         private int page_total_num; //总共有多少个页
 
         private CategoriesChoice(Context context,List<List<String>> typeNames){
@@ -475,9 +491,9 @@ public class DetailAddingActivity extends AppCompatActivity {
                             v.setImageDrawable(drawable);
                         }
                         Drawable drawable = ((ImageView)view).getDrawable().mutate();
-                        drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getIncomeType());
+                        drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getBalanceType());
                         ((ImageView)view).setImageDrawable(drawable);
-                        status.setBuyType(textView.getText().toString());
+                        status.setCategory(textView.getText().toString());
                     }
                 });
             }
@@ -488,14 +504,6 @@ public class DetailAddingActivity extends AppCompatActivity {
             return true;
         }
 
-        public int getPage_posion() {
-            return page_position;
-        }
-
-        public void setPage_posion(int page_posion) {
-            this.page_position = page_posion;
-            setIndicatorPostion(page_posion);
-        }
 
         public int getPage_total_num() {
             return page_total_num;
@@ -509,5 +517,24 @@ public class DetailAddingActivity extends AppCompatActivity {
             return AList;
         }
 
+        public void setSelectCategory(String category){
+            if(category==null) return;
+            int p=0;
+            for(View v :AList){
+                p++;
+                List<TwoTuple<ImageView,TextView>> listview = ViewMap.get(v);
+                for(TwoTuple<ImageView,TextView> tump :listview){
+                    if(tump.getSecond().getText().toString().equals(category)){
+                        //TODO 更改Image状态
+                        ImageView view = tump.getFirst();
+                        Drawable drawable = ((ImageView)view).getDrawable().mutate();
+                        drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getBalanceType());
+                        ((ImageView)view).setImageDrawable(drawable);
+                        setIndicatorPostion(p);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

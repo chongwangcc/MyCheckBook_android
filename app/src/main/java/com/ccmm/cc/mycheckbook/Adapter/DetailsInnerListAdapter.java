@@ -69,10 +69,10 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         //2.设置控件文本内容
         parentListItem.text_description.setText(data_list.get(position).getDescription());
         parentListItem.text_money.setText(data_list.get(position).getMoney()+"");
-        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getBuyType()));
+        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getCategory()));
 
         //3.设置图标颜色
-        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getIncomeType());
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getBalanceType());
         parentListItem.item_icon.setImageDrawable(drawable);
         return convertView;
     }

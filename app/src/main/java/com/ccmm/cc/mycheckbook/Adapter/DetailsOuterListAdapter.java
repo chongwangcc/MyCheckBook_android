@@ -1,6 +1,7 @@
 package com.ccmm.cc.mycheckbook.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.ccmm.cc.mycheckbook.MyControl.MyListView;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.CheckbookSelectActivity;
+import com.ccmm.cc.mycheckbook.activity.DetailInfoActivity;
+import com.ccmm.cc.mycheckbook.activity.LoginActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
@@ -82,9 +85,14 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
                 //1.获得明细数据
                 DetailsInnerListAdapter myAdapter = (DetailsInnerListAdapter)arg0.getAdapter();
                 CheckDetailBean bean = myAdapter.getData_list().get(arg2);
-                Toast.makeText(context,"点击明细...."+bean.getId()+"",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,"点击明细...."+bean.getId()+"",Toast.LENGTH_SHORT).show();
 
                 //2.打开界面展示明细数据
+                Intent intent = new Intent();
+                intent.setClass(context, DetailInfoActivity.class);
+                intent.putExtra("detailBean",bean);
+                intent.putExtra("title","详情");
+                context.startActivity(intent);
             }
         });
         childListViewItem.inner_lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
