@@ -219,6 +219,9 @@ public class CategoriesIconTool {
             case BalanceName.Inner:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.BLUE));
                 break;
+            default:
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GRAY));
+                break;
         }
         return drawable_temp;
 
