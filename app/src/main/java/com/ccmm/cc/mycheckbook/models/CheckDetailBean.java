@@ -23,9 +23,8 @@ public class CheckDetailBean implements Serializable {
     private String year="";
     private String month="";
     private String day="";
-    private String date ="";//2018-04-07
-
     private String account ="Inbox";//花销-生活费-现金，投资-股票，投资-货币基金
+    private String date ="";//2018-04-07
 
 
     public void ChoiceStatus(){
@@ -66,7 +65,7 @@ public class CheckDetailBean implements Serializable {
         String ss[] = date.split("-");
         this.year=ss[0];
         this.month=ss[1];
-        this.day=ss[2];
+        this.date=ss[2];
         this.date = date;
     }
 

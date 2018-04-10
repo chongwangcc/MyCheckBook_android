@@ -1,6 +1,7 @@
 package com.ccmm.cc.mycheckbook.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
+import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 
 import java.util.List;
 
@@ -65,6 +67,10 @@ public class ChildAdapter extends BaseAdapter {
         }
         parentListItem.text_description.setText(list.get(position).getDescription());
         parentListItem.text_money.setText(list.get(position).getMoney()+"");
+        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(list.get(position).getBuyType()));
+
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable,list.get(position).getIncomeType());
+        parentListItem.item_icon.setImageDrawable(drawable);
         return convertView;
     }
 

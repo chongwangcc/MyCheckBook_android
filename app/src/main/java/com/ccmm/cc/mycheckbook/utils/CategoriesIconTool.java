@@ -1,6 +1,9 @@
-package com.ccmm.cc.mycheckbook.Enum;
+package com.ccmm.cc.mycheckbook.utils;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.ccmm.cc.mycheckbook.R;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  * Created by cc on 2018/4/7.
  */
 
-public class SpentTypeEnum {
+public class CategoriesIconTool {
     private static Map<String,Integer > drawableMap= new HashMap<>();
     static{
         drawableMap.put("一般", R.mipmap.u210);
@@ -200,6 +203,35 @@ public class SpentTypeEnum {
         for(String str : drawableMap.keySet()){
 
         }
+    }
+
+    /***
+     * 改变 类别图片的颜色
+     * @param drawable
+     * @param balanceType
+     * @return
+     */
+    public static Drawable changeDrawableByBalanceType(Drawable drawable,String balanceType){
+        //TODO 改变颜色
+        Drawable drawable_temp = drawable.mutate();
+        switch (balanceType){
+            case "支出":
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.RED));
+                break;
+            case "收入":
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GREEN));
+                break;
+            case "内部转账":
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.BLUE));
+                break;
+        }
+        return drawable_temp;
+
+    }
+    public static Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
+        final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintList(wrappedDrawable, colors);
+        return wrappedDrawable;
     }
 
     public class SpendTypeEntity{

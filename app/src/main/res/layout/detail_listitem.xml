@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="60dp">
 
     <ImageView
         android:id="@+id/detail_pic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="4dp"
-        android:adjustViewBounds="true"
         android:background="@drawable/bg_border"
         android:padding="10dip"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/detail_content"
         android:layout_width="160dp"
-        android:layout_height="20dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
@@ -31,6 +31,7 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/detail_pic"
         android:gravity="center_vertical"
+        android:textSize="40px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/detail_pic"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +40,7 @@
     <TextView
         android:id="@+id/detail_money"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -48,6 +49,7 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/detail_content"
         android:singleLine="true"
+        android:textSize="40px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

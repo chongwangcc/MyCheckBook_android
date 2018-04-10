@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.AdapterViewpager;
-import com.ccmm.cc.mycheckbook.Enum.SpentTypeEnum;
+import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
@@ -64,7 +65,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
         status.setDate(selectDate);
         setContentView(R.layout.activity_add_one_detail);
         for(String name:lis){
-            CategoriesChoice cc = new CategoriesChoice(this,SpentTypeEnum.getAllCategoryNames(name));
+            CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
             categoryMap.put(name,cc);
             if(name.equals(status.getIncomeType())){
                 categoriesChoice = cc;
@@ -232,7 +233,13 @@ public class AddOneDetailActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
 
                 //3.保存一条明细记录
-                CheckDetailsTools.addOneCheckDetails(status);
+                if(status.getMoney()>0){
+                    if(status.getDescription()==null || status.getDescription().isEmpty()){
+                        status.setDescription(status.getBuyType());
+                    }
+                    CheckDetailsTools.addOneCheckDetails(status);
+                }
+
 
                 //4.退回上一个Activity
                 finish();
@@ -432,7 +439,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
                 ImageView imageView = tuple.get(i).first;
                 final TextView textView = tuple.get(i).second;
 
-                imageView.setImageResource(SpentTypeEnum.getDrawableIndex(name));
+                imageView.setImageResource(CategoriesIconTool.getDrawableIndex(name));
                 textView.setText(name);
                 imageView.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.VISIBLE);
@@ -444,20 +451,12 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
                         for(ImageView v : allImageView){
                             Drawable drawable =  v.getDrawable();
-                            drawable.clearColorFilter();
+                            CategoriesIconTool.tintDrawable(drawable, ColorStateList.valueOf(Color.GRAY));
                             v.setImageDrawable(drawable);
                         }
                         Drawable drawable = ((ImageView)view).getDrawable().mutate();
-                        switch (status.getIncomeType()){
-                            case "收入":
-                                drawable.setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-                                ((ImageView)view).setImageDrawable(drawable);
-                                break;
-                            case "支出":
-                                drawable.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
-                                ((ImageView)view).setImageDrawable(drawable);
-                                break;
-                        }
+                        drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getIncomeType());
+                        ((ImageView)view).setImageDrawable(drawable);
                         status.setBuyType(textView.getText().toString());
                     }
                 });
