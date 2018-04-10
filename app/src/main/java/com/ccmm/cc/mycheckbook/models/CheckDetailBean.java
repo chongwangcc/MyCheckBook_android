@@ -65,7 +65,7 @@ public class CheckDetailBean implements Serializable {
         String ss[] = date.split("-");
         this.year=ss[0];
         this.month=ss[1];
-        this.date=ss[2];
+        this.day=ss[2];
         this.date = date;
     }
 
