@@ -1,9 +1,5 @@
 package com.ccmm.cc.mycheckbook.activity;
 
-/**
- * Created by cc on 2018/4/5.
- */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,13 +7,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
 
-import com.ccmm.cc.mycheckbook.Adapter.SimpleFragmentPagerAdapter;
+import com.ccmm.cc.mycheckbook.Adapter.CheckbookAddingFragmentPagerAdapter;
 import com.ccmm.cc.mycheckbook.R;
 
+/***
+ * 添加记账本的 activity
+ */
+public class CheckbookAddingFragmentActivity extends FragmentActivity {
 
-public class AddCheckbookFragmentActivity extends FragmentActivity {
-
-    private SimpleFragmentPagerAdapter pagerAdapter;
+    private CheckbookAddingFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -27,11 +25,11 @@ public class AddCheckbookFragmentActivity extends FragmentActivity {
         setContentView(R.layout.add_checkbook);
 
         //1.绑定tab标签View控件
-        pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        pagerAdapter = new CheckbookAddingFragmentPagerAdapter(getSupportFragmentManager(), this);
+        viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(pagerAdapter);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 

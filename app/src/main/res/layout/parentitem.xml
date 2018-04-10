@@ -13,18 +13,18 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="tes" />
+            android:text="" />
 
         <TextView
             android:id="@+id/sum_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
-            android:text="11" />
+            android:text="" />
     </LinearLayout>
 
-    <com.ccmm.cc.mycheckbook.MyControl.ChildListView
+    <com.ccmm.cc.mycheckbook.MyControl.MyListView
         android:id="@+id/detail_statement"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -35,16 +35,12 @@
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:scrollingCache="false" >
-    </com.ccmm.cc.mycheckbook.MyControl.ChildListView>
+    </com.ccmm.cc.mycheckbook.MyControl.MyListView>
 
     <View
         android:id="@+id/view_line1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/detail_statement"
         android:background="#BFBFBF" />
-
-
-
 
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         if(isLogin){
             //登陆未过期，进入选择记账本界面
-            intent.setClass(MainActivity.this, ChooseCheckbookActivity.class);
+            intent.setClass(MainActivity.this, CheckbookSelectActivity.class);
         }else{
             //登陆信息过期，显示登陆界面
             intent.setClass(MainActivity.this, LoginActivity.class);

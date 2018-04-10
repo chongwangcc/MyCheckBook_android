@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.ccmm.cc.mycheckbook.MyControl.ChildListView;
+import com.ccmm.cc.mycheckbook.MyControl.MyListView;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
@@ -17,16 +17,15 @@ import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import java.util.List;
 
 /**
- * Created by cc on 2018/4/6.
+ * 明细，外层列表适配器
  */
-
-public class ParentAdapter extends BaseAdapter implements ListAdapter {
+public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter {
     private List<DetailGroupBean> list;
     private Context context;
     private LayoutInflater inflater;
 
 
-    public ParentAdapter(List<DetailGroupBean> list, Context context) {
+    public DetailsOuterListAdapter(List<DetailGroupBean> list, Context context) {
         super();
         this.list = list;
         this.context = context;
@@ -50,24 +49,26 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ChildListViewItem childListViewItem = null;
+        ChildListViewItem childListViewItem ;
+        //1.获得控件
         if (convertView == null) {
             childListViewItem = new ChildListViewItem();
             convertView = inflater.inflate(R.layout.parentitem, null, false);
-            childListViewItem.text_date = (TextView) convertView.findViewById(R.id.date);
-            childListViewItem.text_sumMoney = (TextView) convertView.findViewById(R.id.sum_money);
-            childListViewItem.parent_lv = (ChildListView) convertView.findViewById(R.id.detail_statement);
+            childListViewItem.text_date =  convertView.findViewById(R.id.date);
+            childListViewItem.text_sumMoney =  convertView.findViewById(R.id.sum_money);
+            childListViewItem.parent_lv =  convertView.findViewById(R.id.detail_statement);
             convertView.setTag(childListViewItem);
         } else {
             childListViewItem = (ChildListViewItem) convertView.getTag();
         }
-        childListViewItem.text_date.setText("  "+list.get(position).getDay()+"-"+list.get(position).getWeek());
-        childListViewItem.text_sumMoney.setText("支出："+list.get(position).getTotal_spent()+" 收入："+list.get(position).getTotal_income()+"  ");
+
 
         //2.显示数据
-        ChildAdapter daAdapter  = new ChildAdapter(context);;
-        int z = ((List<CheckDetailBean>)list.get(position).getData()).size();
-        daAdapter.addAll(((List<CheckDetailBean>)list.get(position).getData()));
+        childListViewItem.text_date.setText("  "+list.get(position).getDay()+"-"+list.get(position).getWeek());
+        childListViewItem.text_sumMoney.setText("支出："+list.get(position).getTotal_spent()+" 收入："+list.get(position).getTotal_income()+"  ");
+        DetailsInnerListAdapter daAdapter  = new DetailsInnerListAdapter(context);
+        int z = (list.get(position).getData()).size();
+        daAdapter.addAll((list.get(position).getData()));
         childListViewItem.parent_lv.setAdapter(daAdapter);
         childListViewItem.parent_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -84,7 +85,7 @@ public class ParentAdapter extends BaseAdapter implements ListAdapter {
     public class ChildListViewItem {
         TextView text_date;
         TextView text_sumMoney;
-        ChildListView parent_lv;
+        MyListView parent_lv;
     }
 
     public void setDetail_data(List<DetailGroupBean> list) {

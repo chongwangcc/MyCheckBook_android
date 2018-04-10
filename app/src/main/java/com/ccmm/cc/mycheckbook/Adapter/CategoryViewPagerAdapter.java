@@ -6,15 +6,16 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * Created by cc on 2018/4/7.
- */
 
-public class AdapterViewpager extends PagerAdapter {
+/***
+ * 类别（零食，居家，餐饮等）view的适配器
+ *
+ */
+public class CategoryViewPagerAdapter extends PagerAdapter {
 
     private List<View> views;
 
-    public AdapterViewpager(List<View> mViewList) {
+    public CategoryViewPagerAdapter(List<View> mViewList) {
         this.views = mViewList;
     }
 

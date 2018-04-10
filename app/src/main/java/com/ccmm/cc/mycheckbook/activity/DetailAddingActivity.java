@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,7 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ccmm.cc.mycheckbook.Adapter.AdapterViewpager;
+import com.ccmm.cc.mycheckbook.Adapter.CategoryViewPagerAdapter;
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
@@ -42,20 +43,20 @@ import java.util.Map;
  * Created by cc on 2018/4/7.
  */
 
-public class AddOneDetailActivity extends AppCompatActivity {
+public class DetailAddingActivity extends AppCompatActivity {
     private final String[] lis = {"收入","支出","内部转账"};
     private CheckDetailBean status = new CheckDetailBean();
     private CategoriesChoice categoriesChoice ;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>();
 
     private Toolbar toolbar;
-    ViewPager vpager_one;
-    AdapterViewpager mAdapter;
-    Button button_selectData;
-    Button button_account;
-    Button button_Note;
-    TextView spendType_View;
-    TextView money_textView11;
+    private ViewPager vpager_one;
+    private CategoryViewPagerAdapter mAdapter;
+    private Button button_selectData;
+    private Button button_account;
+    private Button button_Note;
+    private TextView spendType_View;
+    private TextView money_textView11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +74,8 @@ public class AddOneDetailActivity extends AppCompatActivity {
         }
 
         //1.设置ViewPage页面
-        vpager_one = (ViewPager) findViewById(R.id.viewpager_type);
-        mAdapter = new AdapterViewpager(categoriesChoice.getAList());
+        vpager_one =  findViewById(R.id.viewpager_type);
+        mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
         vpager_one.setAdapter(mAdapter);
         vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             //滚动过程中实现
@@ -95,7 +96,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
         });
 
         //2.添加选择日期按钮
-        button_selectData = (Button) findViewById(R.id.select_date);
+        button_selectData = findViewById(R.id.select_date);
         button_selectData.setText(status.getDate());
         button_selectData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,10 +107,10 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
         //3.设置toolbar
         settingToolBar(CheckbookTools.getSelectedCheckbook());
-        spendType_View=(TextView) findViewById(R.id.spend_type_TextView);
+        spendType_View= findViewById(R.id.spend_type_TextView);
 
         //4.选择账户按钮
-        button_account = (Button) findViewById(R.id.button_account);
+        button_account =  findViewById(R.id.button_account);
         button_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +119,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
         });
 
         //5.备注按钮被点击
-        button_Note = (Button) findViewById(R.id.button_description);
+        button_Note =  findViewById(R.id.button_description);
         button_Note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,13 +128,16 @@ public class AddOneDetailActivity extends AppCompatActivity {
         });
 
         //6.设置计算用按钮
-        money_textView11=(TextView) findViewById(R.id.textView11);
-        settingMoneyButton();
+        money_textView11= findViewById(R.id.textView11);
+        settingMoneyButtons();
     }
 
+    /***
+     * 设置工具栏
+     * @param checkbook
+     */
     private void settingToolBar(CheckbookEntity checkbook) {
-        toolbar = (Toolbar) findViewById(R.id.checkbook_main_toolbar);
-        //toolbar.setTitle(spendType_status);
+        toolbar =  findViewById(R.id.checkbook_main_toolbar);
         setSupportActionBar(toolbar);//设置导航图标要在setSupportActionBar方法之后
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(R.mipmap.ic_drawer_back);
@@ -143,38 +147,41 @@ public class AddOneDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-        toolbar = (Toolbar) findViewById(R.id.checkbook_main_toolbar);
-        TextView text = (TextView) findViewById(R.id.spend_type_TextView);
+        toolbar =  findViewById(R.id.checkbook_main_toolbar);
+        TextView text = findViewById(R.id.spend_type_TextView);
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSpendTypeChoise();
+                showBalanceTypeOptions();
             }
         });
     }
 
-    private void settingMoneyButton(){
-        Button button_1 = (Button) findViewById(R.id.button7);
-        Button button_2 = (Button) findViewById(R.id.button8);
-        Button button_3 = (Button) findViewById(R.id.button9);
-        Button button_4 = (Button) findViewById(R.id.button10);
-        Button button_5 = (Button) findViewById(R.id.button11);
-        Button button_6 = (Button) findViewById(R.id.button12);
-        Button button_7 = (Button) findViewById(R.id.button13);
-        Button button_8 = (Button) findViewById(R.id.button14);
-        Button button_9 = (Button) findViewById(R.id.button15);
-        Button button_0 = (Button) findViewById(R.id.button19);
-        Button button_back = (Button) findViewById(R.id.button16);
-        Button button_finish = (Button) findViewById(R.id.button17);
-        Button button_point = (Button) findViewById(R.id.button18);
-        ImageView imageView2 = (ImageView)findViewById(R.id.imageView2);
+    /***
+     * 设置数字选择按钮群
+     */
+    private void settingMoneyButtons(){
+        Button button_1 =  findViewById(R.id.button7);
+        Button button_2 =  findViewById(R.id.button8);
+        Button button_3 =  findViewById(R.id.button9);
+        Button button_4 =  findViewById(R.id.button10);
+        Button button_5 = findViewById(R.id.button11);
+        Button button_6 =  findViewById(R.id.button12);
+        Button button_7 =  findViewById(R.id.button13);
+        Button button_8 = findViewById(R.id.button14);
+        Button button_9 =  findViewById(R.id.button15);
+        Button button_0 =  findViewById(R.id.button19);
+        Button button_back =  findViewById(R.id.button16);
+        Button button_finish =  findViewById(R.id.button17);
+        Button button_point =  findViewById(R.id.button18);
+        ImageView imageView2 = findViewById(R.id.imageView2);
         View.OnClickListener button__num_listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String money = money_textView11.getText().toString();
                 String num=((Button)view).getText().toString();
-                String newMoney="";
+                String newMoney;
                 if(money.equals("0")){
                     if(num.equals(".")){
                         newMoney=money+num;
@@ -273,7 +280,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
      */
     private void showDatePickerDialog() {
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(AddOneDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(DetailAddingActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 String monthStr=(monthOfYear+1)+"";
@@ -288,31 +295,38 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
     }
 
-    private void showSpendTypeChoise(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddOneDetailActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
+    /***
+     * 选择账单类型
+     */
+    private void showBalanceTypeOptions(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetailAddingActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
         //builder.setIcon(R.drawable.ic_launcher);
-        builder.setTitle("选择收入类型");
+        builder.setTitle("选择账单类型");
         //    指定下拉列表的显示数据
-        final String[] cities = {"收入", "支出", "内部转账"};
+        final String[] balances = {BalanceName.Income,
+                BalanceName.Expend,
+                BalanceName.Inner};
         //    设置一个下拉的列表选择项
-        builder.setItems(cities, new DialogInterface.OnClickListener()
+        builder.setItems(balances, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                status.setIncomeType(cities[which]);
+                status.setIncomeType(balances[which]);
                 spendType_View.setText(status.getIncomeType());
-                //updateViewPager();
                 categoriesChoice=categoryMap.get(status.getIncomeType());
-                mAdapter = new AdapterViewpager(categoriesChoice.getAList());
+                mAdapter = new CategoryViewPagerAdapter(categoriesChoice.getAList());
                 vpager_one.setAdapter(mAdapter);
             }
         });
         builder.show();
     }
 
+    /***
+     * 展示选择账户的界面
+     */
     private void showAccountDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddOneDetailActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetailAddingActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
         //builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle("选择账户");
         //    指定下拉列表的显示数据
@@ -340,8 +354,12 @@ public class AddOneDetailActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /***
+     * 填写备注信息
+     */
     private void showDescriptionDialog(){
         final EditText et = new EditText(this);
+        et.setInputType(InputType.TYPE_TEXT_VARIATION_PHONETIC);
         et.setText(status.getDescription());
         new AlertDialog.Builder(this).setTitle("备注")
                 .setView(et)
@@ -386,9 +404,9 @@ public class AddOneDetailActivity extends AppCompatActivity {
         private Map<View,List<TwoTuple<ImageView,TextView>>> ViewMap=new HashMap<>();
         private LinearLayout lltPageIndicator;
         private int page_posion=0; //滑动到了第几个页码上了
-        private int page_total_num=0; //总共有多少个页
+        private int page_total_num; //总共有多少个页
 
-        public CategoriesChoice(Context context,List<List<String>> typeNames){
+        private CategoriesChoice(Context context,List<List<String>> typeNames){
             page_total_num=typeNames.size();
             for(List<String> level_one:typeNames){
                 //1.创建View
@@ -396,9 +414,9 @@ public class AddOneDetailActivity extends AppCompatActivity {
                 AList.add(v);
                 List<TwoTuple<ImageView,TextView>> listTuple = new LinkedList<>();
                 for(int i=0;i<10;i++){
-                    ImageView im = (ImageView)v.findViewById(All_Image_ID[i]);
-                    TextView tv = (TextView)v.findViewById(All_Text_ID[i]);
-                    TwoTuple<ImageView,TextView> tuple = new TwoTuple<ImageView, TextView>(im,tv);
+                    ImageView im = v.findViewById(All_Image_ID[i]);
+                    TextView tv = v.findViewById(All_Text_ID[i]);
+                    TwoTuple<ImageView,TextView> tuple = new TwoTuple<>(im,tv);
                     listTuple.add(tuple);
                 }
                 ViewMap.put(v,listTuple);
@@ -406,7 +424,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
                 setListView(level_one,listTuple);
             }
             //3.设置状态指示器
-            lltPageIndicator = (LinearLayout) findViewById(R.id.llt_page_indicator);
+            lltPageIndicator =  findViewById(R.id.llt_page_indicator);
             for(int i=0;i<page_total_num;i++){
                 lltPageIndicator.getChildAt(i).setVisibility(View.VISIBLE);
             }
@@ -418,7 +436,7 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
         /***
          * 设置指示器的位置值
-         * @param position
+         * @param position 位置值
          */
         private void setIndicatorPostion(int position){
             for(int i=0;i<page_total_num;i++){
@@ -429,8 +447,8 @@ public class AddOneDetailActivity extends AppCompatActivity {
 
         /***
          * 设置ListView
-         * @param listname
-         * @param tuple
+         * @param listname 所有类别的名称
+         * @param tuple view的颜色
          * @return
          */
         private boolean setListView(List<String> listname,final List<TwoTuple<ImageView,TextView>> tuple){

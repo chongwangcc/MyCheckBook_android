@@ -26,11 +26,11 @@ import java.util.Map;
  * Created by cc on 2018/4/5.
  */
 
-public class ChooseCheckbookActivity extends Activity {
-    List<Map<String, Object>> mList = new ArrayList<Map<String, Object>>();
-    Button addCheckbookButton =null;
-    ListView listView = null;
-    SimpleAdapter adapter=null;
+public class CheckbookSelectActivity extends Activity {
+    private List<Map<String, Object>> mList = new ArrayList<>();
+    private Button addCheckbookButton =null;
+    private ListView listView = null;
+    private SimpleAdapter adapter=null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,18 +43,18 @@ public class ChooseCheckbookActivity extends Activity {
                 new String[] { "PIC", "TITLE", "CONTENT" },
                 new int[] { R.id.detail_pic, R.id.detail_content, R.id.listitem_content }
         );
-        listView = (ListView) findViewById(R.id.list);
+        listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
 
 
         //2.定义“添加记账本”按钮的单击事件
-        addCheckbookButton=(Button)this.findViewById(R.id.add_checkbook_button);
+        addCheckbookButton=this.findViewById(R.id.add_checkbook_button);
         View.OnClickListener addCheckbookButtonHandler = new View.OnClickListener() {
             @Override
             public void onClick(View vv) {
                 //1.弹出对话框
                 Intent intent = new Intent();
-                intent.setClass(ChooseCheckbookActivity.this, AddCheckbookFragmentActivity.class);
+                intent.setClass(CheckbookSelectActivity.this, CheckbookAddingFragmentActivity.class);
                 startActivity(intent);
             }
         };
@@ -85,13 +85,13 @@ public class ChooseCheckbookActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ChooseCheckbookActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckbookSelectActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
                 //1.获得记账本信息
                 CheckbookEntity checkbook =  CheckbookTools.getCheckbookByIndex(LoginTools.getLoginUser(),position);
                 //view.findViewById()
                 //2.跳转
                 Intent intent = new Intent();
-                intent.setClass(ChooseCheckbookActivity.this, CheckbookMainActivity.class);
+                intent.setClass(CheckbookSelectActivity.this, CheckbookMainActivity.class);
                 intent.putExtra("checkbook",checkbook);
                 CheckbookTools.setSelectedCheckbook(checkbook);
                 startActivity(intent);
@@ -105,6 +105,9 @@ public class ChooseCheckbookActivity extends Activity {
         updateCheckbookData();
     }
 
+    /***
+     *更新记账本数据
+     */
     public void updateCheckbookData(){
         //1.更新listView中的数据
         List<CheckbookEntity> checkbookList=CheckbookTools.fetchAllCheckbook(LoginTools.getLoginUser());
@@ -113,7 +116,7 @@ public class ChooseCheckbookActivity extends Activity {
             //2.添加数据
             for (CheckbookEntity checkbook : checkbookList) {
                 if(checkbook!=null) {
-                    Map<String, Object> map = new HashMap<String, Object>();
+                    Map<String, Object> map = new HashMap<>();
                     map.put("PIC", CheckbookTools.getBitmapFromCacher(checkbook));     // 加载图片资源
                     //map.put("PIC", R.drawable.ic_gf_camera);
                     map.put("TITLE", checkbook.getTitle());

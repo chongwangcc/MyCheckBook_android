@@ -22,18 +22,17 @@ import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import java.util.List;
 
 /**
- * Created by cc on 2018/4/6.
+ * 打卡一个记账本后的主页
  */
-
 public class CheckbookMainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TextView year_TextView ;
     private Button month_button ;
-    DetailFragmentPagerAdapter pagerAdapter;
-    ChooseMonthDialog selfDialog;
-    List<DetailGroupBean> list;
+    private DetailFragmentPagerAdapter pagerAdapter;
+    private ChooseMonthDialog selfDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,21 +48,30 @@ public class CheckbookMainActivity extends AppCompatActivity {
 
         //4.设置明细Fragment
         pagerAdapter = new DetailFragmentPagerAdapter(getSupportFragmentManager(), this);
-        viewPager = (ViewPager) findViewById(R.id.checkbook_main_viewpager);
+        viewPager =  findViewById(R.id.checkbook_main_viewpager);
         viewPager.setAdapter(pagerAdapter);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout2);
+        tabLayout =  findViewById(R.id.tabLayout2);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         //5.设置年，月显示功能
-        year_TextView = (TextView) findViewById(R.id.textView6);
-        month_button = (Button) findViewById(R.id.select_date);
+        year_TextView =  findViewById(R.id.textView6);
+        month_button =  findViewById(R.id.select_date);
         year_TextView.setText(CheckDetailsTools.getDetails_year());
         month_button.setText(CheckDetailsTools.getDetals_month());
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    /***
+     * 更新数据
+     */
     private void updateData(){
         year_TextView.setText(CheckDetailsTools.getDetails_year());
         month_button.setText(CheckDetailsTools.getDetals_month());
@@ -71,8 +79,12 @@ public class CheckbookMainActivity extends AppCompatActivity {
         pagerAdapter.notifyDataSetChanged();
     }
 
+    /***
+     * 设置工具栏
+     * @param checkbook
+     */
     private void settingToolBar(CheckbookEntity checkbook){
-        toolbar = (Toolbar) findViewById(R.id.checkbook_main_toolbar);
+        toolbar =  findViewById(R.id.checkbook_main_toolbar);
         toolbar.setTitle("记账本");
         toolbar.setSubtitle(checkbook.getTitle());
         setSupportActionBar(toolbar);//设置导航图标要在setSupportActionBar方法之后
@@ -83,14 +95,14 @@ public class CheckbookMainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        ImageView iv = (ImageView)findViewById(R.id.profile_imageView);
+        ImageView iv = findViewById(R.id.profile_imageView);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(CheckbookMainActivity.this,"profile clicked",Toast.LENGTH_SHORT).show();
             }
         });
-        Button  button =(Button)findViewById(R.id.select_date);
+        Button  button =findViewById(R.id.select_date);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,9 +133,5 @@ public class CheckbookMainActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateData();
-    }
+
 }

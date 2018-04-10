@@ -30,9 +30,9 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         //2.绑定login按钮的处理方法
-        logininButton=(Button)this.findViewById(R.id.login_button);
-        editText_username=(EditText)this.findViewById(R.id.editText_username);
-        editText_password=(EditText)this.findViewById(R.id.editText_password);
+        logininButton=this.findViewById(R.id.login_button);
+        editText_username=this.findViewById(R.id.editText_username);
+        editText_password=this.findViewById(R.id.editText_password);
 
         View.OnClickListener logininButtonHandler = new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
                     LoginTools.setLoginUser(username,password);
                     //跳转到选择记账本界面
                     Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, ChooseCheckbookActivity.class);
+                    intent.setClass(LoginActivity.this, CheckbookSelectActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();//如果不关闭当前的会出现好多个页面
                 }else{
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
                     String errorInfo="登陆失败！用户名或密码错误";
                     Toast toast = Toast.makeText(v.getContext(), errorInfo, Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL , 0, 0);  //设置显示位置
-                    TextView vi = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView vi =  toast.getView().findViewById(android.R.id.message);
                     vi.setTextColor(Color.RED);     //设置字体颜色
                     toast.show();
                 }
@@ -63,8 +63,4 @@ public class LoginActivity extends Activity {
         };
         logininButton.setOnClickListener(logininButtonHandler);
     }
-
-
-
-
 }

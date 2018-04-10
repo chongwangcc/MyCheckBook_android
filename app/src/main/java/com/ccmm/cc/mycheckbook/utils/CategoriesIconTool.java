@@ -47,7 +47,6 @@ public class CategoriesIconTool {
         drawableMap.put("孩子",R.mipmap.u233);
         drawableMap.put("长辈",R.mipmap.u234);
         drawableMap.put("礼物",R.mipmap.u235);
-        drawableMap.put("礼金",R.mipmap.u236);
         drawableMap.put("还钱",R.mipmap.u237);
         drawableMap.put("捐赠",R.mipmap.u238);
         drawableMap.put("理财",R.mipmap.u239);
@@ -61,7 +60,6 @@ public class CategoriesIconTool {
         drawableMap.put("投资支出",R.mipmap.u300);
         drawableMap.put("支付",R.mipmap.u300);
         drawableMap.put("结婚相关",R.mipmap.u300);
-        drawableMap.put("还钱",R.mipmap.u300);
 
         drawableMap.put("工资",R.mipmap.u250);
         drawableMap.put("兼职",R.mipmap.u251);
@@ -81,7 +79,7 @@ public class CategoriesIconTool {
     }
 
     public static List<String> getSpentType(int position){
-        List<String> spendType = new LinkedList<String>();
+        List<String> spendType = new LinkedList<>();
         switch(position){
             case 0:
                 spendType.add("一般");
@@ -140,7 +138,7 @@ public class CategoriesIconTool {
     }
 
     public static List<String> getIncomeType(int position){
-        List<String> spendType = new LinkedList<String>();
+        List<String> spendType = new LinkedList<>();
         switch(position) {
             case 0:
                 spendType.add("工资");
@@ -199,11 +197,6 @@ public class CategoriesIconTool {
         return namesList;
     }
 
-    public static void clearAllDrawableColor(){
-        for(String str : drawableMap.keySet()){
-
-        }
-    }
 
     /***
      * 改变 类别图片的颜色
@@ -212,7 +205,8 @@ public class CategoriesIconTool {
      * @return
      */
     public static Drawable changeDrawableByBalanceType(Drawable drawable,String balanceType){
-        //TODO 改变颜色
+        if(drawable==null) return null;
+        // 改变颜色
         Drawable drawable_temp = drawable.mutate();
         switch (balanceType){
             case "支出":

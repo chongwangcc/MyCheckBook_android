@@ -16,14 +16,14 @@ import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import java.util.List;
 
 /**
- * Created by cc on 2018/4/6.
+ * 明细，里层列表适配器
  */
-public class ChildAdapter extends BaseAdapter {
+public class DetailsInnerListAdapter extends BaseAdapter {
     private List<CheckDetailBean> list;
     private Context context;
     private LayoutInflater inflater;
 
-    public ChildAdapter(Context context) {
+    public DetailsInnerListAdapter(Context context) {
         super();
         this.context = context;
     }
@@ -53,28 +53,33 @@ public class ChildAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ParentListItem parentListItem = null;
+        InnerListItem parentListItem;
         if (convertView == null) {
-            parentListItem = new ParentListItem();
+            parentListItem = new InnerListItem();
             inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.detail_listitem, null, false);
-            parentListItem.item_icon = (ImageView) convertView .findViewById(R.id.detail_pic);
-            parentListItem.text_description = (TextView) convertView .findViewById(R.id.detail_content);
-            parentListItem.text_money = (TextView) convertView .findViewById(R.id.detail_money);
+            parentListItem.item_icon =  convertView .findViewById(R.id.detail_pic);
+            parentListItem.text_description = convertView .findViewById(R.id.detail_content);
+            parentListItem.text_money = convertView .findViewById(R.id.detail_money);
             convertView.setTag(parentListItem);
         } else {
-            parentListItem = (ParentListItem) convertView.getTag();
+            parentListItem = (InnerListItem) convertView.getTag();
         }
+        //2.设置控件文本内容
         parentListItem.text_description.setText(list.get(position).getDescription());
         parentListItem.text_money.setText(list.get(position).getMoney()+"");
         Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(list.get(position).getBuyType()));
 
+        //3.设置图标颜色
         drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable,list.get(position).getIncomeType());
         parentListItem.item_icon.setImageDrawable(drawable);
         return convertView;
     }
 
-    public class ParentListItem {
+    /**
+     * Inner列表类中的控件
+     */
+    public class InnerListItem {
         ImageView item_icon;
         TextView text_description, text_money;
     }

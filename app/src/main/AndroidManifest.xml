@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ccmm.cc.mycheckbook">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:name="com.ccmm.cc.mycheckbook.MyApplication"
         android:allowBackup="true"
@@ -17,12 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ChooseCheckbookActivity" />
+        <activity android:name=".activity.CheckbookSelectActivity" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.AddCheckbookFragmentActivity" />
+        <activity android:name=".activity.CheckbookAddingFragmentActivity" />
         <activity android:name=".activity.CheckbookMainActivity" />
-        <activity android:name=".activity.AddOneDetailActivity" />
+        <activity android:name=".activity.DetailAddingActivity" />
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

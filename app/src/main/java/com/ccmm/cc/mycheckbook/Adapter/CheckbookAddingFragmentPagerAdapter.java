@@ -8,26 +8,26 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 
-import com.ccmm.cc.mycheckbook.Fragment.AddCheckbookFragment;
+import com.ccmm.cc.mycheckbook.Fragment.CheckbookAddingFragment;
 
-/**
- * Created by cc on 2018/4/5.
+/***
+ * 添加记账本Fragment的Page 适配器
+ *
  */
+public class CheckbookAddingFragmentPagerAdapter extends FragmentPagerAdapter {
 
-public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
-
-    final int PAGE_COUNT = 2;
+    private final int  PAGE_COUNT = 2;
     private String tabTitles[] = new String[]{"加入","新建"};
     private Context context;
 
-    public SimpleFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public CheckbookAddingFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return AddCheckbookFragment.newInstance(position + 1);
+        return CheckbookAddingFragment.newInstance(position + 1);
     }
 
     @Override

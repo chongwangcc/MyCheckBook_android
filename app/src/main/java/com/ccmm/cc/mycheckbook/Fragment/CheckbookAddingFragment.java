@@ -25,9 +25,9 @@ import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 /**
- * Created by cc on 2018/4/5.
+ * 添加记账本的Fragment
  */
-public class AddCheckbookFragment extends Fragment implements View.OnClickListener{
+public class CheckbookAddingFragment extends Fragment implements View.OnClickListener{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     //调用系统相册-选择图片
@@ -35,10 +35,10 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
     private int mPage;
     View view_join;
     View view_add;
-    public static AddCheckbookFragment newInstance(int page) {
+    public static CheckbookAddingFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        AddCheckbookFragment pageFragment = new AddCheckbookFragment();
+        CheckbookAddingFragment pageFragment = new CheckbookAddingFragment();
         pageFragment.setArguments(args);
         return pageFragment;
     }
@@ -53,12 +53,12 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = null;
+        View view ;
         switch(mPage){
             case 1: //加入
                 view = inflater.inflate(R.layout.fragment_join_checkbook, container, false);
                 //2.设置按钮的点击事件处理方法
-                Button join_checkbook_button=(Button)view.findViewById(R.id.join_checkbook_button);
+                Button join_checkbook_button=view.findViewById(R.id.join_checkbook_button);
                 join_checkbook_button.setOnClickListener(this);
 
 
@@ -67,8 +67,8 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
             default:
             case 0:  //新建
                 view = inflater.inflate(R.layout.fragment_add_checkbook, container, false);
-                Button new_checkbook_button=(Button)view.findViewById(R.id.new_checkbook_button);
-                ImageView pic_imageview=(ImageView)view.findViewById(R.id.checkbook_pic);
+                Button new_checkbook_button=view.findViewById(R.id.new_checkbook_button);
+                ImageView pic_imageview=view.findViewById(R.id.checkbook_pic);
                 pic_imageview.setOnClickListener(this);
                 new_checkbook_button.setOnClickListener(this);
                 view_add=view;
@@ -81,14 +81,14 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        CheckbookEntity checkbook =null;
+        CheckbookEntity checkbook;
         switch (v.getId()){
             case R.id.new_checkbook_button:
                 //1.获得控件
-                EditText  name_editText = (EditText)view_add.findViewById(R.id.checkbook_title_editText);
-                EditText  descrption_editText = (EditText)view_add.findViewById(R.id.checkbook_description_editText);
-                CheckBox islock_checkBox = (CheckBox)view_add.findViewById(R.id.checkbook_islocal);
-                ImageView pic_ImageView = (ImageView)view_add.findViewById(R.id.checkbook_pic);
+                EditText  name_editText = view_add.findViewById(R.id.checkbook_title_editText);
+                EditText  descrption_editText = view_add.findViewById(R.id.checkbook_description_editText);
+                CheckBox islock_checkBox = view_add.findViewById(R.id.checkbook_islocal);
+                ImageView pic_ImageView = view_add.findViewById(R.id.checkbook_pic);
 
                 //2.生成checkbook
                 String name = name_editText.getText().toString();
@@ -103,7 +103,7 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.join_checkbook_button:
                 //1.获得控件
-                EditText invitation_editText = (EditText)view_join.findViewById(R.id.invitation_editText);
+                EditText invitation_editText = view_join.findViewById(R.id.invitation_editText);
                 String invation = invitation_editText.getText().toString();
                 checkbook = CheckbookTools.checkInvitation(LoginTools.getLoginUser(),invation);
                 if(checkbook==null){
@@ -111,7 +111,7 @@ public class AddCheckbookFragment extends Fragment implements View.OnClickListen
                     String errorInfo="加入失败！！邀请码错误！！";
                     Toast toast = Toast.makeText(v.getContext(), errorInfo, Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL , 0, 0);  //设置显示位置
-                    TextView vi = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView vi =  toast.getView().findViewById(android.R.id.message);
                     vi.setTextColor(Color.RED);     //设置字体颜色
                     toast.show();
                 }else{

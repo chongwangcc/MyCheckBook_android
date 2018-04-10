@@ -6,21 +6,19 @@ import android.view.View;
 import android.widget.ListView;
 
 /**
- * Created by cc on 2018/4/6.
+ * 自定义列表View
  */
+public class MyListView extends ListView {
 
-
-public class ChildListView extends ListView {
-
-    public ChildListView(Context context) {
+    public MyListView(Context context) {
         super(context);
     }
 
-    public ChildListView(Context context, AttributeSet attrs, int defStyle) {
+    public MyListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public ChildListView(Context context, AttributeSet attrs) {
+    public MyListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
