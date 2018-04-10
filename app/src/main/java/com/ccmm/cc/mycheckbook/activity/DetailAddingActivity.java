@@ -72,6 +72,7 @@ public class DetailAddingActivity extends AppCompatActivity {
                 categoriesChoice = cc;
             }
         }
+        categoriesChoice.setPage_posion(0);
 
         //1.设置ViewPage页面
         vpager_one =  findViewById(R.id.viewpager_type);
@@ -403,7 +404,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         private List<ImageView> allImageView=new LinkedList<>();
         private Map<View,List<TwoTuple<ImageView,TextView>>> ViewMap=new HashMap<>();
         private LinearLayout lltPageIndicator;
-        private int page_posion=0; //滑动到了第几个页码上了
+        private int page_position=0; //滑动到了第几个页码上了
         private int page_total_num; //总共有多少个页
 
         private CategoriesChoice(Context context,List<List<String>> typeNames){
@@ -441,6 +442,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         private void setIndicatorPostion(int position){
             for(int i=0;i<page_total_num;i++){
                 ((ImageView)lltPageIndicator.getChildAt(i)).setImageResource(R.drawable.cicle_unactive);
+                lltPageIndicator.getChildAt(i).setVisibility(View.VISIBLE);
             }
             ((ImageView)lltPageIndicator.getChildAt(position)).setImageResource(R.drawable.circle_active);
         }
@@ -487,11 +489,11 @@ public class DetailAddingActivity extends AppCompatActivity {
         }
 
         public int getPage_posion() {
-            return page_posion;
+            return page_position;
         }
 
         public void setPage_posion(int page_posion) {
-            this.page_posion = page_posion;
+            this.page_position = page_posion;
             setIndicatorPostion(page_posion);
         }
 
