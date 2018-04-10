@@ -470,12 +470,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             }
             //3.设置状态指示器
             lltPageIndicator =  findViewById(R.id.llt_page_indicator);
-            for(int i=0;i<page_total_num;i++){
-                lltPageIndicator.getChildAt(i).setVisibility(View.VISIBLE);
-            }
-            for(int i=page_total_num;i<4;i++){
-                lltPageIndicator.getChildAt(i).setVisibility(View.INVISIBLE);
-            }
+
             setIndicatorPostion(0);
         }
 
@@ -484,6 +479,12 @@ public class DetailAddingActivity extends AppCompatActivity {
          * @param position 位置值
          */
         private void setIndicatorPostion(int position){
+            for(int i=0;i<page_total_num;i++){
+                lltPageIndicator.getChildAt(i).setVisibility(View.VISIBLE);
+            }
+            for(int i=page_total_num;i<4;i++){
+                lltPageIndicator.getChildAt(i).setVisibility(View.INVISIBLE);
+            }
             for(int i=0;i<page_total_num;i++){
                 ((ImageView)lltPageIndicator.getChildAt(i)).setImageResource(R.drawable.cicle_unactive);
                 lltPageIndicator.getChildAt(i).setVisibility(View.VISIBLE);
