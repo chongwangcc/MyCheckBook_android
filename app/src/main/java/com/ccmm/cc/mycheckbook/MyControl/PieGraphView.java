@@ -259,7 +259,6 @@ public class PieGraphView extends View {
             canvas.drawArc(oval, sweepStart, sweep, true, mPaintOuter);
 
             // 绘制圆环上扇形的中心“点”
-            //TODO 绘制图表资源
             int middleAngle = (int) (sweepStart + sweep / 2);
             float radius = (mSmallOval.width() + mRingWidth) / 2f;
             if (mGrownItem == i && mGrowMode == GROW_MODE_MOVE_OUT) {
@@ -268,7 +267,6 @@ public class PieGraphView extends View {
                 radius += mGrowProgress * mGrownWidth / 2f;
             }
             calcAngleMiddleInRing(middleAngle, radius, mItemCenter);
-            //TODO 修改参数
             drawItemCenterIcon(canvas, middleAngle, icon_id[i], mItemCenter);
 
             if (sweepStart < rotatedStart) break;
@@ -563,7 +561,7 @@ public class PieGraphView extends View {
         //mItemCenterPaint.setColor(color);
         // 这里当角度非常小的时候，半径有可能显示不完全——超出
        // canvas.drawCircle(center.x, center.y, mRingWidth / 4f, mItemCenterPaint);
-        //TODO 绘制图表
+        // 绘制图标
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), icon_id);
         canvas.drawBitmap(bitmap,center.x-bitmap.getWidth()/2,center.y-bitmap.getHeight()/2,mItemCenterPaint);
     }

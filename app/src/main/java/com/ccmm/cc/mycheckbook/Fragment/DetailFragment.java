@@ -150,9 +150,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         return super.onContextItemSelected(item);
     }
 
-    public List<DetailGroupBean> getDetail_data() {
-        return detail_data;
-    }
 }
 
 

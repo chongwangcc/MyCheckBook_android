@@ -178,9 +178,9 @@ public class CheckDetailsTools {
                         break;
                 }
                 if(n2>n1){
-                    return 1;
-                }else if(n2<n1){
                     return -1;
+                }else if(n2<n1){
+                    return 1;
                 }
                 return 0;
             }

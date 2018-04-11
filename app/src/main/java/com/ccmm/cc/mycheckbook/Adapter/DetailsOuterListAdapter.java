@@ -81,11 +81,11 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int arg2, long arg3) {
-                //TODO 点击一条明细时的操作
+                //点击一条明细时的操作
                 //1.获得明细数据
                 DetailsInnerListAdapter myAdapter = (DetailsInnerListAdapter)arg0.getAdapter();
                 CheckDetailBean bean = myAdapter.getData_list().get(arg2);
-                //Toast.makeText(context,"点击明细...."+bean.getId()+"",Toast.LENGTH_SHORT).show();
+
 
                 //2.打开界面展示明细数据
                 Intent intent = new Intent();
@@ -113,10 +113,6 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
         TextView text_date;
         TextView text_sumMoney;
         MyListView inner_lv;
-    }
-
-    public void setDetail_data(List<DetailGroupBean> list) {
-        this.list = list;
     }
 
 }
