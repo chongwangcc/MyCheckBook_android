@@ -1,23 +1,14 @@
 package com.ccmm.cc.mycheckbook.Fragment;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.ccmm.cc.mycheckbook.Adapter.DetailsOuterListAdapter;
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.MyControl.PieGraphView;
 import com.ccmm.cc.mycheckbook.R;
@@ -26,9 +17,7 @@ import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
-import com.ccmm.cc.mycheckbook.utils.DateTools;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,20 +108,26 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void setPieViewData(){
+        //TODO 将类别值设置放到一个函数
         List<PieGraphView.ItemGroup> itemGroups = new LinkedList<>();
         if(detail_group_income.size()>0){
             PieGraphView.ItemGroup itemGroup = new PieGraphView.ItemGroup();
             itemGroup.id=BalanceName.Income;
+
             List<DetailGroupBean>  groupBeans=detail_group_income;
             List<PieGraphView.Item> items = new LinkedList<>();
+            float totalMoney=0;
             for(int i=0;i<8 && i<groupBeans.size();i++){
                 PieGraphView.Item item = new PieGraphView.Item();
                 item.id = groupBeans.get(i).getCategoryType();
                 item.value = groupBeans.get(i).getMoney();
-                item.color = mColors[i];
+                item.drawable = mColors[i];
                 items.add(item);
+                totalMoney+=groupBeans.get(i).getMoney();
             }
             itemGroup.items = items.toArray(new PieGraphView.Item[items.size()]);
+            //TODO 设置title
+            itemGroup.title="总收入\n"+totalMoney+"\n元";
             itemGroups.add(itemGroup);
         }
 
@@ -141,14 +136,18 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
             itemGroup.id=BalanceName.Expend;
             List<DetailGroupBean>  groupBeans=detail_group_spend;
             List<PieGraphView.Item> items = new LinkedList<>();
+            float totalMoney=0;
             for(int i=0;i<8 && i<groupBeans.size();i++){
                 PieGraphView.Item item = new PieGraphView.Item();
                 item.id = groupBeans.get(i).getCategoryType();
                 item.value = groupBeans.get(i).getMoney();
-                item.color = mColors[i];
+                item.drawable = mColors[i];
                 items.add(item);
+                totalMoney+=groupBeans.get(i).getMoney();
             }
             itemGroup.items = items.toArray(new PieGraphView.Item[items.size()]);
+            //TODO 设置title
+            itemGroup.title="总支出\n"+totalMoney+"\n元";
             itemGroups.add(itemGroup);
         }
 

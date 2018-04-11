@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -213,7 +212,8 @@ public class PieGraphView extends View {
         // 使用自定义ViewGroup去设置中间标题区域更好，或者直接使用帧布局覆盖在上面更灵活。
         // 可以把mTitleRect暴漏给外界访问，这里简单的绘制文本。
         ItemGroup group = mGroups[mCurrentGroup];
-        String title = "[" + group.id + "] [" + group.items[mCurrentItem].id + "]";
+        String title = group.title;
+        //String title = "[" + group.id + "] [" + group.items[mCurrentItem].id + "]";
         Paint.FontMetricsInt fontMetrics = mTextPaint.getFontMetricsInt();
         float y = (mTitleRect.bottom + mTitleRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
         canvas.drawText(title, mTitleRect.centerX(), y, mTextPaint);
@@ -563,12 +563,13 @@ public class PieGraphView extends View {
 
     public static class ItemGroup {
         public String id;
+        public String title;
         public Item[] items;
     }
 
     public static class Item {
         public double value;
-        public int color;
+        public int drawable;
         public String id;
     }
 
@@ -586,7 +587,7 @@ public class PieGraphView extends View {
 
             double total = 0;
             for (int j = 0; j < items.length; j++) {
-                info.colors[j] = items[j].color;
+                info.colors[j] = items[j].drawable;
                 total += items[j].value;
             }
 
