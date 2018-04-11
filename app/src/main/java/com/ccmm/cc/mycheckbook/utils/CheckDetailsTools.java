@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.Enum.SqliteTableName;
 import com.ccmm.cc.mycheckbook.MyApplication;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
@@ -11,6 +12,8 @@ import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -126,6 +129,63 @@ public class CheckDetailsTools {
                 list.add(detailGroup);
             }
         }
+        return list;
+
+    }
+
+    /**
+     * 获得明细的分组结果，类别分组
+     * @return
+     */
+    public static List<DetailGroupBean> detailsGroupByCategory(List<CheckDetailBean> detailsList,String balanceType){
+        List<DetailGroupBean> list = new LinkedList<DetailGroupBean>();
+        Map<String,DetailGroupBean> tempMap=new HashMap<>();
+        for(CheckDetailBean detail : detailsList){
+            //1.获得group对象
+            if(detail.getBalanceType().equals(balanceType)){
+                String key = detail.getCategory();
+                DetailGroupBean detailGroup =tempMap.get(key);
+                if(detailGroup==null){
+                    detailGroup=new DetailGroupBean();
+                    tempMap.put(key,detailGroup);
+                }
+                //2.
+                detailGroup.addOneDetailBean(detail);
+            }
+        }
+
+        //3.按照金额大小tempMap
+        for(String key:tempMap.keySet()){
+            DetailGroupBean detailGroup =tempMap.get(key);
+            if(detailGroup!=null){
+                list.add(detailGroup);
+            }
+        }
+        Collections.sort(list, new Comparator<DetailGroupBean>() {
+            @Override
+            public int compare(DetailGroupBean t1, DetailGroupBean t2) {
+                float n1=0,n2=0;
+                switch (t1.getBalanceType()){
+                    case BalanceName.Expend:
+                        n1=t1.getTotal_spent();
+                        n2=t2.getTotal_spent();
+                        break;
+                    case BalanceName.Income:
+                        n1=t1.getTotal_income();
+                        n2=t2.getTotal_income();
+                        break;
+                    case BalanceName.Inner:
+                        break;
+                }
+                if(n2>n1){
+                    return 1;
+                }else if(n2<n1){
+                    return -1;
+                }
+                return 0;
+            }
+        });
+
         return list;
 
     }

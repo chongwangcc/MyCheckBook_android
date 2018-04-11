@@ -3,6 +3,7 @@ package com.ccmm.cc.mycheckbook.utils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DateTools {
 
@@ -25,5 +26,19 @@ public class DateTools {
 
         }
         return "";
+    }
+
+    public static int[] toIntArray(List<Integer> list){
+        int[] ret = new int[list.size()];
+        for(int i = 0;i <ret.length;i++)
+            ret[i] = list.get(i);
+        return ret;
+    }
+
+    public static String[] toStringArray(List<String> list){
+        String[] ret = new String[list.size()];
+        for(int i = 0;i <ret.length;i++)
+            ret[i] = list.get(i);
+        return ret;
     }
 }

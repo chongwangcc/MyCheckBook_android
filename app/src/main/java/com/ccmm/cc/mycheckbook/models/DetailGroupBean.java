@@ -18,8 +18,8 @@ public class DetailGroupBean {
     private float total_income=0; //收入总计
     private String date; //日期
     private float total_spent=0; //支出总计
-    private String incomeType;// 收入，支出，内部转账
-    private String buyType; //零食，居家，娱乐
+    private String balanceType;// 收入，支出，内部转账
+    private String categoryType; //零食，居家，娱乐
     private  List<CheckDetailBean> data=new LinkedList<>();
 
 
@@ -47,10 +47,10 @@ public class DetailGroupBean {
         }else if(detail.getBalanceType().equals(BalanceName.Expend)){
             total_spent+=detail.getMoney();
         }
-        if(incomeType==null)
-            incomeType=detail.getBalanceType();
-        if(buyType==null)
-            buyType=detail.getCategory();
+        if(balanceType ==null)
+            balanceType =detail.getBalanceType();
+        if(categoryType ==null)
+            categoryType =detail.getCategory();
 
         data.add(detail);
 
@@ -113,20 +113,20 @@ public class DetailGroupBean {
         this.total_spent = total_spent;
     }
 
-    public String getIncomeType() {
-        return incomeType;
+    public String getBalanceType() {
+        return balanceType;
     }
 
-    public void setIncomeType(String incomeType) {
-        this.incomeType = incomeType;
+    public void setBalanceType(String balanceType) {
+        this.balanceType = balanceType;
     }
 
-    public String getBuyType() {
-        return buyType;
+    public String getCategoryType() {
+        return categoryType;
     }
 
-    public void setBuyType(String buyType) {
-        this.buyType = buyType;
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
     }
 
     public List<CheckDetailBean> getData() {
@@ -135,5 +135,20 @@ public class DetailGroupBean {
 
     public void setData(List<CheckDetailBean> data) {
         this.data = data;
+    }
+
+    public float getMoney(){
+        float money=0;
+        switch (this.getBalanceType()){
+            case BalanceName.Expend:
+                money= getTotal_spent();
+                break;
+            case BalanceName.Income:
+                money=getTotal_income();
+                break;
+            case BalanceName.Inner:
+                break;
+        }
+        return money;
     }
 }

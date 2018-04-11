@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 
+import com.ccmm.cc.mycheckbook.Fragment.CategoryFragment;
 import com.ccmm.cc.mycheckbook.Fragment.DetailFragment;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 
@@ -35,9 +36,9 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0: //明细
                 f=DetailFragment.newInstance();
                 fragmentList.add(f);
-
+                break;
             case 1: //类别
-                f=DetailFragment.newInstance();
+                f= CategoryFragment.newInstance();
                 fragmentList.add(f);
                 break;
             case 2: //账号
