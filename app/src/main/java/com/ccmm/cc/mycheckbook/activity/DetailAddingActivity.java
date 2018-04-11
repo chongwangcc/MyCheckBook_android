@@ -337,7 +337,7 @@ public class DetailAddingActivity extends AppCompatActivity {
      */
     private void showBalanceTypeOptions(){
         AlertDialog.Builder builder = new AlertDialog.Builder(DetailAddingActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
-        //builder.setIcon(R.drawable.ic_launcher);
+        //builder.setIcon(R.color.ic_launcher);
         builder.setTitle("选择账单类型");
         //    指定下拉列表的显示数据
         final String[] balances = {BalanceName.Income,
@@ -364,7 +364,7 @@ public class DetailAddingActivity extends AppCompatActivity {
      */
     private void showAccountDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(DetailAddingActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
-        //builder.setIcon(R.drawable.ic_launcher);
+        //builder.setIcon(R.color.ic_launcher);
         builder.setTitle("选择账户");
         //    指定下拉列表的显示数据
         final String[] cities = {"Inbox",

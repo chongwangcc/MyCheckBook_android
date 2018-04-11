@@ -1,16 +1,20 @@
 package com.ccmm.cc.mycheckbook.MyControl;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.utils.GeomTool;
 
 /**
@@ -62,7 +66,8 @@ public class PieGraphView extends View {
      * 对从mStartAngle绘制后的扇形旋转的角度。控制在-360~360 调用setRotation对我赋值！
      */
     private int mRotation = 0;
-    private int[] colors; //
+    private int[] colors;
+    private int[] icon_id;
     private float[] angles;
     private float mShowOutProgress = 1f;
     private int mRotateDelta;
@@ -254,6 +259,7 @@ public class PieGraphView extends View {
             canvas.drawArc(oval, sweepStart, sweep, true, mPaintOuter);
 
             // 绘制圆环上扇形的中心“点”
+            //TODO 绘制图表资源
             int middleAngle = (int) (sweepStart + sweep / 2);
             float radius = (mSmallOval.width() + mRingWidth) / 2f;
             if (mGrownItem == i && mGrowMode == GROW_MODE_MOVE_OUT) {
@@ -262,7 +268,8 @@ public class PieGraphView extends View {
                 radius += mGrowProgress * mGrownWidth / 2f;
             }
             calcAngleMiddleInRing(middleAngle, radius, mItemCenter);
-            drawItemCenterIcon(canvas, middleAngle, colors[i], mItemCenter);
+            //TODO 修改参数
+            drawItemCenterIcon(canvas, middleAngle, icon_id[i], mItemCenter);
 
             if (sweepStart < rotatedStart) break;
             rotatedEnd -= itemAngle;
@@ -359,13 +366,13 @@ public class PieGraphView extends View {
                 canvas.drawArc(mBigOval, sweepStart, itemAngle, true, mPaintOuter);
                 int middleAngle = (int) (sweepStart + itemAngle / 2);
                 calcAngleMiddleInRing(middleAngle, radius, mItemCenter);
-                drawItemCenterIcon(canvas, middleAngle, colors[i], mItemCenter);
+                drawItemCenterIcon(canvas, middleAngle, icon_id[i], mItemCenter);
             } else {
                 itemAngle = endAngle - startAngle;
                 int middleAngle = (int) (startAngle + itemAngle / 2);
                 canvas.drawArc(mBigOval, startAngle, itemAngle, true, mPaintOuter);
                 calcAngleMiddleInRing(middleAngle, radius, mItemCenter);
-                drawItemCenterIcon(canvas, middleAngle , colors[i], mItemCenter);
+                drawItemCenterIcon(canvas, middleAngle , icon_id[i], mItemCenter);
                 break;
             }
             endAngle -= itemAngle;
@@ -495,6 +502,7 @@ public class PieGraphView extends View {
         GroupInfo info = mGroupViewInfos[index];
         angles = info.angles;
         colors = info.colors;
+        icon_id = info.icon_id;
         runShowOutAnim();
     }
 
@@ -550,11 +558,14 @@ public class PieGraphView extends View {
         GeomTool.calcCirclePoint(angle, radius, cx, cy, resultPoint);
     }
 
-    private void drawItemCenterIcon(Canvas canvas, int middleAngle, int itemColor, Point center) {
-        int color = itemColor / 2;
-        mItemCenterPaint.setColor(color);
+    private void drawItemCenterIcon(Canvas canvas, int middleAngle, int icon_id, Point center) {
+        //int color = itemColor / 2;
+        //mItemCenterPaint.setColor(color);
         // 这里当角度非常小的时候，半径有可能显示不完全——超出
-        canvas.drawCircle(center.x, center.y, mRingWidth / 4f, mItemCenterPaint);
+       // canvas.drawCircle(center.x, center.y, mRingWidth / 4f, mItemCenterPaint);
+        //TODO 绘制图表
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), icon_id);
+        canvas.drawBitmap(bitmap,center.x-bitmap.getWidth()/2,center.y-bitmap.getHeight()/2,mItemCenterPaint);
     }
 
     public RectF getTitleRect() {
@@ -569,8 +580,9 @@ public class PieGraphView extends View {
 
     public static class Item {
         public double value;
-        public int drawable;
+        public int color;
         public String id;
+        public int icon_id; //图标显示的值
     }
 
     public void setData(ItemGroup[] groups) {
@@ -584,13 +596,15 @@ public class PieGraphView extends View {
             GroupInfo info = new GroupInfo();
             info.colors = new int[items.length];
             info.angles = new float[items.length];
-
+            info.icon_id = new int[items.length];
             double total = 0;
             for (int j = 0; j < items.length; j++) {
-                info.colors[j] = items[j].drawable;
+                info.colors[j] = items[j].color;
                 total += items[j].value;
             }
-
+            for (int j = 0; j < items.length; j++) {
+                info.icon_id[j] = items[j].icon_id;
+            }
             for (int j = 0; j < items.length; j++) {
                 info.angles[j] = (float) ((items[j].value / total) * 360f);
             }
@@ -604,6 +618,7 @@ public class PieGraphView extends View {
     private static class GroupInfo {
         public int[] colors;
         public float[] angles;
+        public int[] icon_id;
     }
 
     private ItemChangeListener mItemChangeListener;

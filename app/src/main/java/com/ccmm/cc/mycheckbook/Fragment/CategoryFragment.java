@@ -15,6 +15,7 @@ import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.DetailAddingActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 
@@ -121,7 +122,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 PieGraphView.Item item = new PieGraphView.Item();
                 item.id = groupBeans.get(i).getCategoryType();
                 item.value = groupBeans.get(i).getMoney();
-                item.drawable = mColors[i];
+                item.color = mColors[i];
+                item.icon_id = CategoriesIconTool.getDrawableIndex(item.id);
                 items.add(item);
                 totalMoney+=groupBeans.get(i).getMoney();
             }
@@ -141,7 +143,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 PieGraphView.Item item = new PieGraphView.Item();
                 item.id = groupBeans.get(i).getCategoryType();
                 item.value = groupBeans.get(i).getMoney();
-                item.drawable = mColors[i];
+                item.color = mColors[i];
+                item.icon_id = CategoriesIconTool.getDrawableIndex(item.id);
                 items.add(item);
                 totalMoney+=groupBeans.get(i).getMoney();
             }
