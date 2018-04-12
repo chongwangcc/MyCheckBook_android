@@ -18,10 +18,10 @@ public class DetailGroupBean {
     private float total_income=0; //收入总计
     private String date; //日期
     private float total_spent=0; //支出总计
+    private float total_inner=0; //内部转账
     private String balanceType;// 收入，支出，内部转账
     private String categoryType; //零食，居家，娱乐
     private  List<CheckDetailBean> data=new LinkedList<>();
-
 
     /***
      * 已第一个的值填写统计值
@@ -46,6 +46,8 @@ public class DetailGroupBean {
             total_income+=detail.getMoney();
         }else if(detail.getBalanceType().equals(BalanceName.Expend)){
             total_spent+=detail.getMoney();
+        }else if(detail.getBalanceType().equals(BalanceName.Inner)){
+            total_inner+=detail.getMoney();
         }
         if(balanceType ==null)
             balanceType =detail.getBalanceType();
@@ -137,6 +139,14 @@ public class DetailGroupBean {
         this.data = data;
     }
 
+    public float getTotal_inner() {
+        return total_inner;
+    }
+
+    public void setTotal_inner(float total_inner) {
+        this.total_inner = total_inner;
+    }
+
     public float getMoney(){
         float money=0;
         switch (this.getBalanceType()){
@@ -147,6 +157,7 @@ public class DetailGroupBean {
                 money=getTotal_income();
                 break;
             case BalanceName.Inner:
+                money=getTotal_inner();
                 break;
         }
         return money;

@@ -5,50 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.ccmm.cc.mycheckbook.MyControl.PieGraphView
-        android:id="@+id/pieChart"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/main1"
-        layout="@layout/detail_listitem"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:fadingEdge="vertical"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pieChart"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <com.ccmm.cc.mycheckbook.MyControl.MyListView
-        android:id="@+id/detail_statement"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:cacheColorHint="#00000000"
-        android:divider="#e8e8e8"
-        android:dividerHeight="1dp"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
-        android:scrollingCache="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"></com.ccmm.cc.mycheckbook.MyControl.MyListView>
+            <com.ccmm.cc.mycheckbook.MyControl.PieGraphView
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
+            <include
+                android:id="@+id/main1"
+                layout="@layout/detail_listitem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView" />
+
+            <com.ccmm.cc.mycheckbook.MyControl.MyListView
+                android:id="@+id/detail_statement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:cacheColorHint="#00000000"
+                android:divider="#e8e8e8"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:scrollbars="none"
+                android:scrollingCache="false">
+
+            </com.ccmm.cc.mycheckbook.MyControl.MyListView>
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

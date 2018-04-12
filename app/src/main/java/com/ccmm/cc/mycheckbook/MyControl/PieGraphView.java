@@ -577,10 +577,11 @@ public class PieGraphView extends View {
     }
 
     public static class Item {
-        public double value;
+        public double value;//所占百分比
         public int color;
         public String id;
         public int icon_id; //图标显示的值
+        public Object remark; //临时存的数据,管理数据用
     }
 
     public void setData(ItemGroup[] groups) {

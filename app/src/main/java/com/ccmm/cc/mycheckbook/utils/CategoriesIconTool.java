@@ -198,7 +198,6 @@ public class CategoriesIconTool {
         return namesList;
     }
 
-
     /***
      * 改变 类别图片的颜色
      * @param drawable
@@ -226,6 +225,7 @@ public class CategoriesIconTool {
         return drawable_temp;
 
     }
+
     public static Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
         final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTintList(wrappedDrawable, colors);

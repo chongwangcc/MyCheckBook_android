@@ -1,6 +1,7 @@
 package com.ccmm.cc.mycheckbook.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,34 +10,57 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+import com.ccmm.cc.mycheckbook.Enum.CategoryColorEnum;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.activity.DetailInfoActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
+import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 明细，里层列表适配器
+ * 类别，排行榜列表适配器
  */
-public class DetailsInnerListAdapter extends BaseAdapter {
+public class CategoryLeaderBoadAdapter extends BaseAdapter {
 
     private List<CheckDetailBean> data_list;
     private Context context;
     private LayoutInflater inflater;
 
-    public DetailsInnerListAdapter(Context context) {
+    public CategoryLeaderBoadAdapter(Context context) {
         super();
         this.context = context;
     }
     public void addAll(List<CheckDetailBean> list) {
-        this.data_list =list;
+        //1.排序
+        Collections.sort(list, new Comparator<CheckDetailBean>() {
+            @Override
+            public int compare(CheckDetailBean t1, CheckDetailBean t2) {
+                float n1=0,n2=0;
+                n1=t1.getMoney();
+                n2=t2.getMoney();
+                if(n2>n1){
+                    return 1;
+                }else if(n2<n1){
+                    return -1;
+                }
+                return 0;
+            }
+        });
+        //2.取top5
+        this.data_list = new LinkedList<>();
+        for(int i=0;i<5 && i<list.size();i++){
+            this.data_list.add(list.get(i));
+        }
+
         notifyDataSetChanged();
     }
 
-    public void clearAll() {
-        this.data_list.clear();
-        notifyDataSetChanged();
-    }
     @Override
     public int getCount() {
         return data_list.size();
@@ -54,6 +78,7 @@ public class DetailsInnerListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // 1.获得控件
         InnerListItem parentListItem;
         if (convertView == null) {
             parentListItem = new InnerListItem();
@@ -62,6 +87,7 @@ public class DetailsInnerListAdapter extends BaseAdapter {
             parentListItem.item_icon =  convertView .findViewById(R.id.detail_pic);
             parentListItem.text_description = convertView .findViewById(R.id.detail_content);
             parentListItem.text_money = convertView .findViewById(R.id.detail_money);
+            convertView.findViewById(R.id.detail_statement);
             convertView.setTag(parentListItem);
         } else {
             parentListItem = (InnerListItem) convertView.getTag();
@@ -74,11 +100,13 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         parentListItem.text_description.setText(desciption);
         parentListItem.text_money.setText(data_list.get(position).getMoney()+"");
 
-
         //3.设置图标颜色
-        Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getCategory()));
+        Drawable drawable = context.getDrawable(CategoryColorEnum.rank_ICON_ID[position]);
         drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getBalanceType());
         parentListItem.item_icon.setImageDrawable(drawable);
+
+        //4.设置点击响应事件
+
         return convertView;
     }
 

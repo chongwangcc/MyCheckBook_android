@@ -68,7 +68,6 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
             childListViewItem = (ChildListViewItem) convertView.getTag();
         }
 
-
         //2.显示数据
         childListViewItem.text_date.setText("  "+list.get(position).getDay()+"-"+list.get(position).getWeek());
         childListViewItem.text_sumMoney.setText("支出："+list.get(position).getTotal_spent()+" 收入："+list.get(position).getTotal_income()+"  ");
@@ -85,7 +84,6 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
                 //1.获得明细数据
                 DetailsInnerListAdapter myAdapter = (DetailsInnerListAdapter)arg0.getAdapter();
                 CheckDetailBean bean = myAdapter.getData_list().get(arg2);
-
 
                 //2.打开界面展示明细数据
                 Intent intent = new Intent();
