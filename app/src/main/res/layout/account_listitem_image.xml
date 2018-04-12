@@ -40,11 +40,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
         android:layout_toRightOf="@id/detail_title_1"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textSize="40px"
-        tools:layout_editor_absoluteX="315dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="-12394" />
 
     <TextView
