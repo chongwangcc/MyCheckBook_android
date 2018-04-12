@@ -3,6 +3,7 @@ package com.ccmm.cc.mycheckbook.models;
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.utils.DateTools;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by cc on 2018/4/6.
  */
 
-public class DetailGroupBean {
+public class DetailGroupBean implements Serializable {
     private String year;
     private String month;
     private String day;

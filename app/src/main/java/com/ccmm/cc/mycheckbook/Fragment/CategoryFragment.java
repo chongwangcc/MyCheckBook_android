@@ -2,12 +2,10 @@ package com.ccmm.cc.mycheckbook.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +16,12 @@ import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.CategoryLeaderBoadAdapter;
 import com.ccmm.cc.mycheckbook.Adapter.CategoryMultiGroupAdapter;
-import com.ccmm.cc.mycheckbook.Adapter.DetailsInnerListAdapter;
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.Enum.CategoryColorEnum;
 import com.ccmm.cc.mycheckbook.MyControl.MyListView;
 import com.ccmm.cc.mycheckbook.MyControl.PieGraphView;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.activity.CategoryDetailsActivity;
 import com.ccmm.cc.mycheckbook.activity.DetailAddingActivity;
 import com.ccmm.cc.mycheckbook.activity.DetailInfoActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
@@ -31,7 +29,6 @@ import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
-import com.ccmm.cc.mycheckbook.utils.ZaTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +41,7 @@ import java.util.List;
 
 public class CategoryFragment extends Fragment implements View.OnClickListener,PieGraphView.ItemChangeListener{
     private final int MAX_ITEM_NUM=8;
+
     com.ccmm.cc.mycheckbook.MyControl.PieGraphView pieChart;
     private ImageView iv_select_category;
     private TextView tv_select_category_description;
@@ -51,16 +49,18 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
     private TextView tv_Leaderboard;
     private MyListView mlv_Leaderboard_details;
     private View layout_title;
+    private Context context;
+
     protected boolean isCreated = false;
 
     private List<DetailGroupBean> detail_group_income; //收入-类别-明细数据
     private List<DetailGroupBean> detail_group_spend; //支出-类别-明细数据
     private List<DetailGroupBean> detail_group_inner; //内部转账-类别明细数据
 
-    double total_income=1.0;
-    double total_spent=1.0;
-    double total_inner=1.0;
-    private Context context;
+    double total_income_money =1.0;
+    double total_spent_money =1.0;
+    double total_inner_money =1.0;
+
     public static CategoryFragment newInstance() {
         Bundle args = new Bundle();
         return new CategoryFragment();
@@ -131,7 +131,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
         detail_group_income =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Income);
         detail_group_spend =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Expend);
         detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Inner);
-
         //2.设置pieVie中的数据
         setPieViewData();
     }
@@ -195,13 +194,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             }
             switch (balanceName){
                 case BalanceName.Expend:
-                    total_spent=totalMoney;
+                    total_spent_money =totalMoney;
                     break;
                 case BalanceName.Income:
-                    total_income=totalMoney;
+                    total_income_money =totalMoney;
                     break;
                 case BalanceName.Inner:
-                    total_inner=totalMoney;
+                    total_inner_money =totalMoney;
                     break;
             }
 
@@ -299,7 +298,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
         }
         if(groupAll.size()==1){
             /*************单一类别**?????*/
-            DetailGroupBean bean = groupAll.get(0);
+            final DetailGroupBean bean = groupAll.get(0);
             double money = bean.getMoney();
             //1.设置图标
             Drawable drawable = this.getContext().getDrawable(CategoriesIconTool.getDrawableIndex(category));
@@ -315,15 +314,15 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             String leaderboard_title=category;
             switch (balance){
                 case BalanceName.Income:
-                    percent = money/total_income;
+                    percent = money/ total_income_money;
                     leaderboard_title+="消费排行榜";
                     break;
                 case BalanceName.Expend:
-                    percent = money/total_spent;
+                    percent = money/ total_spent_money;
                     leaderboard_title+="收入排行榜";
                     break;
                 case BalanceName.Inner:
-                    percent = money/total_inner;
+                    percent = money/ total_inner_money;
                     leaderboard_title+="内部转账排行榜";
             }
             String percent_str=String.format("%.2f", percent*100);
@@ -349,11 +348,36 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                     intent.setClass(context, DetailInfoActivity.class);
                     intent.putExtra("detailBean",bean);
                     intent.putExtra("title","详情");
+
+                    context.startActivity(intent);
+                }
+            });
+            layout_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    double totalMoney=0;
+                    switch (bean.getBalanceType()){
+                        case BalanceName.Expend:
+                            totalMoney= total_spent_money;
+                            break;
+                        case BalanceName.Income:
+                            totalMoney= total_income_money;
+                            break;
+                        case BalanceName.Inner:
+                            totalMoney= total_inner_money;
+                            break;
+                    }
+                    //2.打开界面展示明细数据
+                    Intent intent = new Intent();
+                    intent.setClass(context, CategoryDetailsActivity.class);
+                    intent.putExtra("detailGroup",bean);
+                    intent.putExtra("title","类别详情");
+                    intent.putExtra("total",totalMoney);
                     context.startActivity(intent);
                 }
             });
         }else{
-            /*************TODO 多个类别类别**?????*/
+            /************* 多个类别类别**?????*/
             List<DetailGroupBean> detailList = (List<DetailGroupBean>)item.remark;
             //1.隐藏不用的控件
             layout_title.setVisibility(View.INVISIBLE);
@@ -365,13 +389,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             double totalMoney=0;
             switch (balance){
                 case BalanceName.Expend:
-                    totalMoney=total_spent;
+                    totalMoney= total_spent_money;
                     break;
                 case BalanceName.Income:
-                    totalMoney=total_income;
+                    totalMoney= total_income_money;
                     break;
                 case BalanceName.Inner:
-                    totalMoney=total_inner;
+                    totalMoney= total_inner_money;
                     break;
             }
             daAdapter.setTotalMoney(totalMoney);
@@ -381,17 +405,30 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             mlv_Leaderboard_details.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    //TODO 设置点击事件处理,调到新的Activity中
+                    //设置点击事件处理,跳到新的Activity中
                     //1.获得明细数据
-//                    CategoryLeaderBoadAdapter myAdapter = (CategoryLeaderBoadAdapter)adapterView.getAdapter();
-//                    CheckDetailBean bean = myAdapter.getData_list().get(i);
-//
-//                    //2.打开界面展示明细数据
-//                    Intent intent = new Intent();
-//                    intent.setClass(context, DetailInfoActivity.class);
-//                    intent.putExtra("detailBean",bean);
-//                    intent.putExtra("title","详情");
-//                    context.startActivity(intent);
+                    CategoryMultiGroupAdapter myAdapter = (CategoryMultiGroupAdapter)adapterView.getAdapter();
+                    DetailGroupBean bean = myAdapter.getData_list().get(i);
+
+                    //2.打开界面展示明细数据
+                    Intent intent = new Intent();
+                    double totalMoney=0;
+                    switch (bean.getBalanceType()){
+                        case BalanceName.Expend:
+                            totalMoney= total_spent_money;
+                            break;
+                        case BalanceName.Income:
+                            totalMoney= total_income_money;
+                            break;
+                        case BalanceName.Inner:
+                            totalMoney= total_inner_money;
+                            break;
+                    }
+                    intent.setClass(context, CategoryDetailsActivity.class);
+                    intent.putExtra("detailGroup",bean);
+                    intent.putExtra("title","类别详情");
+                    intent.putExtra("total",totalMoney);
+                    context.startActivity(intent);
                 }
             });
         }

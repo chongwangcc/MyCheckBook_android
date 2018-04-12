@@ -12,7 +12,6 @@ public class MyListView extends ListView {
 
     public MyListView(Context context) {
         super(context);
-
     }
 
     public MyListView(Context context, AttributeSet attrs, int defStyle) {

@@ -37,7 +37,6 @@ public class LoginActivity extends Activity {
         View.OnClickListener logininButtonHandler = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //1.获得用户名,密码
                 String username =  editText_username.getText().toString();
                 String password =  editText_password.getText().toString();

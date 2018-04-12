@@ -117,6 +117,14 @@ public class CategoryMultiGroupAdapter extends BaseAdapter {
         this.totalMoney = totalMoney;
     }
 
+    public List<DetailGroupBean> getData_list() {
+        return data_list;
+    }
+
+    public void setData_list(List<DetailGroupBean> data_list) {
+        this.data_list = data_list;
+    }
+
     /**
      * Inner列表类中的控件
      */

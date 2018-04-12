@@ -24,5 +24,6 @@
         <activity android:name=".activity.CheckbookMainActivity" />
         <activity android:name=".activity.DetailAddingActivity" />
         <activity android:name=".activity.DetailInfoActivity" />
+        <activity android:name=".activity.CategoryDetailsActivity" />
     </application>
 </manifest>
