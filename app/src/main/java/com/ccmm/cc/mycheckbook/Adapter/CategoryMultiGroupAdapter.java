@@ -106,7 +106,6 @@ public class CategoryMultiGroupAdapter extends BaseAdapter {
         parentListItem.item_icon.setImageDrawable(drawable);
 
         //4.设置点击响应事件
-
         return convertView;
     }
     public double getTotalMoney() {

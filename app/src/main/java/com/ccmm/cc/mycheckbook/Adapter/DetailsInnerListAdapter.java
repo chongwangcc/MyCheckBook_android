@@ -33,10 +33,6 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void clearAll() {
-        this.data_list.clear();
-        notifyDataSetChanged();
-    }
     @Override
     public int getCount() {
         return data_list.size();

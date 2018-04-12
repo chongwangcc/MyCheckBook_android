@@ -31,10 +31,7 @@ public class CheckDetailsTools {
 
     private static String details_year="";
     private static String detals_month="";
-
     private static CheckDetailBean deleteDetails_cacher=null;
-
-
 
     private static List<CheckDetailBean> allDetails=null;
     private static List<DetailGroupBean> detailGroup_byDay=null;
@@ -265,6 +262,42 @@ public class CheckDetailsTools {
         return true;
     }
 
+    /***
+     * 读数据库,获得最新值
+     * @param checkDetailsBean
+     * @return
+     */
+    public static CheckDetailBean queryCheckDetail(int checkbook_id,CheckDetailBean checkDetailsBean){
+        CheckDetailBean entity =null;
+        if(checkDetailsBean==null) return entity;
+        String sql = "select * from "+ SqliteTableName.CheckDetails+" where id="+checkDetailsBean.getId()+" order by createTime DESC";
+        Cursor detailsCursor = read_db.rawQuery(sql,null);
+        while (detailsCursor.moveToNext()) {
+            entity = new CheckDetailBean();
+            entity.setId(detailsCursor.getInt(detailsCursor.getColumnIndex("id")));
+            entity.setCheckbook_id(detailsCursor.getInt(detailsCursor.getColumnIndex("checkbook_id")));
+            entity.setAccount_id(detailsCursor.getInt(detailsCursor.getColumnIndex("account_id")));
+            entity.setIsCreditcard(detailsCursor.getInt(detailsCursor.getColumnIndex("isCreditcard")));
+            entity.setLast_update_user_id(detailsCursor.getInt(detailsCursor.getColumnIndex("last_update_user_id")));
+            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
+            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
+            entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));
+            entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
+
+            entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
+            String account = "Inbox";
+            try {
+                String sql_2 = "select * from " + SqliteTableName.AccountInfo + " where account_id=" + entity.getAccount_id();
+                Cursor temp = read_db.rawQuery(sql_2, null);
+                temp.moveToFirst();
+                account = temp.getString(temp.getColumnIndex("account_name"));
+            } catch (Exception e) {
+
+            }
+            entity.setAccount(account);
+        }
+        return entity;
+    }
 
     /////////////////////////////////SET GET方法///////////////////////////////
 

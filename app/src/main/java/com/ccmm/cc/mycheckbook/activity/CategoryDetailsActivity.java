@@ -25,6 +25,7 @@ import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
+import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 public class CategoryDetailsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -34,8 +35,11 @@ public class CategoryDetailsActivity extends AppCompatActivity implements Adapte
     private TextView tv_money;
     private TextView tv_month;
     private ListView lv_details;
+
     private String title;
     DetailGroupBean bean;
+    private String category;
+    private String balance;
     private double total_income_money;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +53,49 @@ public class CategoryDetailsActivity extends AppCompatActivity implements Adapte
         total_income_money = (double) intent.getDoubleExtra("total",1.0);
         //2.设置toolbar
         toolbar =  findViewById(R.id.toolbar4);
-        settingToolBar();
+        category = bean.getCategoryType();
+        balance = bean.getBalanceType();
 
         //3.设置类别汇总数据
         iv_icon = findViewById(R.id.main1).findViewById(R.id.detail_pic);
         tv_description = findViewById(R.id.main1).findViewById(R.id.detail_content);
         tv_money = findViewById(R.id.main1).findViewById(R.id.detail_money);
         tv_month = findViewById(R.id.textView15);
-        settingCategorySum();
+
         //4.设置类别明细数据
         lv_details = findViewById(R.id.dd_dynamic);
-        settingCategoryDetails();
+    }
 
+    @Override
+    protected void onResume() {
+        //1.遍历bean更新数据
+
+        updateGroupBean();
+        //2.设置控件上值
+        settingToolBar();
+        settingCategorySum();
+        settingCategoryDetails();
+        super.onResume();
+    }
+
+    private void updateGroupBean(){
+        //1.更新数据
+        DetailGroupBean new_bean_group = new DetailGroupBean();
+        for(CheckDetailBean detailBean: this.bean.getData()){
+            CheckDetailBean beanDetail=CheckDetailsTools.queryCheckDetail(CheckbookTools.getSelectedCheckbook().getCheckbookID(),detailBean);
+            new_bean_group.setCategoryType(category);
+            new_bean_group.setBalanceType(balance);
+            new_bean_group.addOneDetailBean(beanDetail);
+        }
+
+        //2.更新totoal_Income
+        double money_old=this.bean.getMoney();
+        double money_new=new_bean_group.getMoney();
+        total_income_money=total_income_money-money_old+money_new;
+        this.bean=new_bean_group;
 
     }
+
     /***
      * 设置工具栏
      * @param

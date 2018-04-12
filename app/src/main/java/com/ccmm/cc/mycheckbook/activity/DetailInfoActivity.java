@@ -57,6 +57,7 @@ public class DetailInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //1.获得修改后数据
                 bean.setDescription(ev_description.getText().toString());
+
                 //2.保存到数据库中
                 CheckDetailsTools.modifyOneCheckDetails(bean);
 
