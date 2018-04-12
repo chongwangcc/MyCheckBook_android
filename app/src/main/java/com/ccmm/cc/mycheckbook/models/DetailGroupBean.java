@@ -22,6 +22,7 @@ public class DetailGroupBean implements Serializable {
     private float total_inner=0; //内部转账
     private String balanceType;// 收入，支出，内部转账
     private String categoryType; //零食，居家，娱乐
+    private String accountName; //账户名称,
     private  List<CheckDetailBean> data=new LinkedList<>();
 
     /***
@@ -38,6 +39,8 @@ public class DetailGroupBean implements Serializable {
             day=detail.getDay();
         if(date==null)
             date=detail.getDate();
+        if(accountName==null)
+            accountName=detail.getAccount();
         if(week==null){
             //计算week字符串
             String date_Str=year+"-"+month+"-"+day;
@@ -162,5 +165,13 @@ public class DetailGroupBean implements Serializable {
                 break;
         }
         return money;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }

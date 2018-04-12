@@ -13,7 +13,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
@@ -43,7 +42,7 @@ public class CheckbookSelectActivity extends Activity {
                 mList,
                 R.layout.checkbook_listitem,      // 自定义布局格式
                 new String[] { "PIC", "TITLE", "CONTENT" },
-                new int[] { R.id.detail_pic, R.id.detail_content, R.id.listitem_content }
+                new int[] { R.id.detail_pic, R.id.detail_title_1, R.id.listitem_content }
         );
         listView = findViewById(R.id.list);
         listView.setAdapter(adapter);

@@ -1,17 +1,14 @@
 package com.ccmm.cc.mycheckbook.Adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
-import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 
 import java.util.List;
 
@@ -60,7 +57,7 @@ public class CategoryDetailsListAdapter extends BaseAdapter {
             inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.detail_listitem_text, null, false);
             parentListItem.text_date =  convertView .findViewById(R.id.detail_date);
-            parentListItem.text_description = convertView .findViewById(R.id.detail_content);
+            parentListItem.text_description = convertView .findViewById(R.id.detail_title_1);
             parentListItem.text_money = convertView .findViewById(R.id.detail_money);
             convertView.setTag(parentListItem);
         } else {

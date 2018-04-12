@@ -1,32 +1,23 @@
 package com.ccmm.cc.mycheckbook.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.CategoryDetailsListAdapter;
-import com.ccmm.cc.mycheckbook.Adapter.CategoryLeaderBoadAdapter;
-import com.ccmm.cc.mycheckbook.Adapter.DetailsInnerListAdapter;
-import com.ccmm.cc.mycheckbook.MyControl.ChooseMonthDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
-import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
-import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 public class CategoryDetailsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private Toolbar toolbar;
@@ -58,7 +49,7 @@ public class CategoryDetailsActivity extends AppCompatActivity implements Adapte
 
         //3.设置类别汇总数据
         iv_icon = findViewById(R.id.main1).findViewById(R.id.detail_pic);
-        tv_description = findViewById(R.id.main1).findViewById(R.id.detail_content);
+        tv_description = findViewById(R.id.main1).findViewById(R.id.detail_title_1);
         tv_money = findViewById(R.id.main1).findViewById(R.id.detail_money);
         tv_month = findViewById(R.id.textView15);
 

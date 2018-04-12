@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="80dp">
 
     <ImageView
         android:id="@+id/detail_pic"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="4dp"
         android:background="@drawable/bg_border"
         android:padding="10dip"
         android:scaleType="fitXY"
@@ -26,13 +25,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/detail_pic"
         android:gravity="center_vertical"
         android:textSize="40px"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/detail_pic"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="sdaDA" />
@@ -44,14 +40,32 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/detail_title_1"
+        android:gravity="center_vertical"
         android:singleLine="true"
         android:textSize="40px"
+        tools:layout_editor_absoluteX="315dp"
+        tools:text="-12394" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_pic"
+        app:layout_constraintTop_toBottomOf="@+id/detail_title_1" />
+
+    <TextView
+        android:id="@+id/money_out"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="-12394" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_money" />
 </android.support.constraint.ConstraintLayout>

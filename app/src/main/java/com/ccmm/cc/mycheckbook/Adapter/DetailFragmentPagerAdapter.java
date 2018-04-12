@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 
+import com.ccmm.cc.mycheckbook.Fragment.AccountFagment;
 import com.ccmm.cc.mycheckbook.Fragment.CategoryFragment;
 import com.ccmm.cc.mycheckbook.Fragment.DetailFragment;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
@@ -42,7 +43,7 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragmentList.add(f);
                 break;
             case 2: //账号
-                f=DetailFragment.newInstance();
+                f= AccountFagment.newInstance();
                 fragmentList.add(f);
                 break;
 

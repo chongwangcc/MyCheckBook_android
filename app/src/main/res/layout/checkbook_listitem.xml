@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         android:padding="10dip" />
 
-    <TextView android:id="@+id/detail_content"
+    <TextView android:id="@+id/detail_title_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/detail_pic"
@@ -30,7 +30,7 @@
         android:layout_toRightOf="@id/detail_pic"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/detail_content"
+        android:layout_below="@id/detail_title_1"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:textSize="14sp" />

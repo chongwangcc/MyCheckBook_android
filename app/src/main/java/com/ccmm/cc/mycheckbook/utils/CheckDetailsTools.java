@@ -188,6 +188,34 @@ public class CheckDetailsTools {
     }
 
     /***
+     * 通过账户来对数据分组
+     * @param detailsList
+     * @return
+     */
+    public static List<DetailGroupBean> detailsGroupByAccount(List<CheckDetailBean> detailsList){
+        List<DetailGroupBean> list = new LinkedList<DetailGroupBean>();
+        Map<String,DetailGroupBean> tempMap=new HashMap<>();
+        for(CheckDetailBean detail : detailsList){
+            //1.获得group对象
+            String key = detail.getAccount();
+            DetailGroupBean detailGroup =tempMap.get(key);
+            if(detailGroup==null){
+                detailGroup=new DetailGroupBean();
+                tempMap.put(key,detailGroup);
+            }
+            detailGroup.addOneDetailBean(detail);
+        }
+
+        //3.按照日期排序tempMap
+        for(String key:tempMap.keySet()){
+            DetailGroupBean detailGroup =tempMap.get(key);
+            list.add(detailGroup);
+        }
+        return list;
+    }
+
+
+    /***
      * 添加一条明细记录
      * @param checkDetailsBean
      * @return

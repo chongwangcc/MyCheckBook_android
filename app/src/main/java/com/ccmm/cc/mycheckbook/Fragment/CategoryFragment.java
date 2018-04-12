@@ -82,7 +82,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
         view = inflater.inflate(R.layout.fragment_category_report, container, false);
         pieChart=view.findViewById(R.id.pieChart);
         iv_select_category = view.findViewById(R.id.main1).findViewById(R.id.detail_pic);
-        tv_select_category_description = view.findViewById(R.id.main1).findViewById(R.id.detail_content);
+        tv_select_category_description = view.findViewById(R.id.main1).findViewById(R.id.detail_title_1);
         tv_select_category_money = view.findViewById(R.id.main1).findViewById(R.id.detail_money);
         tv_Leaderboard = view.findViewById(R.id.textView17);
         mlv_Leaderboard_details = view.findViewById(R.id.detail_statement);

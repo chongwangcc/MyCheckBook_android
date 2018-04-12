@@ -56,7 +56,7 @@ public class DetailsInnerListAdapter extends BaseAdapter {
             inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.detail_listitem, null, false);
             parentListItem.item_icon =  convertView .findViewById(R.id.detail_pic);
-            parentListItem.text_description = convertView .findViewById(R.id.detail_content);
+            parentListItem.text_description = convertView .findViewById(R.id.detail_title_1);
             parentListItem.text_money = convertView .findViewById(R.id.detail_money);
             convertView.setTag(parentListItem);
         } else {
