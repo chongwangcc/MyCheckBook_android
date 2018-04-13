@@ -513,7 +513,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             categoryMap.put(name,cc);
         }
         accountList = AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
-
+        iscrideit = findViewById(R.id.checkBox);
         //2.添加选择日期按钮
         button_selectData = findViewById(R.id.select_date);
         button_selectData.setOnClickListener(new View.OnClickListener() {
@@ -557,6 +557,9 @@ public class DetailAddingActivity extends AppCompatActivity {
         }else{
             button_account.setText(AccountTools.concatAccountName(status.getAccount_id()));
         }
+        if(status.getIsCreditcard()==1){
+            iscrideit.setChecked(true);
+        }
         for(String name:categoryMap.keySet()){
             CategoriesChoice cc =categoryMap.get(name);
             if(name.equals(status.getBalanceType())){
@@ -566,7 +569,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             }
         }
         //5.
-        iscrideit = findViewById(R.id.checkBox);
+
 
         //1.设置ViewPage页面
         vpager_one =  findViewById(R.id.viewpager_type);
