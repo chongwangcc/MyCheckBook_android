@@ -53,7 +53,7 @@ public class CheckbookTools {
         try{
             Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
             while (userCheckbookMapCursor.moveToNext()){
-                int id = userCheckbookMapCursor.getInt(userCheckbookMapCursor.getColumnIndex("account_id"));
+                int id = userCheckbookMapCursor.getInt(userCheckbookMapCursor.getColumnIndex("checkbook_id"));
                 CheckbookEntity entity = getCheckbookByID(id);
                 result.add(entity);
             }
@@ -81,7 +81,7 @@ public class CheckbookTools {
         //2.建立checkbook和User的对应管理
         ContentValues values_r = new ContentValues();
         values_r.put("user_name",user.getName());
-        values_r.put("account_id",id);
+        values_r.put("checkbook_id",id);
         values_r.put("permission",1);
         values_r.put("description","");
         write_db.insert(SqliteTableName.UserCheckbookMap,null,values_r);

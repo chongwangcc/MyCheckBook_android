@@ -1,11 +1,12 @@
+
 create table AccountInfo (
 account_id           INTEGER                        not null,
 account_name         varchar(64),
 parent_id            int,
 "level"              int,
 key                  varchar(1024),
-assets_nums          int,
-liabilities_nums     int,
+assets_nums          float,
+liabilities_nums     float,
 primary key (account_id)
 );
 
@@ -53,11 +54,11 @@ foreign key (account_id)
 create table UserCheckbookMap (
 id                   INTEGER                        not null,
 user_name            VARBINARY(0)                   not null,
-account_id           INTEGER,
+checkbook_id         INTEGER,
 permission           int,
 description          varchar(64),
 primary key (id),
-foreign key (account_id)
+foreign key (checkbook_id)
       references CheckbookInfo (id)
 );
 

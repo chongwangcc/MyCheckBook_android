@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.Enum.SqliteTableName;
 import com.ccmm.cc.mycheckbook.MyApplication;
+import com.ccmm.cc.mycheckbook.models.AccountBean;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
@@ -84,10 +85,8 @@ public class CheckDetailsTools {
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
             String account="Inbox";
             try{
-                String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id="+entity.getAccount_id();
-                Cursor temp = read_db.rawQuery(sql_2,null);
-                temp.moveToFirst();
-                account=temp.getString(temp.getColumnIndex("account_name"));
+                AccountBean accountBean = AccountTools.getAccountByID(entity.getAccount_id());
+                account=accountBean.getName();
             }catch (Exception e){
 
             }

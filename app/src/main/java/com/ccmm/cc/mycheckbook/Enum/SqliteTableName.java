@@ -5,6 +5,6 @@ public class SqliteTableName {
     public static final String CheckbookInfo="CheckbookInfo";
     public static final String CheckDetails="CheckDetails";
     public static final String AccountInfo="AccountInfo";
-    public static final String CheckbookAccountMap="CheckbookAcountMap";
+    public static final String CheckbookAccountMap="CheckbookAccountMap";
 
 }
