@@ -57,7 +57,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view ;
 
-        view = inflater.inflate(R.layout.checkbook_main_details_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_checkbook_main_details, container, false);
         //2.设置按钮的点击事件处理方法
         Button join_checkbook_button= view.findViewById(R.id.add_detail_button);
         join_checkbook_button.setOnClickListener(this);

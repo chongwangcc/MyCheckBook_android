@@ -9,13 +9,10 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.MyControl.MyListView;
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.activity.CheckbookSelectActivity;
 import com.ccmm.cc.mycheckbook.activity.DetailInfoActivity;
-import com.ccmm.cc.mycheckbook.activity.LoginActivity;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
@@ -59,7 +56,7 @@ public class DetailsOuterListAdapter extends BaseAdapter implements ListAdapter 
         //1.获得控件
         if (convertView == null) {
             childListViewItem = new ChildListViewItem();
-            convertView = inflater.inflate(R.layout.parentitem, null, false);
+            convertView = inflater.inflate(R.layout.listitem_parent, null, false);
             childListViewItem.text_date =  convertView.findViewById(R.id.date);
             childListViewItem.text_sumMoney =  convertView.findViewById(R.id.sum_money);
             childListViewItem.inner_lv =  convertView.findViewById(R.id.detail_statement);

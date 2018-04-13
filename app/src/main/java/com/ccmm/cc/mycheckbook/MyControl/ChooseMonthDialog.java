@@ -62,7 +62,7 @@ public class ChooseMonthDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.choose_month_dialog);
+        setContentView(R.layout.dialog_choose_month);
         //按空白处不能取消动画
         setCanceledOnTouchOutside(false);
 

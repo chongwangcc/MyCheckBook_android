@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/main1"
-        layout="@layout/detail_listitem"
+        layout="@layout/listitem_detail_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

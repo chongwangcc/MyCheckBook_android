@@ -27,7 +27,7 @@
 
             <include
                 android:id="@+id/main1"
-                layout="@layout/detail_listitem"
+                layout="@layout/listitem_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

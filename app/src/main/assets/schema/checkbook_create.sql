@@ -1,7 +1,11 @@
-
 create table AccountInfo (
 account_id           INTEGER                        not null,
 account_name         varchar(64),
+parent_id            int,
+"level"              int,
+key                  varchar(1024),
+assets_nums          int,
+liabilities_nums     int,
 primary key (account_id)
 );
 

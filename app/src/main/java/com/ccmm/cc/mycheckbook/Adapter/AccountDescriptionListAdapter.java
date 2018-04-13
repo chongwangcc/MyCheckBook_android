@@ -55,7 +55,7 @@ public class AccountDescriptionListAdapter extends BaseAdapter {
         if (convertView == null) {
             parentListItem = new InnerListItem();
             inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.account_listitem_image, null, false);
+            convertView = inflater.inflate(R.layout.listitem_account_image, null, false);
             parentListItem.item_icon =  convertView .findViewById(R.id.detail_pic);
             parentListItem.text_title = convertView .findViewById(R.id.detail_title_1);
             parentListItem.text_subtitle = convertView .findViewById(R.id.subtitle);

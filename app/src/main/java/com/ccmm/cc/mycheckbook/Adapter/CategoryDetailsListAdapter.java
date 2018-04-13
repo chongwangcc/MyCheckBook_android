@@ -55,7 +55,7 @@ public class CategoryDetailsListAdapter extends BaseAdapter {
         if (convertView == null) {
             parentListItem = new InnerListItem();
             inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.detail_listitem_text, null, false);
+            convertView = inflater.inflate(R.layout.listitem_detail_text, null, false);
             parentListItem.text_date =  convertView .findViewById(R.id.detail_date);
             parentListItem.text_description = convertView .findViewById(R.id.detail_title_1);
             parentListItem.text_money = convertView .findViewById(R.id.detail_money);

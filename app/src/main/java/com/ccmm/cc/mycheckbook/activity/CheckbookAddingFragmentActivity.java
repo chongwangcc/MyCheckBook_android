@@ -22,7 +22,7 @@ public class CheckbookAddingFragmentActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_checkbook);
+        setContentView(R.layout.viewpager_add_checkbook);
 
         //1.绑定tab标签View控件
         pagerAdapter = new CheckbookAddingFragmentPagerAdapter(getSupportFragmentManager(), this);
