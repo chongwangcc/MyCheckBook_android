@@ -17,7 +17,10 @@ public class AccountTools {
     static private DBHelper helper=new DBHelper(MyApplication.getContext());
     static private SQLiteDatabase write_db=helper.getWritableDatabase();   //写数据库
     static private SQLiteDatabase read_db=helper.getReadableDatabase();   //读数据库
-
+    static public  AccountBean defaultAccount ;
+    static{
+        getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
+    }
     /**
      * 获得记账本下的所有账户
      * @param checkbook_id
@@ -50,6 +53,13 @@ public class AccountTools {
             accountList.add(bean);
         }
 
+        //4.填写默认账户
+        for(AccountBean bean:accountList){
+            if(bean.getName().equals("未分类")){
+                defaultAccount=bean;
+                break;
+            }
+        }
         return accountList;
     }
 

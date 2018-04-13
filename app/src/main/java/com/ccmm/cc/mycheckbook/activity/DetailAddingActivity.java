@@ -52,8 +52,6 @@ public class DetailAddingActivity extends AppCompatActivity {
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>(); //
     private boolean newOrModefy=true; //false--新建，true==修改
     List<AccountBean> accountList;
-    AccountBean  selectAccount;
-
 
     private Toolbar toolbar;
     private ViewPager vpager_one;
@@ -64,6 +62,7 @@ public class DetailAddingActivity extends AppCompatActivity {
     private TextView balanceType_View;
     private TextView money_textView11;
     private CheckBox iscrideit;
+
 
     /***
      * 设置工具栏
@@ -173,9 +172,9 @@ public class DetailAddingActivity extends AppCompatActivity {
                     status.setCategory("一般");
                 }
                 if(status.getAccount_id()<=0){
-                    status.setAccount_id(0);
+                    int id= AccountTools.defaultAccount.getAccount_id();
+                    status.setAccount_id(id);
                 }
-
                 if(isChecked){
                     status.setIsCreditcard(1);//是信用卡
                 }else{
