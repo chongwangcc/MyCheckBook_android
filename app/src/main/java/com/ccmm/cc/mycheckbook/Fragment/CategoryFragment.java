@@ -29,6 +29,7 @@ import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
+import com.ccmm.cc.mycheckbook.utils.ZaTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -306,7 +307,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             iv_select_category.setImageDrawable(drawable);
 
             //2.设置金钱
-            String money_str=String.format("%.2f", money);
+            String money_str=ZaTools.formatMoneyStr(money,balance);
             tv_select_category_money.setText(money_str);
 
             //3.设置详解

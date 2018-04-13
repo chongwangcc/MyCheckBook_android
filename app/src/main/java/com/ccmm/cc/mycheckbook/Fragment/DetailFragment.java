@@ -45,6 +45,26 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    /***
+     * 更新数据
+     */
+    public void updateData(){
+        if(isCreated){
+            List<CheckDetailBean> llBan = CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                    CheckDetailsTools.getDetails_year(),
+                    CheckDetailsTools.getDetals_month());
+            CheckDetailsTools.setAllDetails(llBan);
+            detail_data = CheckDetailsTools.detailsGroupByDay(llBan);
+            CheckDetailsTools.setDetailGroup_byDay(detail_data);
+            detail_adapter = new DetailsOuterListAdapter(detail_data,getContext());
+            detail_listView.setAdapter(detail_adapter);
+            detail_adapter.notifyDataSetChanged();
+            detail_listView.invalidate();
+        }
+    }
+
+    //////////////////////OVERRIDE 方法///////////////////////////////////
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +84,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         view_detail=view;
         //3.设定List源
         List<CheckDetailBean> llBan =CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
-                                               CheckDetailsTools.getDetails_year(),
-                                               CheckDetailsTools.getDetals_month());
+                CheckDetailsTools.getDetails_year(),
+                CheckDetailsTools.getDetals_month());
         detail_data =  CheckDetailsTools.detailsGroupByDay(llBan);
         detail_adapter = new DetailsOuterListAdapter(detail_data,this.getContext());
         detail_listView = view.findViewById(R.id.details_listview);
@@ -86,38 +106,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (!isCreated) {
-            return;
-        }
-
-        if (isVisibleToUser) {
-            updateData();
-        }
-    }
-
-    /***
-     * 更新数据
-     */
-    public void updateData(){
-        if(isCreated){
-            List<CheckDetailBean> llBan = CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
-                    CheckDetailsTools.getDetails_year(),
-                    CheckDetailsTools.getDetals_month());
-            CheckDetailsTools.setAllDetails(llBan);
-            detail_data = CheckDetailsTools.detailsGroupByDay(llBan);
-            CheckDetailsTools.setDetailGroup_byDay(detail_data);
-            detail_adapter = new DetailsOuterListAdapter(detail_data,getContext());
-            detail_listView.setAdapter(detail_adapter);
-            detail_adapter.notifyDataSetChanged();
-            detail_listView.invalidate();
-        }
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -148,6 +136,20 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
         }
         return super.onContextItemSelected(item);
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (!isCreated) {
+            return;
+        }
+
+        if (isVisibleToUser) {
+            updateData();
+        }
     }
 
 }

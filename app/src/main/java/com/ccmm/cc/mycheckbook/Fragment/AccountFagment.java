@@ -67,7 +67,7 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
                 CheckDetailsTools.getDetals_month());
         List<DetailGroupBean> groupBeans= CheckDetailsTools.detailsGroupByAccount(llBan);
         AccountDescriptionListAdapter adtapter = new AccountDescriptionListAdapter(context);
-        //TODO 添加要处理的数据
+        // 添加要处理的数据
         adtapter.addAll(groupBeans);
         lv_account_description.setAdapter(adtapter);
     }

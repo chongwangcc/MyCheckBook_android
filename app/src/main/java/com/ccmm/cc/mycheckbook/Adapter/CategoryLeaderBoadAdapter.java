@@ -13,6 +13,7 @@ import com.ccmm.cc.mycheckbook.Enum.CategoryColorEnum;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
+import com.ccmm.cc.mycheckbook.utils.ZaTools;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -90,11 +91,13 @@ public class CategoryLeaderBoadAdapter extends BaseAdapter {
         }
         //2.设置控件文本内容
         String desciption=data_list.get(position).getDescription();
+        String balance=data_list.get(position).getBalanceType();
         if(desciption==null || desciption.isEmpty()){
             desciption=data_list.get(position).getCategory();
         }
         parentListItem.text_description.setText(desciption);
-        parentListItem.text_money.setText(data_list.get(position).getMoney()+"");
+        String money_str= ZaTools.formatMoneyStr(data_list.get(position).getMoney(),balance);
+        parentListItem.text_money.setText(money_str);
 
         //3.设置图标颜色
         Drawable drawable = context.getDrawable(CategoryColorEnum.rank_ICON_ID[position]);

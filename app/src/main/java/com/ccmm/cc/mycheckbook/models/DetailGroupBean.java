@@ -24,6 +24,7 @@ public class DetailGroupBean implements Serializable {
     private String balanceType;// 收入，支出，内部转账
     private String categoryType; //零食，居家，娱乐
     private String accountName; //账户名称,
+    private int account_id; //账户名称,
     private  List<CheckDetailBean> data=new LinkedList<>();
 
     /***
@@ -40,6 +41,8 @@ public class DetailGroupBean implements Serializable {
             day=detail.getDay();
         if(date==null)
             date=detail.getDate();
+        if(account_id<0)
+            account_id=detail.getAccount_id();
         if(accountName==null)
             accountName= AccountTools.concatAccountName(detail.getAccount_id());
         if(week==null){
@@ -62,6 +65,17 @@ public class DetailGroupBean implements Serializable {
         data.add(detail);
 
         return true;
+    }
+
+
+    //////////////////////SET GET 方法/////////////////////////////////
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
     public String getYear() {

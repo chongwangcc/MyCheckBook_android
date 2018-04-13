@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+
 public class ZaTools {
 
     public static String toHexString(int number,int index){
@@ -22,5 +24,23 @@ public class ZaTools {
         TextView vi =  toast.getView().findViewById(android.R.id.message);
         vi.setTextColor(Color.RED);     //设置字体颜色
         toast.show();
+    }
+
+    public static String formatMoneyStr(double money,String balanceType){
+        String flag="";
+        switch (balanceType){
+            case BalanceName.Expend:
+                flag="-";
+                break;
+            case BalanceName.Income:
+                flag="+";
+                break;
+            case BalanceName.Inner:
+                flag="-";
+                break;
+        }
+        String money_str=String.format("%.2f", money);
+        String result = flag+money_str;
+        return result;
     }
 }

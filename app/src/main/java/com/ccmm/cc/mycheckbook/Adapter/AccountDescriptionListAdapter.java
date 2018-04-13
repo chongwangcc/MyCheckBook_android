@@ -8,8 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.ZaTools;
 
 import java.util.List;
 
@@ -70,8 +72,10 @@ public class AccountDescriptionListAdapter extends BaseAdapter {
         //TODO 设置文字
         parentListItem.text_title.setText(data_list.get(position).getAccountName());
         parentListItem.text_subtitle.setText(data_list.get(position).getAccountName());
-        parentListItem.text_money_in.setText(data_list.get(position).getTotal_income()+"");
-        parentListItem.text_money_out.setText(data_list.get(position).getTotal_spent()+"");
+        String money_in_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_income(), BalanceName.Income);
+        String money_out_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_spent(), BalanceName.Expend);
+        parentListItem.text_money_in.setText(money_in_str);
+        parentListItem.text_money_out.setText(money_out_str);
 //        String desciption=data_list.get(position).getDescription();
 //        if(desciption==null || desciption.isEmpty()){
 //            desciption=data_list.get(position).getCategory();
