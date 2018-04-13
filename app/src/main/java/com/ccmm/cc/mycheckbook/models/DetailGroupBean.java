@@ -25,6 +25,10 @@ public class DetailGroupBean implements Serializable {
     private String categoryType; //零食，居家，娱乐
     private String accountName; //账户名称,
     private int account_id; //账户名称,
+    private float cashflow_in=0; //现金流入总计
+    private float cashflow_out=0; //现金流出总计
+    private float assets_diff=0; //资产差值
+    private float liabilities_diff=0; //负债差值
     private  List<CheckDetailBean> data=new LinkedList<>();
 
     /***
@@ -41,7 +45,7 @@ public class DetailGroupBean implements Serializable {
             day=detail.getDay();
         if(date==null)
             date=detail.getDate();
-        if(account_id<0)
+        if(account_id<=0)
             account_id=detail.getAccount_id();
         if(accountName==null)
             accountName= AccountTools.concatAccountName(detail.getAccount_id());
@@ -52,8 +56,19 @@ public class DetailGroupBean implements Serializable {
         }
         if(detail.getBalanceType().equals(BalanceName.Income)){
             total_income+=detail.getMoney();
+            if(detail.getIsCreditcard()==0){ //不是债务,是现金
+                cashflow_in+=detail.getMoney();
+            }
+            assets_diff+=detail.getMoney();
         }else if(detail.getBalanceType().equals(BalanceName.Expend)){
             total_spent+=detail.getMoney();
+            if(detail.getIsCreditcard()==0){ //不是债务,是现金
+                cashflow_out+=detail.getMoney();
+                assets_diff-=detail.getMoney();
+            }else{
+                liabilities_diff+=detail.getMoney();
+            }
+
         }else if(detail.getBalanceType().equals(BalanceName.Inner)){
             total_inner+=detail.getMoney();
         }
@@ -188,5 +203,37 @@ public class DetailGroupBean implements Serializable {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public float getCashflow_in() {
+        return cashflow_in;
+    }
+
+    public void setCashflow_in(float cashflow_in) {
+        this.cashflow_in = cashflow_in;
+    }
+
+    public float getCashflow_out() {
+        return cashflow_out;
+    }
+
+    public void setCashflow_out(float cashflow_out) {
+        this.cashflow_out = cashflow_out;
+    }
+
+    public float getAssets_diff() {
+        return assets_diff;
+    }
+
+    public void setAssets_diff(float assets_diff) {
+        this.assets_diff = assets_diff;
+    }
+
+    public float getLiabilities_diff() {
+        return liabilities_diff;
+    }
+
+    public void setLiabilities_diff(float liabilities_diff) {
+        this.liabilities_diff = liabilities_diff;
     }
 }

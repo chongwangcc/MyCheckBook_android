@@ -49,7 +49,7 @@ public class AccountTools {
             bean.setParent_id(-1);
             bean.setLiablities_num(0);
             bean.setAssets_nums(0);
-            saveAccountToSqlite(bean);
+            addOneAccount(checkbook_id,bean);
             accountList.add(bean);
         }
 
@@ -128,10 +128,10 @@ public class AccountTools {
 
     /***
      * 新增一个账户信息
-     * @param checkbook
+     * @param checkbook_id
      * @param account
      */
-    public static void addOneAccount(CheckbookEntity checkbook,AccountBean account){
+    public static void addOneAccount(int checkbook_id,AccountBean account){
         //1.保存Checkbook实体 到数据库
         int id=saveAccountToSqlite(account);
         account.setAccount_id(id);
@@ -139,7 +139,7 @@ public class AccountTools {
         //2.建立checkbook和account的对应管理
         ContentValues values_r = new ContentValues();
         values_r.put("account_id",id);
-        values_r.put("checkbook_id",checkbook.getCheckbookID());
+        values_r.put("checkbook_id",checkbook_id);
         write_db.insert(SqliteTableName.CheckbookAccountMap,null,values_r);
     }
 

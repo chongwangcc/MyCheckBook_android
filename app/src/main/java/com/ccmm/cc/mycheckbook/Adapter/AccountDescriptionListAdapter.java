@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.models.AccountBean;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.AccountTools;
 import com.ccmm.cc.mycheckbook.utils.ZaTools;
 
 import java.util.List;
@@ -70,12 +72,25 @@ public class AccountDescriptionListAdapter extends BaseAdapter {
         }
         //2.设置控件文本内容
         //TODO 设置文字
+
         parentListItem.text_title.setText(data_list.get(position).getAccountName());
-        parentListItem.text_subtitle.setText(data_list.get(position).getAccountName());
-        String money_in_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_income(), BalanceName.Income);
-        String money_out_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_spent(), BalanceName.Expend);
-        parentListItem.text_money_in.setText(money_in_str);
-        parentListItem.text_money_out.setText(money_out_str);
+        AccountBean bean = AccountTools.getAccountByID(data_list.get(position).getAccount_id());
+        double assets_num = bean.getAssets_nums()+data_list.get(position).getAssets_diff();
+        double liablity_num = bean.getLiablities_num()+data_list.get(position).getLiabilities_diff();
+        String money_in_str= ZaTools.formatMoneyStr(assets_num, BalanceName.Income);
+        String money_out_str= ZaTools.formatMoneyStr(liablity_num, BalanceName.Expend);
+        String assets_str="资产:"+money_in_str+"     负债:"+money_out_str;
+        parentListItem.text_money_in.setText(assets_str);
+
+        money_in_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_income(), BalanceName.Income);
+        money_out_str= ZaTools.formatMoneyStr(data_list.get(position).getTotal_spent(), BalanceName.Expend);
+        String profitSum_str="收入:"+money_in_str+"     支出:"+money_out_str;
+        parentListItem.text_money_out.setText(profitSum_str);
+
+        money_in_str= ZaTools.formatMoneyStr(data_list.get(position).getCashflow_in(), BalanceName.Income);
+        money_out_str= ZaTools.formatMoneyStr(data_list.get(position).getCashflow_out(), BalanceName.Expend);
+        String cacherflowm_str="流入:"+money_in_str+"     流出:"+money_out_str;
+        parentListItem.text_subtitle.setText(cacherflowm_str);
 //        String desciption=data_list.get(position).getDescription();
 //        if(desciption==null || desciption.isEmpty()){
 //            desciption=data_list.get(position).getCategory();

@@ -31,13 +31,15 @@ public class ZaTools {
         String flag="";
         switch (balanceType){
             case BalanceName.Expend:
-                flag="-";
+                if(money>=0)
+                    flag="-";
                 break;
             case BalanceName.Income:
-                flag="+";
+                if(money>=0)
+                    flag="+";
                 break;
             case BalanceName.Inner:
-                flag="-";
+                flag="";
                 break;
         }
         String money_str=String.format("%.2f", money);

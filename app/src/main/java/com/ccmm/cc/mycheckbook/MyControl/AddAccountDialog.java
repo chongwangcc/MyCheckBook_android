@@ -97,7 +97,7 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                     account.setLevel(topAccount.getLevel()+1);
                     account.setKey(topAccount.getParent_id()+"-");
                 }
-                AccountTools.addOneAccount(CheckbookTools.getSelectedCheckbook(),account);
+                AccountTools.addOneAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID(),account);
                 //退出
                 cancel();
             }
