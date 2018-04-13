@@ -40,7 +40,7 @@ public class CheckbookSelectActivity extends Activity {
         //1.绑定listView 的data和view
         adapter = new SimpleAdapter(this,
                 mList,
-                R.layout.checkbook_listitem,      // 自定义布局格式
+                R.layout.listitem_checkbook,      // 自定义布局格式
                 new String[] { "PIC", "TITLE", "CONTENT" },
                 new int[] { R.id.detail_pic, R.id.detail_title_1, R.id.listitem_content }
         );

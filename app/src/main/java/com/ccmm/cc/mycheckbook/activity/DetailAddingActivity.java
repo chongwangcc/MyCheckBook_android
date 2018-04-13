@@ -455,7 +455,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             page_total_num=typeNames.size();
             for(List<String> level_one:typeNames){
                 //1.创建View
-                View v = View.inflate(context, R.layout.circle_page, null);
+                View v = View.inflate(context, R.layout.fragment_circle_page, null);
                 AList.add(v);
                 List<TwoTuple<ImageView,TextView>> listTuple = new LinkedList<>();
                 for(int i=0;i<10;i++){
