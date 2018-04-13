@@ -90,7 +90,7 @@ public class CategoryLeaderBoadAdapter extends BaseAdapter {
             parentListItem = (InnerListItem) convertView.getTag();
         }
         //2.设置控件文本内容
-        String desciption=data_list.get(position).getDescription();
+        String desciption=ZaTools.makeDetailDescription(data_list.get(position));
         String balance=data_list.get(position).getBalanceType();
         if(desciption==null || desciption.isEmpty()){
             desciption=data_list.get(position).getCategory();

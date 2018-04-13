@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,102 +63,7 @@ public class DetailAddingActivity extends AppCompatActivity {
     private Button button_Note;
     private TextView balanceType_View;
     private TextView money_textView11;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_one_detail);
-
-        //0.获得数据
-        Intent intent = getIntent();
-        status = (CheckDetailBean)intent.getSerializableExtra("detailBean");
-        if(status ==null){
-            status = new CheckDetailBean();
-            newOrModefy=false;
-        }else{
-            newOrModefy=true;
-        }
-
-        for(String name:lis){
-            CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
-            categoryMap.put(name,cc);
-        }
-        accountList = AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
-
-        //2.添加选择日期按钮
-        button_selectData = findViewById(R.id.select_date);
-        button_selectData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
-
-        //3.设置toolbar
-        settingToolBar(CheckbookTools.getSelectedCheckbook());
-        balanceType_View = findViewById(R.id.spend_type_TextView);
-
-        //4.选择账户按钮
-        button_account =  findViewById(R.id.button_account);
-        button_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAccountDialog();
-            }
-        });
-
-        //5.备注按钮被点击
-        button_Note =  findViewById(R.id.button_description);
-        button_Note.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDescriptionDialog();
-            }
-        });
-
-        //6.设置计算用按钮
-        money_textView11= findViewById(R.id.textView11);
-        settingMoneyButtons();
-
-        // 根据status显示数据
-        money_textView11.setText(status.getMoneyStr());
-        button_selectData.setText(status.getDate());
-        if(status.getAccount_id()<0){
-            button_account.setText("选择账户");
-        }else{
-            button_account.setText(AccountTools.concatAccountName(status.getAccount_id()));
-        }
-        for(String name:categoryMap.keySet()){
-            CategoriesChoice cc =categoryMap.get(name);
-            if(name.equals(status.getBalanceType())){
-                setM_categoriesChoice(cc);
-                m_categoriesChoice.setSelectCategory(status.getCategory());
-                balanceType_View.setText(status.getBalanceType());
-            }
-        }
-        //TODO ListView显示有问题
-        //TODO BUG 支出，收入，图标同时选中的问题
-        //1.设置ViewPage页面
-        vpager_one =  findViewById(R.id.viewpager_type);
-        mAdapter = new CategoryViewPagerAdapter(m_categoriesChoice.getAList());
-        vpager_one.setAdapter(mAdapter);
-        vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            //滚动过程中实现
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            //滚动成功后实现
-            @Override
-            public void onPageSelected(int position) {
-                m_categoriesChoice.setIndicatorPostion(position);
-            }
-            //滚动成功前，即手指按下屏幕时
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
+    private CheckBox iscrideit;
 
     /***
      * 设置工具栏
@@ -261,12 +167,19 @@ public class DetailAddingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //1.获得money，保存到状态数据中
                 String money=money_textView11.getText().toString();
+                Boolean isChecked = iscrideit.isChecked();
                 status.setMoneyStr(money);
                 if(status.getCategory()==null || status.getCategory().isEmpty()){
                     status.setCategory("一般");
                 }
                 if(status.getAccount_id()<=0){
                     status.setAccount_id(0);
+                }
+
+                if(isChecked){
+                    status.setIsCreditcard(1);//是信用卡
+                }else{
+                    status.setIsCreditcard(0);//不是信用卡
                 }
                 //2. 显示记录数据
                 //Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
@@ -578,4 +491,105 @@ public class DetailAddingActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    ////////////////////////////////OVERRIDE 方法/////////////////
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_one_detail);
+
+        //0.获得数据
+        Intent intent = getIntent();
+        status = (CheckDetailBean)intent.getSerializableExtra("detailBean");
+        if(status ==null){
+            status = new CheckDetailBean();
+            newOrModefy=false;
+        }else{
+            newOrModefy=true;
+        }
+
+        for(String name:lis){
+            CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
+            categoryMap.put(name,cc);
+        }
+        accountList = AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
+
+        //2.添加选择日期按钮
+        button_selectData = findViewById(R.id.select_date);
+        button_selectData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
+        //3.设置toolbar
+        settingToolBar(CheckbookTools.getSelectedCheckbook());
+        balanceType_View = findViewById(R.id.spend_type_TextView);
+
+        //4.选择账户按钮
+        button_account =  findViewById(R.id.button_account);
+        button_account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAccountDialog();
+            }
+        });
+
+        //5.备注按钮被点击
+        button_Note =  findViewById(R.id.button_description);
+        button_Note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDescriptionDialog();
+            }
+        });
+
+        //6.设置计算用按钮
+        money_textView11= findViewById(R.id.textView11);
+        settingMoneyButtons();
+
+        // 根据status显示数据
+        money_textView11.setText(status.getMoneyStr());
+        button_selectData.setText(status.getDate());
+        if(status.getAccount_id()<0){
+            button_account.setText("选择账户");
+        }else{
+            button_account.setText(AccountTools.concatAccountName(status.getAccount_id()));
+        }
+        for(String name:categoryMap.keySet()){
+            CategoriesChoice cc =categoryMap.get(name);
+            if(name.equals(status.getBalanceType())){
+                setM_categoriesChoice(cc);
+                m_categoriesChoice.setSelectCategory(status.getCategory());
+                balanceType_View.setText(status.getBalanceType());
+            }
+        }
+        //5.
+        iscrideit = findViewById(R.id.checkBox);
+
+        //1.设置ViewPage页面
+        vpager_one =  findViewById(R.id.viewpager_type);
+        mAdapter = new CategoryViewPagerAdapter(m_categoriesChoice.getAList());
+        vpager_one.setAdapter(mAdapter);
+        vpager_one.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            //滚动过程中实现
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+            //滚动成功后实现
+            @Override
+            public void onPageSelected(int position) {
+                m_categoriesChoice.setIndicatorPostion(position);
+            }
+            //滚动成功前，即手指按下屏幕时
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
 }

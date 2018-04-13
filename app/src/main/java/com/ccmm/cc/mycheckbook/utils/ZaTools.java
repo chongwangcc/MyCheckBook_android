@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 
 public class ZaTools {
 
@@ -42,5 +43,20 @@ public class ZaTools {
         String money_str=String.format("%.2f", money);
         String result = flag+money_str;
         return result;
+    }
+
+    public static String makeDetailDescription(CheckDetailBean details){
+        String result="";
+        if(details==null) return result;
+        if(details.getIsCreditcard()==1){
+            result+="[债]";
+        }
+        if(details.getDescription()==null || details.getDescription().isEmpty()){
+            result+=details.getCategory();
+        }else{
+            result+=details.getDescription();
+        }
+        return result;
+
     }
 }

@@ -34,6 +34,7 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    ///////////OVERRIDE 方法///////////////////////////////////
     @Override
     public int getCount() {
         return data_list.size();
@@ -64,12 +65,9 @@ public class DetailsInnerListAdapter extends BaseAdapter {
             parentListItem = (InnerListItem) convertView.getTag();
         }
         //2.设置控件文本内容
-        String desciption=data_list.get(position).getDescription();
-        String balance = data_list.get(position).getBalanceType();
-        if(desciption==null || desciption.isEmpty()){
-            desciption=data_list.get(position).getCategory();
-        }
+        String desciption=ZaTools.makeDetailDescription(data_list.get(position));
         parentListItem.text_description.setText(desciption);
+        String balance = data_list.get(position).getBalanceType();
         String money_str= ZaTools.formatMoneyStr(data_list.get(position).getMoney(),balance);
         parentListItem.text_money.setText(money_str);
 
@@ -81,16 +79,20 @@ public class DetailsInnerListAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+    //////////////////////SET GET 方法///////////////////////////////////////
+    public List<CheckDetailBean> getData_list() {
+        return data_list;
+    }
+
+    ///////////////////////////////内部类///////////////////////////////////////
+
     /**
      * Inner列表类中的控件
      */
     public class InnerListItem {
         ImageView item_icon;
         TextView text_description, text_money;
-    }
-
-    public List<CheckDetailBean> getData_list() {
-        return data_list;
     }
 
 }
