@@ -104,6 +104,11 @@ public class AccountTools {
         return strid;
     }
 
+    /***
+     * 新增一个账户信息
+     * @param checkbook
+     * @param account
+     */
     public static void addOneAccount(CheckbookEntity checkbook,AccountBean account){
         //1.保存Checkbook实体 到数据库
         int id=saveAccountToSqlite(account);
@@ -131,5 +136,35 @@ public class AccountTools {
         }
         return false;
 
+    }
+
+    /***
+     * 找到一个账户的父节点
+     * @param account
+     * @return
+     */
+    public static AccountBean findParentAccount(AccountBean account,List<AccountBean> accountList){
+        if(account == null || accountList==null) return null;
+        if(account.getParent_id() <0) return null;
+        for(AccountBean bean:accountList){
+            if(bean.getAccount_id() == account.getParent_id()){
+                return bean;
+            }
+        }
+        return null;
+    }
+
+
+    public static String concatAccountName(int account_id){
+        String name="";
+        try{
+            AccountBean bean=  getAccountByID(account_id);
+            name=bean.getName();
+            AccountBean parent=  getAccountByID(bean.getParent_id());
+            name=parent.getName()+"-"+name;
+        }catch(Exception e){
+
+        }
+        return name;
     }
 }

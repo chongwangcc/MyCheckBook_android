@@ -281,7 +281,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
     @Override
     public void onItemSelected(PieGraphView.ItemGroup group, PieGraphView.Item item) {
 
-        Toast.makeText(this.getContext(),group.id+"...."+item.id+"...."+item.value,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getContext(),group.id+"...."+item.id+"...."+item.value,Toast.LENGTH_SHORT).show();
         String category=item.id;
         String balance=group.id;
         List<DetailGroupBean >groupAll = (List<DetailGroupBean>)item.remark;

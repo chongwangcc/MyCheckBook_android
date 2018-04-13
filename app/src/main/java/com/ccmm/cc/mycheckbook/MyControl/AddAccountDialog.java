@@ -93,7 +93,7 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                     account.setParent_id(-1);
                     account.setLevel(1);
                 }else{
-                    account.setParent_id(topAccount.getParent_id());
+                    account.setParent_id(topAccount.getAccount_id());
                     account.setLevel(topAccount.getLevel()+1);
                     account.setKey(topAccount.getParent_id()+"-");
                 }

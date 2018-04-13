@@ -83,14 +83,6 @@ public class CheckDetailsTools {
             entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
 
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
-            String account="Inbox";
-            try{
-                AccountBean accountBean = AccountTools.getAccountByID(entity.getAccount_id());
-                account=accountBean.getName();
-            }catch (Exception e){
-
-            }
-            entity.setAccount(account);
 
             result.add(entity);
         }
@@ -196,7 +188,7 @@ public class CheckDetailsTools {
         Map<String,DetailGroupBean> tempMap=new HashMap<>();
         for(CheckDetailBean detail : detailsList){
             //1.获得group对象
-            String key = detail.getAccount();
+            String key = AccountTools.concatAccountName(detail.getAccount_id());
             DetailGroupBean detailGroup =tempMap.get(key);
             if(detailGroup==null){
                 detailGroup=new DetailGroupBean();
@@ -312,16 +304,6 @@ public class CheckDetailsTools {
             entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
 
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
-            String account = "Inbox";
-            try {
-                String sql_2 = "select * from " + SqliteTableName.AccountInfo + " where account_id=" + entity.getAccount_id();
-                Cursor temp = read_db.rawQuery(sql_2, null);
-                temp.moveToFirst();
-                account = temp.getString(temp.getColumnIndex("account_name"));
-            } catch (Exception e) {
-
-            }
-            entity.setAccount(account);
         }
         return entity;
     }

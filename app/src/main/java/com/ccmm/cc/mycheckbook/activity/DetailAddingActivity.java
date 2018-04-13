@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.CategoryViewPagerAdapter;
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+import com.ccmm.cc.mycheckbook.models.AccountBean;
+import com.ccmm.cc.mycheckbook.utils.AccountTools;
 import com.ccmm.cc.mycheckbook.utils.CategoriesIconTool;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
@@ -48,6 +50,9 @@ public class DetailAddingActivity extends AppCompatActivity {
     private CategoriesChoice m_categoriesChoice;
     private Map<String,CategoriesChoice> categoryMap=new HashMap<>(); //
     private boolean newOrModefy=true; //false--新建，true==修改
+    List<AccountBean> accountList;
+    AccountBean  selectAccount;
+
 
     private Toolbar toolbar;
     private ViewPager vpager_one;
@@ -76,6 +81,7 @@ public class DetailAddingActivity extends AppCompatActivity {
             CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
             categoryMap.put(name,cc);
         }
+        accountList = AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
 
         //2.添加选择日期按钮
         button_selectData = findViewById(R.id.select_date);
@@ -115,10 +121,10 @@ public class DetailAddingActivity extends AppCompatActivity {
         // 根据status显示数据
         money_textView11.setText(status.getMoneyStr());
         button_selectData.setText(status.getDate());
-        if(status.getAccount()==null || status.getAccount().isEmpty()){
+        if(status.getAccount_id()<0){
             button_account.setText("选择账户");
         }else{
-            button_account.setText(status.getAccount());
+            button_account.setText(AccountTools.concatAccountName(status.getAccount_id()));
         }
         for(String name:categoryMap.keySet()){
             CategoriesChoice cc =categoryMap.get(name);
@@ -259,8 +265,8 @@ public class DetailAddingActivity extends AppCompatActivity {
                 if(status.getCategory()==null || status.getCategory().isEmpty()){
                     status.setCategory("一般");
                 }
-                if(status.getAccount()==null || status.getAccount().isEmpty()){
-                    status.setAccount("Inbox");
+                if(status.getAccount_id()<=0){
+                    status.setAccount_id(0);
                 }
                 //2. 显示记录数据
                 //Toast.makeText(getApplicationContext(),  status.toString(), Toast.LENGTH_SHORT).show();
@@ -279,14 +285,11 @@ public class DetailAddingActivity extends AppCompatActivity {
                         CheckDetailsTools.deleteCheckDetail(status);
                     }
                 }
-
                 //4.退回上一个Activity
-
                 Intent intent = new Intent();
                 intent.putExtra("detailBean",status);
                 DetailAddingActivity.this.setResult(RESULT_OK, intent);
                 finish();
-
             }
         };
         View.OnClickListener button__delete_listener = new View.OnClickListener() {
@@ -340,9 +343,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         //builder.setIcon(R.color.ic_launcher);
         builder.setTitle("选择账单类型");
         //    指定下拉列表的显示数据
-        final String[] balances = {BalanceName.Income,
-                BalanceName.Expend,
-                BalanceName.Inner};
+        final String[] balances = BalanceName.getALlNames().toArray(new String[BalanceName.getALlNames().size()]);
         //    设置一个下拉的列表选择项
         builder.setItems(balances, new DialogInterface.OnClickListener()
         {
@@ -367,25 +368,24 @@ public class DetailAddingActivity extends AppCompatActivity {
         //builder.setIcon(R.color.ic_launcher);
         builder.setTitle("选择账户");
         //    指定下拉列表的显示数据
-        final String[] cities = {"Inbox",
-                                    "花销-生活费-现金",
-                                   "花销-doodads-现金",
-                                    "花销-学习-现金",
-                                    "花销-风险备付金-现金",
-                                    "花销-生活费-信用卡",
-                                    "花销-doodads-信用卡",
-                                    "花销-学习-信用卡",
-                                    "花销-风险备付金-现金",
-                                    "投资-股票",
-                                    "投资-货币基金"};
+
+        final String[] cities = new String[accountList.size()];
+        for(int i=0;i<accountList.size();i++){
+            String name=accountList.get(i).getName();
+            AccountBean parent = AccountTools.findParentAccount(accountList.get(i),accountList);
+            if(parent!=null){
+                name=parent.getName()+"-"+name;
+            }
+            cities[i]=name;
+        }
         //    设置一个下拉的列表选择项
         builder.setItems(cities, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                status.setAccount(cities[which]);
-                button_account.setText(status.getAccount());
+                button_account.setText(cities[which]);
+                status.setAccount_id(accountList.get(which).getAccount_id());
             }
         });
         builder.show();

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class CheckDetailBean implements Serializable {
     private int id; //这条记录的ID
-    private int account_id; //这条明细对应账户的ID
+    private int account_id=-1; //这条明细对应账户的ID
     private int isCreditcard; //这条明细是不是信用账户
     private int last_update_user_id;//最后更新用户的ID
     private int checkbook_id;//对应记账本的ID
@@ -22,11 +22,9 @@ public class CheckDetailBean implements Serializable {
     private String moneyStr ="0"; //钱100.00
     private float money=0;
 
-
     private String year="";
     private String month="";
     private String day="";
-    private String account ="";//花销-生活费-现金，投资-股票，投资-货币基金
     private String date ="";//2018-04-07
 
 
@@ -50,13 +48,6 @@ public class CheckDetailBean implements Serializable {
         this.category = category;
     }
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
 
     public String getDate() {
         return date;
@@ -100,7 +91,6 @@ public class CheckDetailBean implements Serializable {
         str+= balanceType +",";
         str+= moneyStr +",";
         str+= category +",";
-        str+= account +",";
         str+= description;
         return str;
     }

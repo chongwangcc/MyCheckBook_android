@@ -1,6 +1,7 @@
 package com.ccmm.cc.mycheckbook.models;
 
 import com.ccmm.cc.mycheckbook.Enum.BalanceName;
+import com.ccmm.cc.mycheckbook.utils.AccountTools;
 import com.ccmm.cc.mycheckbook.utils.DateTools;
 
 import java.io.Serializable;
@@ -40,7 +41,7 @@ public class DetailGroupBean implements Serializable {
         if(date==null)
             date=detail.getDate();
         if(accountName==null)
-            accountName=detail.getAccount();
+            accountName= AccountTools.concatAccountName(detail.getAccount_id());
         if(week==null){
             //计算week字符串
             String date_Str=year+"-"+month+"-"+day;
