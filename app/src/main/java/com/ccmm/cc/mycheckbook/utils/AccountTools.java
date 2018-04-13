@@ -38,6 +38,18 @@ public class AccountTools {
         }catch (Exception e){
             e.printStackTrace();
         }
+        //3.如果账户为空,新增默认账户
+        if(accountList==null || accountList.isEmpty()){
+            AccountBean bean = new AccountBean();
+            bean.setLevel(1);
+            bean.setName("未分类");
+            bean.setParent_id(-1);
+            bean.setLiablities_num(0);
+            bean.setAssets_nums(0);
+            saveAccountToSqlite(bean);
+            accountList.add(bean);
+        }
+
         return accountList;
     }
 

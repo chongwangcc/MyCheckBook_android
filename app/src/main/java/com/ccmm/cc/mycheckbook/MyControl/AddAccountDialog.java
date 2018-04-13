@@ -73,7 +73,7 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                     String errorInfo="账户名称不能为空!!!";
                     ZaTools.showErrorMessage(context,errorInfo);
                     return;
-                }else if (AccountTools.isNamesUsed(name,allAccounts) || name.equals("NULL")){
+                }else if (AccountTools.isNamesUsed(name,allAccounts) || name.equals("未分类")){
                     String errorInfo="账户名称已被使用!!!";
                     ZaTools.showErrorMessage(context,errorInfo);
                     return;
@@ -89,7 +89,7 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                 account.setName(name);
                 account.setAssets_nums(Double.valueOf(assets_str.toString()));
                 account.setLiablities_num(Double.valueOf(liablities_str.toString()));
-                if(topAccount==null || topAccount.getAccount_id()<0 || topAccount.getName().equals("NULL")){
+                if(topAccount==null || topAccount.getAccount_id()<0 || topAccount.getName().equals("未分类")){
                     account.setParent_id(-1);
                     account.setLevel(1);
                 }else{
@@ -120,9 +120,6 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
         //1.设置子账户列表
        allAccounts =  AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
 
-        AccountBean nullAccount = new AccountBean();
-        nullAccount.setName("NULL");
-        topAccounts.add(nullAccount);
         for(AccountBean account : allAccounts){
             if(account.getLevel()==1){
                 topAccounts.add(account);
