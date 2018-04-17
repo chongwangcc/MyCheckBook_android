@@ -11,11 +11,11 @@ import java.util.Date;
  * 记账明细的值，要获得的明细数据，全部为String类型
  */
 public class CheckDetailBean implements Serializable {
-    private int id; //这条记录的ID
-    private int account_id=-1; //这条明细对应账户的ID
+    private String id; //这条记录的ID
+    private String account_id=""; //这条明细对应账户的ID
     private int isCreditcard; //这条明细是不是信用账户
-    private int last_update_user_id;//最后更新用户的ID
-    private int checkbook_id;//对应记账本的ID
+    private String last_update_user_id;//最后更新用户的ID
+    private String checkbook_id;//对应记账本的ID
     private String balanceType = BalanceName.Expend; //收入，支出，内部转账
     private String category =""; //一般，餐饮，购物，服饰
     private String description =""; //备注信息
@@ -95,19 +95,19 @@ public class CheckDetailBean implements Serializable {
         return str;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getAccount_id() {
+    public String getAccount_id() {
         return account_id;
     }
 
-    public void setAccount_id(int account_id) {
+    public void setAccount_id(String account_id) {
         this.account_id = account_id;
     }
 
@@ -119,19 +119,19 @@ public class CheckDetailBean implements Serializable {
         this.isCreditcard = isCreditcard;
     }
 
-    public int getLast_update_user_id() {
+    public String getLast_update_user_id() {
         return last_update_user_id;
     }
 
-    public void setLast_update_user_id(int last_update_user_id) {
+    public void setLast_update_user_id(String last_update_user_id) {
         this.last_update_user_id = last_update_user_id;
     }
 
-    public int getCheckbook_id() {
+    public String getCheckbook_id() {
         return checkbook_id;
     }
 
-    public void setCheckbook_id(int checkbook_id) {
+    public void setCheckbook_id(String checkbook_id) {
         this.checkbook_id = checkbook_id;
     }
 

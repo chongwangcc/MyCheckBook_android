@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ccmm.cc.mycheckbook.Enum.SqliteTableName;
 import com.ccmm.cc.mycheckbook.MyApplication;
 import com.ccmm.cc.mycheckbook.models.AccountBean;
-import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
-
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,16 +23,16 @@ public class AccountTools {
      * @param checkbook_id
      * @return
      */
-    public static List<AccountBean> getAccountList(int checkbook_id){
+    public static List<AccountBean> getAccountList(String checkbook_id){
         List<AccountBean> accountList = new LinkedList<>();
         //2.查询SQLlite，获得所有账户
         String sql="select * from "+SqliteTableName.CheckbookAccountMap+" where checkbook_id="+checkbook_id+"";
         try{
             Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
             while (userCheckbookMapCursor.moveToNext()){
-                int id = userCheckbookMapCursor.getInt(userCheckbookMapCursor.getColumnIndex("account_id"));
+                String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("account_id"));
                 AccountBean entity = getAccountByID(id);
-                if(entity!=null && entity.getAccount_id()>=0)
+                if(entity!=null && entity.getAccount_id()==null || entity.getAccount_id().isEmpty())
                     accountList.add(entity);
             }
         }catch (Exception e){
@@ -46,7 +43,7 @@ public class AccountTools {
             AccountBean bean = new AccountBean();
             bean.setLevel(1);
             bean.setName("未分类");
-            bean.setParent_id(-1);
+            bean.setParent_id("");
             bean.setLiablities_num(0);
             bean.setAssets_nums(0);
             addOneAccount(checkbook_id,bean);
@@ -68,15 +65,15 @@ public class AccountTools {
      * @param account_id
      * @return
      */
-    public static AccountBean getAccountByID(int account_id){
+    public static AccountBean getAccountByID(String account_id){
         AccountBean bean = new AccountBean();
         try{
-            String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id="+account_id;
+            String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id='"+account_id+"'";
             Cursor temp = read_db.rawQuery(sql_2,null);
             temp.moveToFirst();
             bean.setName(temp.getString(temp.getColumnIndex("account_name")));
-            bean.setAccount_id(temp.getInt(temp.getColumnIndex("account_id")));
-            bean.setParent_id(temp.getInt(temp.getColumnIndex("parent_id")));
+            bean.setAccount_id(temp.getString(temp.getColumnIndex("account_id")));
+            bean.setParent_id(temp.getString(temp.getColumnIndex("parent_id")));
             bean.setLevel(temp.getInt(temp.getColumnIndex("level")));
             bean.setKey(temp.getString(temp.getColumnIndex("key")));
             bean.setAssets_nums(temp.getFloat(temp.getColumnIndex("assets_nums")));
@@ -93,8 +90,8 @@ public class AccountTools {
      * @param account
      * @return
      */
-    public static int saveAccountToSqlite(AccountBean account){
-        int strid = saveAccountToSqlite(account, true);
+    public static String saveAccountToSqlite(AccountBean account){
+        String strid = saveAccountToSqlite(account, true);
         return strid;
     }
 
@@ -104,12 +101,15 @@ public class AccountTools {
      * @param isNew
      * @return
      */
-    public static int saveAccountToSqlite(AccountBean account,boolean isNew){
+    public static String saveAccountToSqlite(AccountBean account,boolean isNew){
         ContentValues values = new ContentValues();
-        if(!isNew && account.getAccount_id()>0){
-            values.put("account_id",account.getAccount_id());
+        String strid="";
+        if(!isNew && account.getAccount_id()!=null && !account.getAccount_id().isEmpty()){
+            strid=account.getAccount_id();
+        }else{
+            strid=ZaTools.genNewUUID();
         }
-
+        values.put("account_id",strid);
         values.put("account_name",account.getName());
         values.put("parent_id",account.getParent_id());
         values.put("level",account.getLevel());
@@ -118,10 +118,6 @@ public class AccountTools {
         values.put("liabilities_nums",account.getLiablities_num());
 
         write_db.insert(SqliteTableName.AccountInfo,null,values);
-        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckbookInfo,null);
-        int strid=-1;
-        if(cursor.moveToFirst())
-            strid = cursor.getInt(0);
         account.setAccount_id(strid);
         return strid;
     }
@@ -131,9 +127,9 @@ public class AccountTools {
      * @param checkbook_id
      * @param account
      */
-    public static void addOneAccount(int checkbook_id,AccountBean account){
+    public static void addOneAccount(String checkbook_id,AccountBean account){
         //1.保存Checkbook实体 到数据库
-        int id=saveAccountToSqlite(account);
+        String id=saveAccountToSqlite(account);
         account.setAccount_id(id);
 
         //2.建立checkbook和account的对应管理
@@ -167,9 +163,9 @@ public class AccountTools {
      */
     public static AccountBean findParentAccount(AccountBean account,List<AccountBean> accountList){
         if(account == null || accountList==null) return null;
-        if(account.getParent_id() <0) return null;
+        if(account.getParent_id()==null || account.getParent_id().isEmpty()) return null;
         for(AccountBean bean:accountList){
-            if(bean.getAccount_id() == account.getParent_id()){
+            if(bean.getAccount_id().equals(account.getParent_id())){
                 return bean;
             }
         }
@@ -177,7 +173,7 @@ public class AccountTools {
     }
 
 
-    public static String concatAccountName(int account_id){
+    public static String concatAccountName(String account_id){
         String name="";
         try{
             AccountBean bean=  getAccountByID(account_id);
@@ -185,7 +181,7 @@ public class AccountTools {
             AccountBean parent=  getAccountByID(bean.getParent_id());
             name=parent.getName()+"-"+name;
         }catch(Exception e){
-
+            e.printStackTrace();
         }
         return name;
     }

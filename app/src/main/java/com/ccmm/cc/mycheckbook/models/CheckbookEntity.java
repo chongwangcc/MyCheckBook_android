@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 public class CheckbookEntity implements Serializable {
-    private int checkbookID;
+    private String checkbookID;
     private String title;
     private String description;
     private byte[] pic;  //记账本对应的头像
@@ -25,11 +25,11 @@ public class CheckbookEntity implements Serializable {
         this.description = description;
     }
 
-    public int getCheckbookID() {
+    public String getCheckbookID() {
         return checkbookID;
     }
 
-    public void setCheckbookID(int checkbookID) {
+    public void setCheckbookID(String checkbookID) {
         this.checkbookID = checkbookID;
     }
 

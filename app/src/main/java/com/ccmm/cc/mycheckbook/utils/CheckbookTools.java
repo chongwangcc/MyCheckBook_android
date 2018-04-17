@@ -53,7 +53,7 @@ public class CheckbookTools {
         try{
             Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
             while (userCheckbookMapCursor.moveToNext()){
-                int id = userCheckbookMapCursor.getInt(userCheckbookMapCursor.getColumnIndex("checkbook_id"));
+                String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("checkbook_id"));
                 CheckbookEntity entity = getCheckbookByID(id);
                 result.add(entity);
             }
@@ -75,11 +75,12 @@ public class CheckbookTools {
         if(user==null || checkbook==null) return false;
 
         //1.保存Checkbook实体 到数据库
-        int id=saveCheckbookToSqllite(checkbook);
+        String id=saveCheckbookToSqllite(checkbook);
         checkbook.setCheckbookID(id);
 
         //2.建立checkbook和User的对应管理
         ContentValues values_r = new ContentValues();
+        values_r.put("id",ZaTools.genNewUUID());
         values_r.put("user_name",user.getName());
         values_r.put("checkbook_id",id);
         values_r.put("permission",1);
@@ -112,7 +113,7 @@ public class CheckbookTools {
 
             //1.获得记账本
             checkbook = new CheckbookEntity();
-            checkbook.setCheckbookID(1);
+            checkbook.setCheckbookID("");
             checkbook.setDescription("测试用");
             checkbook.setLocal(0);
             checkbook.setOwner(user);
@@ -169,13 +170,13 @@ public class CheckbookTools {
      * @param id
      * @return
      */
-    static public CheckbookEntity getCheckbookByID(int id){
-        String sql_2="select * from " +SqliteTableName.CheckbookInfo+" where id="+id;
+    static public CheckbookEntity getCheckbookByID(String id){
+        String sql_2="select * from " +SqliteTableName.CheckbookInfo+" where id='"+id+"'";
         Cursor tempCursor = read_db.rawQuery(sql_2,null);
         while (tempCursor.moveToNext()){
             //1.获得记账本实体
             CheckbookEntity checkbookEntity = new CheckbookEntity();
-            checkbookEntity.setCheckbookID(tempCursor.getInt(tempCursor.getColumnIndex("id")));
+            checkbookEntity.setCheckbookID(tempCursor.getString(tempCursor.getColumnIndex("id")));
             checkbookEntity.setTitle(tempCursor.getString(tempCursor.getColumnIndex("name")));
             checkbookEntity.setDescription(tempCursor.getString(tempCursor.getColumnIndex("description")));
             checkbookEntity.setLocal(tempCursor.getInt(tempCursor.getColumnIndex("islocal")));
@@ -207,17 +208,21 @@ public class CheckbookTools {
      * @param checkbook
      * @return
      */
-    static public int saveCheckbookToSqllite(CheckbookEntity checkbook){
+    static public String saveCheckbookToSqllite(CheckbookEntity checkbook){
         ContentValues values = new ContentValues();
+        String strid="";
+        if(checkbook.getCheckbookID()==null || checkbook.getCheckbookID().isEmpty()){
+            strid=ZaTools.genNewUUID();
+        }else{
+            strid=checkbook.getCheckbookID();
+        }
+
+        values.put("id",strid);
         values.put("coverImage",checkbook.getPic());
         values.put("islocal",(checkbook.isLocal()));
         values.put("description",checkbook.getDescription());
         values.put("name",checkbook.getTitle());
         write_db.insert(SqliteTableName.CheckbookInfo,null,values);
-        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckbookInfo,null);
-        int strid=-1;
-        if(cursor.moveToFirst())
-            strid = cursor.getInt(0);
         checkbook.setCheckbookID(strid);
         return strid;
     }

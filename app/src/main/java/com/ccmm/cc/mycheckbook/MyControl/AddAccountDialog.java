@@ -89,8 +89,8 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                 account.setName(name);
                 account.setAssets_nums(Double.valueOf(assets_str.toString()));
                 account.setLiablities_num(Double.valueOf(liablities_str.toString()));
-                if(topAccount==null || topAccount.getAccount_id()<0 || topAccount.getName().equals("未分类")){
-                    account.setParent_id(-1);
+                if(topAccount==null || topAccount.getAccount_id()==null || topAccount.getAccount_id().isEmpty() || topAccount.getName().equals("未分类")){
+                    account.setParent_id("");
                     account.setLevel(1);
                 }else{
                     account.setParent_id(topAccount.getAccount_id());
@@ -111,7 +111,7 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
      */
     private void initData() {
         //如果用户自定了title和message
-        if(accountbean==null || accountbean.getAccount_id()<0){
+        if(accountbean==null || accountbean.getAccount_id()==null || accountbean.getAccount_id().isEmpty()){
             //新增账户信息
             tv_title.setText("新增账户");
         }else{

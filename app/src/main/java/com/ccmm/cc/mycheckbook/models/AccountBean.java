@@ -5,9 +5,9 @@ package com.ccmm.cc.mycheckbook.models;
  */
 
 public class AccountBean {
-    private int account_id=-1;
+    private String account_id="";
     private String name="";//账户名称，例如：花销账户-生活费，花销账户-doodas等
-    private int parent_id=-1;
+    private String parent_id="";
     private int level=-1;
     private String key="";
     private double assets_nums=0;
@@ -26,19 +26,19 @@ public class AccountBean {
         this.name = name;
     }
 
-    public int getAccount_id() {
+    public String getAccount_id() {
         return account_id;
     }
 
-    public void setAccount_id(int account_id) {
+    public void setAccount_id(String account_id) {
         this.account_id = account_id;
     }
 
-    public int getParent_id() {
+    public String getParent_id() {
         return parent_id;
     }
 
-    public void setParent_id(int parent_id) {
+    public void setParent_id(String parent_id) {
         this.parent_id = parent_id;
     }
 

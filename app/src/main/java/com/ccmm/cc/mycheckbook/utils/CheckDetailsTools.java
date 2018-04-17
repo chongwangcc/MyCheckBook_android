@@ -63,22 +63,22 @@ public class CheckDetailsTools {
      * 获得这个月的所有明细记录
      * @return
      */
-    public static List<CheckDetailBean> getAllDetailsInMonth(int checkbook_id,String year,String month){
+    public static List<CheckDetailBean> getAllDetailsInMonth(String checkbook_id,String year,String month){
         List<CheckDetailBean> result = new LinkedList<>();
         //0.检查年，月
 
         //1.读数据
-        String sql = "select * from "+ SqliteTableName.CheckDetails+" where checkbook_id="+checkbook_id+" and year='"+year+"' and month='"+month+"' order by createTime DESC";
+        String sql = "select * from "+ SqliteTableName.CheckDetails+" where checkbook_id='"+checkbook_id+"' and year='"+year+"' and month='"+month+"' order by createTime DESC";
         Cursor detailsCursor = read_db.rawQuery(sql,null);
         while (detailsCursor.moveToNext()){
             CheckDetailBean entity = new CheckDetailBean();
-            entity.setId(detailsCursor.getInt(detailsCursor.getColumnIndex("id")));
-            entity.setCheckbook_id(detailsCursor.getInt(detailsCursor.getColumnIndex("checkbook_id")));
-            entity.setAccount_id(detailsCursor.getInt(detailsCursor.getColumnIndex("account_id")));
+            entity.setId(detailsCursor.getString(detailsCursor.getColumnIndex("id")));
+            entity.setCheckbook_id(detailsCursor.getString(detailsCursor.getColumnIndex("checkbook_id")));
+            entity.setAccount_id(detailsCursor.getString(detailsCursor.getColumnIndex("account_id")));
             entity.setIsCreditcard(detailsCursor.getInt(detailsCursor.getColumnIndex("isCreditcard")));
-            entity.setLast_update_user_id(detailsCursor.getInt(detailsCursor.getColumnIndex("last_update_user_id")));
-            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
-            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
+            entity.setLast_update_user_id(detailsCursor.getString(detailsCursor.getColumnIndex("last_update_user_id")));
+            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("balanceType")));
+            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Category")));
             entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));
             entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
 
@@ -216,6 +216,14 @@ public class CheckDetailsTools {
         CheckbookEntity checkbook = CheckbookTools.getSelectedCheckbook();
 
         ContentValues values = new ContentValues();
+        String strid="";
+        if(checkDetailsBean.getId()==null || checkDetailsBean.getId().isEmpty()){
+            strid=ZaTools.genNewUUID();
+        }else{
+            strid=checkbook.getCheckbookID();
+
+        }
+        values.put("id",strid);
         values.put("checkbook_id",checkbook.getCheckbookID());
         values.put("account_id",(checkDetailsBean.getAccount_id()));
         values.put("date_str",checkDetailsBean.getDate());
@@ -224,18 +232,14 @@ public class CheckDetailsTools {
         values.put("day",checkDetailsBean.getDay());
         values.put("money",checkDetailsBean.getMoney());
         values.put("description",checkDetailsBean.getDescription());
-        values.put("incomeStatement",checkDetailsBean.getBalanceType());
-        values.put("Categoryclassification",checkDetailsBean.getCategory());
+        values.put("balanceType",checkDetailsBean.getBalanceType());
+        values.put("Category",checkDetailsBean.getCategory());
         values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
         // 添加更新日期
         values.put("updateTime",new Date().getTime());
         values.put("createTime",new Date().getTime());
         values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
         write_db.insert(SqliteTableName.CheckDetails,null,values);
-        Cursor cursor = write_db.rawQuery("select last_insert_rowid() from "+SqliteTableName.CheckDetails,null);
-        int strid=-1;
-        if(cursor.moveToFirst())
-            strid = cursor.getInt(0);
         checkDetailsBean.setId(strid);
         return b;
     }
@@ -258,13 +262,13 @@ public class CheckDetailsTools {
         values.put("day",checkDetailsBean.getDay());
         values.put("money",checkDetailsBean.getMoney());
         values.put("description",checkDetailsBean.getDescription());
-        values.put("incomeStatement",checkDetailsBean.getBalanceType());
-        values.put("Categoryclassification",checkDetailsBean.getCategory());
+        values.put("balanceType",checkDetailsBean.getBalanceType());
+        values.put("Category",checkDetailsBean.getCategory());
         values.put("isCreditcard",checkDetailsBean.getIsCreditcard());
         // 添加更新日期
         values.put("updateTime",new Date().getTime());
         values.put("last_update_user_id",checkDetailsBean.getLast_update_user_id());
-        write_db.update(SqliteTableName.CheckDetails,values,"id="+checkDetailsBean.getId(),null);
+        write_db.update(SqliteTableName.CheckDetails,values,"id='"+checkDetailsBean.getId()+"'",null);
         return b;
     }
 
@@ -286,18 +290,18 @@ public class CheckDetailsTools {
      * @param checkDetailsBean
      * @return
      */
-    public static CheckDetailBean queryCheckDetail(int checkbook_id,CheckDetailBean checkDetailsBean){
+    public static CheckDetailBean queryCheckDetail(String checkbook_id,CheckDetailBean checkDetailsBean){
         CheckDetailBean entity =null;
         if(checkDetailsBean==null) return entity;
         String sql = "select * from "+ SqliteTableName.CheckDetails+" where id="+checkDetailsBean.getId()+" order by createTime DESC";
         Cursor detailsCursor = read_db.rawQuery(sql,null);
         while (detailsCursor.moveToNext()) {
             entity = new CheckDetailBean();
-            entity.setId(detailsCursor.getInt(detailsCursor.getColumnIndex("id")));
-            entity.setCheckbook_id(detailsCursor.getInt(detailsCursor.getColumnIndex("checkbook_id")));
-            entity.setAccount_id(detailsCursor.getInt(detailsCursor.getColumnIndex("account_id")));
+            entity.setId(detailsCursor.getString(detailsCursor.getColumnIndex("id")));
+            entity.setCheckbook_id(detailsCursor.getString(detailsCursor.getColumnIndex("checkbook_id")));
+            entity.setAccount_id(detailsCursor.getString(detailsCursor.getColumnIndex("account_id")));
             entity.setIsCreditcard(detailsCursor.getInt(detailsCursor.getColumnIndex("isCreditcard")));
-            entity.setLast_update_user_id(detailsCursor.getInt(detailsCursor.getColumnIndex("last_update_user_id")));
+            entity.setLast_update_user_id(detailsCursor.getString(detailsCursor.getColumnIndex("last_update_user_id")));
             entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
             entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
             entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));

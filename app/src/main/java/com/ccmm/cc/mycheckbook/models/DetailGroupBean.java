@@ -24,7 +24,7 @@ public class DetailGroupBean implements Serializable {
     private String balanceType;// 收入，支出，内部转账
     private String categoryType; //零食，居家，娱乐
     private String accountName; //账户名称,
-    private int account_id; //账户名称,
+    private String account_id; //账户名称,
     private float cashflow_in=0; //现金流入总计
     private float cashflow_out=0; //现金流出总计
     private float assets_diff=0; //资产差值
@@ -45,7 +45,7 @@ public class DetailGroupBean implements Serializable {
             day=detail.getDay();
         if(date==null)
             date=detail.getDate();
-        if(account_id<=0)
+        if(account_id==null || account_id.isEmpty())
             account_id=detail.getAccount_id();
         if(accountName==null)
             accountName= AccountTools.concatAccountName(detail.getAccount_id());
@@ -85,11 +85,11 @@ public class DetailGroupBean implements Serializable {
 
     //////////////////////SET GET 方法/////////////////////////////////
 
-    public int getAccount_id() {
+    public String getAccount_id() {
         return account_id;
     }
 
-    public void setAccount_id(int account_id) {
+    public void setAccount_id(String account_id) {
         this.account_id = account_id;
     }
 

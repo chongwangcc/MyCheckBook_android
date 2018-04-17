@@ -171,8 +171,8 @@ public class DetailAddingActivity extends AppCompatActivity {
                 if(status.getCategory()==null || status.getCategory().isEmpty()){
                     status.setCategory("一般");
                 }
-                if(status.getAccount_id()<=0){
-                    int id= AccountTools.defaultAccount.getAccount_id();
+                if(status.getAccount_id()==null || status.getAccount_id().isEmpty()){
+                    String id= AccountTools.defaultAccount.getAccount_id();
                     status.setAccount_id(id);
                 }
                 if(isChecked){
@@ -552,7 +552,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         // 根据status显示数据
         money_textView11.setText(status.getMoneyStr());
         button_selectData.setText(status.getDate());
-        if(status.getAccount_id()<0){
+        if(status.getAccount_id()==null || status.getAccount_id().isEmpty()){
             button_account.setText("选择账户");
         }else{
             button_account.setText(AccountTools.concatAccountName(status.getAccount_id()));
