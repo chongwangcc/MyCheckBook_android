@@ -29,6 +29,7 @@ import java.util.Map;
 public class CheckbookSelectActivity extends Activity {
     private List<Map<String, Object>> mList = new ArrayList<>();
     private Button addCheckbookButton =null;
+    private Button returnloginButton =null;
     private ListView listView = null;
     private SimpleAdapter adapter=null;
 
@@ -99,6 +100,19 @@ public class CheckbookSelectActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        //5.设置返回登录界面按钮
+        returnloginButton=this.findViewById(R.id.button21);
+        View.OnClickListener returnlonginButtonHandler = new View.OnClickListener() {
+            @Override
+            public void onClick(View vv) {
+                //1.弹出对话框
+                Intent intent = new Intent();
+                intent.setClass(CheckbookSelectActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        };
+        returnloginButton.setOnClickListener(returnlonginButtonHandler );
     }
 
     @Override
