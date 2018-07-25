@@ -26,14 +26,21 @@ public class AccountTools {
     public static List<AccountBean> getAccountList(String checkbook_id){
         List<AccountBean> accountList = new LinkedList<>();
         //2.查询SQLlite，获得所有账户
+
         String sql="select * from "+SqliteTableName.CheckbookAccountMap+" where checkbook_id='"+checkbook_id+"'";
+
+
+        Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
+        while (userCheckbookMapCursor.moveToNext()){
+            String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("account_id"));
+            AccountBean entity = getAccountByID(id);
+            if(entity!=null && entity.getAccount_id()!=null && !entity.getAccount_id().isEmpty())
+                accountList.add(entity);
+        }
         try{
-            Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
-            while (userCheckbookMapCursor.moveToNext()){
-                String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("account_id"));
-                AccountBean entity = getAccountByID(id);
-                if(entity!=null && entity.getAccount_id()==null || entity.getAccount_id().isEmpty())
-                    accountList.add(entity);
+            if(checkbook_id !=null){
+                int sss = accountList.size();
+                throw new Exception(sss+"");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -66,12 +73,13 @@ public class AccountTools {
      * @return
      */
     public static AccountBean getAccountByID(String account_id){
+        if(account_id==null || account_id.isEmpty())
+            return null;
         AccountBean bean = new AccountBean();
-        try{
-            String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id='"+account_id+"'";
-            Cursor temp = read_db.rawQuery(sql_2,null);
-            System.out.print(sql_2);
-            temp.moveToFirst();
+        String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id='"+account_id+"'";
+        Cursor temp = read_db.rawQuery(sql_2,null);
+        System.out.print(sql_2);
+        if( temp != null &&  temp.moveToFirst() ){
             bean.setName(temp.getString(temp.getColumnIndex("account_name")));
             bean.setAccount_id(temp.getString(temp.getColumnIndex("account_id")));
             bean.setParent_id(temp.getString(temp.getColumnIndex("parent_id")));
@@ -79,11 +87,6 @@ public class AccountTools {
             bean.setKey(temp.getString(temp.getColumnIndex("key")));
             bean.setAssets_nums(temp.getFloat(temp.getColumnIndex("assets_nums")));
             bean.setLiablities_num(temp.getFloat(temp.getColumnIndex("liabilities_nums")));
-        }catch (Exception e){
-            e.printStackTrace();
-
-            bean=null;
-
         }
         return bean;
     }
@@ -178,15 +181,11 @@ public class AccountTools {
 
     public static String concatAccountName(String account_id){
         String name="";
-        try{
-            AccountBean bean=  getAccountByID(account_id);
-            name=bean.getName();
-            AccountBean parent=  getAccountByID(bean.getParent_id());
+        AccountBean bean=  getAccountByID(account_id);
+        name=bean.getName();
+        AccountBean parent=  getAccountByID(bean.getParent_id());
+        if(parent !=null)
             name=parent.getName()+"-"+name;
-        }catch(Exception e){
-            e.printStackTrace();
-
-        }
         return name;
     }
 }
