@@ -206,7 +206,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             }
 
             itemGroup.items = items.toArray(new PieGraphView.Item[items.size()]);
-            title+="\n"+totalMoney+"\n元";
+            title+="\n"+String.format("%.2f", totalMoney)+"\n元";
             itemGroup.title=title;
 
             //5.整理itemGroup各项所占百分比
@@ -316,11 +316,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             switch (balance){
                 case BalanceName.Income:
                     percent = money/ total_income_money;
-                    leaderboard_title+="消费排行榜";
+                    leaderboard_title+="收入排行榜";
                     break;
                 case BalanceName.Expend:
                     percent = money/ total_spent_money;
-                    leaderboard_title+="收入排行榜";
+                    leaderboard_title+="消費排行榜";
                     break;
                 case BalanceName.Inner:
                     percent = money/ total_inner_money;
