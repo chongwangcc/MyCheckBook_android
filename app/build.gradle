@@ -32,4 +32,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:12.0.1'
     implementation 'com.android.support:cardview-v7:26.1.0'
     compile 'cn.finalteam:galleryfinal:1.4.6'
+    // https://mvnrepository.com/artifact/org.jboss.resteasy.mobile/resteasy-mobile
+//    compile group: 'org.jboss.resteasy.mobile', name: 'resteasy-mobile', version: '1.0.0'
+
 }

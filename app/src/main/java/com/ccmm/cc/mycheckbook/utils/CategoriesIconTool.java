@@ -131,7 +131,6 @@ public class CategoriesIconTool {
                 spendType.add("投资支出");
                 spendType.add("支付");
                 spendType.add("结婚相关");
-                spendType.add("还钱");
                 break;
 
         }

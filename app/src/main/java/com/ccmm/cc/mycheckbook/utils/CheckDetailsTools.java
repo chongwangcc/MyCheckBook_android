@@ -280,7 +280,7 @@ public class CheckDetailsTools {
      */
     public static boolean deleteCheckDetail(CheckDetailBean checkDetailsBean){
         if(checkDetailsBean==null) return false;
-        String sql = "delete from "+SqliteTableName.CheckDetails+" where id="+checkDetailsBean.getId();
+        String sql = "delete from "+SqliteTableName.CheckDetails+" where id='"+checkDetailsBean.getId()+"'";
         write_db.execSQL(sql);
         return true;
     }
@@ -293,7 +293,7 @@ public class CheckDetailsTools {
     public static CheckDetailBean queryCheckDetail(String checkbook_id,CheckDetailBean checkDetailsBean){
         CheckDetailBean entity =null;
         if(checkDetailsBean==null) return entity;
-        String sql = "select * from "+ SqliteTableName.CheckDetails+" where id="+checkDetailsBean.getId()+" order by createTime DESC";
+        String sql = "select * from "+ SqliteTableName.CheckDetails+" where id='"+checkDetailsBean.getId()+"' order by createTime DESC";
         Cursor detailsCursor = read_db.rawQuery(sql,null);
         while (detailsCursor.moveToNext()) {
             entity = new CheckDetailBean();

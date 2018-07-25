@@ -26,7 +26,7 @@ public class AccountTools {
     public static List<AccountBean> getAccountList(String checkbook_id){
         List<AccountBean> accountList = new LinkedList<>();
         //2.查询SQLlite，获得所有账户
-        String sql="select * from "+SqliteTableName.CheckbookAccountMap+" where checkbook_id="+checkbook_id+"";
+        String sql="select * from "+SqliteTableName.CheckbookAccountMap+" where checkbook_id='"+checkbook_id+"'";
         try{
             Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
             while (userCheckbookMapCursor.moveToNext()){
@@ -70,6 +70,7 @@ public class AccountTools {
         try{
             String sql_2 = "select * from "+ SqliteTableName.AccountInfo+" where account_id='"+account_id+"'";
             Cursor temp = read_db.rawQuery(sql_2,null);
+            System.out.print(sql_2);
             temp.moveToFirst();
             bean.setName(temp.getString(temp.getColumnIndex("account_name")));
             bean.setAccount_id(temp.getString(temp.getColumnIndex("account_id")));
@@ -80,7 +81,9 @@ public class AccountTools {
             bean.setLiablities_num(temp.getFloat(temp.getColumnIndex("liabilities_nums")));
         }catch (Exception e){
             e.printStackTrace();
+
             bean=null;
+
         }
         return bean;
     }
@@ -182,6 +185,7 @@ public class AccountTools {
             name=parent.getName()+"-"+name;
         }catch(Exception e){
             e.printStackTrace();
+
         }
         return name;
     }
