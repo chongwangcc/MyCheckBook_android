@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "Checkbook.db";
+    private static final String DB_NAME = "checkbook.db";
     public static final String DB_PATH = "schema";
     public static int oldVersion = -1;
     private Context mContext;
