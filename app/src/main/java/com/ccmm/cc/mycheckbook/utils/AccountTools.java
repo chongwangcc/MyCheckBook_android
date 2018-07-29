@@ -37,14 +37,6 @@ public class AccountTools {
             if(entity!=null && entity.getAccount_id()!=null && !entity.getAccount_id().isEmpty())
                 accountList.add(entity);
         }
-        try{
-            if(checkbook_id !=null){
-                int sss = accountList.size();
-                throw new Exception(sss+"");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         //3.如果账户为空,新增默认账户
         if(accountList==null || accountList.isEmpty()){
             AccountBean bean = new AccountBean();

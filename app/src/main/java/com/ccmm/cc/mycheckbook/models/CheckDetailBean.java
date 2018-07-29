@@ -75,12 +75,13 @@ public class CheckDetailBean implements Serializable {
 
     public void setMoneyStr(String moneyStr) {
         this.moneyStr = moneyStr;
-        this.money = Float.valueOf(moneyStr);
+        this.money = Float.parseFloat(String.format("%.2f",Float.valueOf(moneyStr)));
     }
 
     public void setMoney(float money) {
-        this.money = money;
-        this.moneyStr = money+"";
+        float money_1 = Float.parseFloat(String.format("%.2f",money));
+        this.money = money_1;
+        this.moneyStr = money_1+"";
     }
     public float getMoney() {
         return money;

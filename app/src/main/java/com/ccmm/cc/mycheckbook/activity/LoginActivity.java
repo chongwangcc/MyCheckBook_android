@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.R;
-import com.ccmm.cc.mycheckbook.utils.DBManager;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 /**

@@ -80,10 +80,9 @@ public class CheckDetailsTools {
             entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("balanceType")));
             entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Category")));
             entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));
-            entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
-
+            float money = Float.parseFloat(String.format("%.2f",detailsCursor.getFloat(detailsCursor.getColumnIndex("money"))));
+            entity.setMoney(money);
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
-
             result.add(entity);
         }
         return result;
@@ -230,7 +229,8 @@ public class CheckDetailsTools {
         values.put("year",checkDetailsBean.getYear());
         values.put("month",checkDetailsBean.getMonth());
         values.put("day",checkDetailsBean.getDay());
-        values.put("money",checkDetailsBean.getMoney());
+        float money = Float.parseFloat(String.format("%.2f",checkDetailsBean.getMoney()));
+        values.put("money",money);
         values.put("description",checkDetailsBean.getDescription());
         values.put("balanceType",checkDetailsBean.getBalanceType());
         values.put("Category",checkDetailsBean.getCategory());
@@ -260,7 +260,8 @@ public class CheckDetailsTools {
         values.put("year",checkDetailsBean.getYear());
         values.put("month",checkDetailsBean.getMonth());
         values.put("day",checkDetailsBean.getDay());
-        values.put("money",checkDetailsBean.getMoney());
+        float money = Float.parseFloat(String.format("%.2f",checkDetailsBean.getMoney()));
+        values.put("money",money);
         values.put("description",checkDetailsBean.getDescription());
         values.put("balanceType",checkDetailsBean.getBalanceType());
         values.put("Category",checkDetailsBean.getCategory());
@@ -302,10 +303,11 @@ public class CheckDetailsTools {
             entity.setAccount_id(detailsCursor.getString(detailsCursor.getColumnIndex("account_id")));
             entity.setIsCreditcard(detailsCursor.getInt(detailsCursor.getColumnIndex("isCreditcard")));
             entity.setLast_update_user_id(detailsCursor.getString(detailsCursor.getColumnIndex("last_update_user_id")));
-            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("incomeStatement")));
-            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Categoryclassification")));
+            entity.setBalanceType(detailsCursor.getString(detailsCursor.getColumnIndex("balanceType")));
+            entity.setCategory(detailsCursor.getString(detailsCursor.getColumnIndex("Category")));
             entity.setDescription(detailsCursor.getString(detailsCursor.getColumnIndex("description")));
-            entity.setMoney(detailsCursor.getFloat(detailsCursor.getColumnIndex("money")));
+            float money = Float.parseFloat(String.format("%.2f",detailsCursor.getFloat(detailsCursor.getColumnIndex("money"))));
+            entity.setMoney(money);
 
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
         }
