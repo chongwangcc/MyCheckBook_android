@@ -102,8 +102,8 @@ public class CheckbookMainActivity extends AppCompatActivity {
                     break;
             }
         }
-        tv_totalIncome.setText("+"+total_income);
-        tv_totalSpend.setText("-"+total_spent);
+        tv_totalIncome.setText("+"+String.format("%.2f", total_income));
+        tv_totalSpend.setText("-"+String.format("%.2f", total_spent));
     }
 
     /***

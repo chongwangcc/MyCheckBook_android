@@ -180,8 +180,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             if(groupBeans.size()>=MAX_ITEM_NUM){
                 PieGraphView.Item item = new PieGraphView.Item();
                 List<DetailGroupBean> groupAll = new LinkedList<>();
+                // 计算money
                 float temp_money=0;
-                for(int i=MAX_ITEM_NUM-1;i<groupBeans.size();i++){
+                for(int i=MAX_ITEM_NUM;i<groupBeans.size();i++){
                     groupAll.add(groupBeans.get(i));
                     temp_money+=groupBeans.get(i).getMoney();
                     totalMoney+=groupBeans.get(i).getMoney();
@@ -191,7 +192,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 item.value =temp_money;
                 item.color = mColors_temp[MAX_ITEM_NUM-1]; //设置颜色
                 item.icon_id = CategoriesIconTool.getDrawableIndex(item.id);
-                items.set(MAX_ITEM_NUM-1,item);
+                items.add(item);
             }
             switch (balanceName){
                 case BalanceName.Expend:
