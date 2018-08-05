@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ccmm.cc.mycheckbook.Enum.BalanceName;
 import com.ccmm.cc.mycheckbook.Enum.CategoryColorEnum;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
@@ -26,6 +27,7 @@ import java.util.List;
 public class CategoryLeaderBoadAdapter extends BaseAdapter {
 
     private List<CheckDetailBean> data_list;
+    private String balanceName;
     private Context context;
     private LayoutInflater inflater;
 
@@ -56,6 +58,10 @@ public class CategoryLeaderBoadAdapter extends BaseAdapter {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void setBalanceName(String balanceName){
+        this.balanceName=balanceName;
     }
 
     @Override
@@ -101,7 +107,7 @@ public class CategoryLeaderBoadAdapter extends BaseAdapter {
 
         //3.设置图标颜色
         Drawable drawable = context.getDrawable(CategoryColorEnum.rank_ICON_ID[position]);
-        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getBalanceType());
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, this.balanceName);
         parentListItem.item_icon.setImageDrawable(drawable);
 
         //4.设置点击响应事件

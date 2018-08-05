@@ -55,7 +55,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
 
     private List<DetailGroupBean> detail_group_income; //收入-类别-明细数据
     private List<DetailGroupBean> detail_group_spend; //支出-类别-明细数据
-    private List<DetailGroupBean> detail_group_inner; //内部转账-类别明细数据
+    private List<DetailGroupBean> detail_group_inflow; //流入-类别明细数据
+    private List<DetailGroupBean> detail_group_outflow; //流出-类别明细数据
 
     double total_income_money =1.0;
     double total_spent_money =1.0;
@@ -131,8 +132,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 CheckDetailsTools.getDetals_month());
         detail_group_income =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Income);
         detail_group_spend =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Expend);
-        detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Inflow);
-        detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Outflow);
+        detail_group_inflow=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Inflow);
+        detail_group_outflow=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Outflow);
         //2.设置pieVie中的数据
         setPieViewData();
     }
@@ -280,12 +281,12 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             itemGroups.add(itemGourp);
         }
         //设置流入组别
-        itemGourp = genItemGroup(detail_group_inner,BalanceName.Inflow);
+        itemGourp = genItemGroup(detail_group_inflow,BalanceName.Inflow);
         if(itemGourp!=null){
             itemGroups.add(itemGourp);
         }
         //设置流出组别
-        itemGourp = genItemGroup(detail_group_inner,BalanceName.Outflow);
+        itemGourp = genItemGroup(detail_group_outflow,BalanceName.Outflow);
         if(itemGourp!=null){
             itemGroups.add(itemGourp);
         }
@@ -352,6 +353,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             tv_Leaderboard.setText(leaderboard_title);
             CategoryLeaderBoadAdapter daAdapter  = new CategoryLeaderBoadAdapter(this.getContext());
             daAdapter.addAll(bean.getData());
+            daAdapter.setBalanceName(balance);
             mlv_Leaderboard_details.setAdapter(daAdapter);
 
             //5.设置带点击事件
@@ -407,6 +409,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
             mlv_Leaderboard_details.setVisibility(View.VISIBLE);
 
             CategoryMultiGroupAdapter daAdapter  = new CategoryMultiGroupAdapter(this.getContext());
+            daAdapter.setBalanceName(balance);
             daAdapter.addAll(detailList);
             double totalMoney=0;
             switch (balance){

@@ -149,9 +149,11 @@ public class CheckDetailsTools {
     public static List<DetailGroupBean> detailsGroupByCategory(List<CheckDetailBean> detailsList,String balanceType){
         List<DetailGroupBean> list = new LinkedList<DetailGroupBean>();
         Map<String,DetailGroupBean> tempMap=new HashMap<>();
+        //1.获得group对象
         for(CheckDetailBean detail : detailsList){
-            //1.获得group对象
-            if(detail.getBalanceType().equals(balanceType)){
+            if(detail.getBalanceType().equals(balanceType)
+                    || (balanceType.equals(BalanceName.Inflow) && detail.getBalanceType().equals(BalanceName.Income) &&detail.getIsCreditcard()!=0)
+                    || (balanceType.equals(BalanceName.Outflow) && detail.getBalanceType().equals(BalanceName.Expend )&&detail.getIsCreditcard()!=0) ){
                 String key = detail.getCategory();
                 DetailGroupBean detailGroup =tempMap.get(key);
                 if(detailGroup==null){
@@ -185,8 +187,12 @@ public class CheckDetailsTools {
                         break;
                     //TODO 处理流入、流出表
                     case BalanceName.Inflow:
+                        n1=t1.getCashflow_in();
+                        n2=t2.getCashflow_in();
                         break;
                     case BalanceName.Outflow:
+                        n1=t1.getCashflow_out();
+                        n2=t2.getCashflow_out();
                         break;
                 }
                 if(n2>n1){

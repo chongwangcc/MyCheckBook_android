@@ -116,21 +116,14 @@ public class CategoriesIconTool {
                 spendType.add("长辈");
                 spendType.add("礼物");
                 spendType.add("礼金");
-                spendType.add("还钱");
                 spendType.add("捐赠");
                 spendType.add("理财");
 
                 break;
             case 3:
-                spendType.add("垫付");
                 spendType.add("生活-信");
                 spendType.add("doo新");
-                spendType.add("租房");
-                spendType.add("套现");
                 spendType.add("手续费");
-                spendType.add("投资支出");
-                spendType.add("支付");
-                spendType.add("结婚相关");
                 break;
 
         }
@@ -159,8 +152,43 @@ public class CategoriesIconTool {
         return spendType;
     }
 
+    public static List<String> getInflowType(int position){
+        List<String> spendType = new LinkedList<>();
+        switch(position) {
+            case 0:
+                spendType.add("消费返现");
+                spendType.add("退款");
+                spendType.add("买股票");
+                spendType.add("定投买入");
+                spendType.add("投资买入");
+                spendType.add("借钱");
+                spendType.add("别人还钱");
+                break;
+        }
+        return spendType;
+    }
+
+    public static List<String> getOutflowType(int position){
+        List<String> spendType = new LinkedList<>();
+        switch(position) {
+            case 0:
+                spendType.add("还钱");
+                spendType.add("借别人钱");
+                spendType.add("卖股票");
+                spendType.add("定投卖出");
+                spendType.add("垫付");
+                break;
+        }
+        return spendType;
+    }
+
+
     public static Integer getDrawableIndex(String name){
-       return drawableMap.get(name);
+        if(drawableMap.keySet().contains(name)){
+            return drawableMap.get(name);
+        }else{
+            return drawableMap.get("一般");
+        }
     }
 
     public static Integer getLengthType(String type){
@@ -173,8 +201,10 @@ public class CategoriesIconTool {
                 Len=2;
                 break;
             case BalanceName.Inflow:
+                Len=1;
                 break;
             case BalanceName.Outflow:
+                Len=1;
                 break;
         }
         return Len;
@@ -191,10 +221,11 @@ public class CategoriesIconTool {
                 case BalanceName.Expend:
                     names =getSpentType(i);
                     break;
-                //TODO 流入流出的类别
                 case BalanceName.Inflow:
+                    names =getInflowType(i);
                     break;
                 case BalanceName.Outflow:
+                    names =getOutflowType(i);
                     break;
             }
             namesList.add(names);
@@ -223,7 +254,7 @@ public class CategoriesIconTool {
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.BLUE));
                 break;
             case BalanceName.Outflow:
-                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.YELLOW));
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.CYAN));
                 break;
             default:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GRAY));

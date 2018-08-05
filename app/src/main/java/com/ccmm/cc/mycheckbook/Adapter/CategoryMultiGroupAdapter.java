@@ -24,12 +24,16 @@ public class CategoryMultiGroupAdapter extends BaseAdapter {
 
     private List<DetailGroupBean> data_list;
     private Context context;
+    private String balancename;
     private LayoutInflater inflater;
     private double totalMoney=0;
 
     public CategoryMultiGroupAdapter(Context context) {
         super();
         this.context = context;
+    }
+    public void setBalanceName(String balanceName){
+        this.balancename = balanceName;
     }
     public void addAll(List<DetailGroupBean> list) {
         //1.排序
@@ -99,7 +103,7 @@ public class CategoryMultiGroupAdapter extends BaseAdapter {
 
         //3.设置图标颜色
         Drawable drawable = context.getDrawable(CategoriesIconTool.getDrawableIndex(data_list.get(position).getCategoryType()));
-        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, data_list.get(position).getBalanceType());
+        drawable = CategoriesIconTool.changeDrawableByBalanceType(drawable, this.balancename);
         parentListItem.item_icon.setImageDrawable(drawable);
 
         //4.设置点击响应事件
