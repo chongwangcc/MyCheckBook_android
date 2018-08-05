@@ -283,12 +283,7 @@ public class DetailAddingActivity extends AppCompatActivity {
 
         final String[] cities = new String[accountList.size()];
         for(int i=0;i<accountList.size();i++){
-            String name=accountList.get(i).getName();
-            AccountBean parent = AccountTools.findParentAccount(accountList.get(i),accountList);
-            if(parent!=null){
-                name=parent.getName()+"-"+name;
-            }
-            cities[i]=name;
+            cities[i]=AccountTools.concatAccountName(accountList.get(i).getAccount_id());
         }
         //    设置一个下拉的列表选择项
         builder.setItems(cities, new DialogInterface.OnClickListener()
@@ -435,6 +430,18 @@ public class DetailAddingActivity extends AppCompatActivity {
                         drawable=CategoriesIconTool.changeDrawableByBalanceType(drawable,status.getBalanceType());
                         ((ImageView)view).setImageDrawable(drawable);
                         status.setCategory(textView.getText().toString());
+
+
+                        // 2.根据选中的类别设置默认账户
+                        AccountBean acount_bean = CheckDetailsTools.selectLastAcoountByCategory(status.getBalanceType(),status.getCategory());
+                        if(acount_bean != null){
+                            status.setAccount_id(acount_bean.getAccount_id());
+                            button_account.setText(AccountTools.concatAccountName(acount_bean.getAccount_id()));
+                        }else{
+                            button_account.setText("选择账户");
+                        }
+
+
                     }
                 });
             }

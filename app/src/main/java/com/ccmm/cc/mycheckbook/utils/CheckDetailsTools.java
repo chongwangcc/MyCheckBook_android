@@ -46,6 +46,28 @@ public class CheckDetailsTools {
     }
 
     /***
+     * 根据 类别选择它的上一次使用的账户
+     * @param category
+     * @return
+     */
+    public static AccountBean selectLastAcoountByCategory(String balanceType, String category){
+        try{
+            // 1.获得最近的account id
+            String sql = "select account_id from "+SqliteTableName.CheckDetails+" where balanceType='"+balanceType+"' and Category='"+category+"' order by updateTime desc  limit 1";
+            Cursor detailsCursor = read_db.rawQuery(sql,null);
+            while (detailsCursor.moveToNext()) {
+                String account_id = detailsCursor.getString(detailsCursor.getColumnIndex("account_id"));
+                // 获得account_
+                AccountBean account_bean = AccountTools.getAccountByID(account_id);
+                return account_bean;
+            }
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+
+    /***
      * 更新记账明细月份
      * @param year
      * @param month
