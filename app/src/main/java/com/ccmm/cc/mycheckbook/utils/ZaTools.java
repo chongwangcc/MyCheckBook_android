@@ -38,7 +38,10 @@ public class ZaTools {
                 if(money>=0)
                     flag="+";
                 break;
-            case BalanceName.Inner:
+            case BalanceName.Inflow:
+                flag="";
+                break;
+            case BalanceName.Outflow:
                 flag="";
                 break;
         }

@@ -183,7 +183,10 @@ public class CheckDetailsTools {
                         n1=t1.getTotal_income();
                         n2=t2.getTotal_income();
                         break;
-                    case BalanceName.Inner:
+                    //TODO 处理流入、流出表
+                    case BalanceName.Inflow:
+                        break;
+                    case BalanceName.Outflow:
                         break;
                 }
                 if(n2>n1){

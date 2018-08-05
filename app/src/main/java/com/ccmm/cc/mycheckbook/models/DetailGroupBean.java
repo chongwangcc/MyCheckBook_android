@@ -16,17 +16,19 @@ public class DetailGroupBean implements Serializable {
     private String year;
     private String month;
     private String day;
-    private String week; //星期几
-    private float total_income=0; //收入总计
+    private String week; //星期几、
     private String date; //日期
+
+    private float total_income=0; //收入总计
     private float total_spent=0; //支出总计
-    private float total_inner=0; //内部转账
+    private float cashflow_in=0; //现金流入总计
+    private float cashflow_out=0; //现金流出总计
+
     private String balanceType;// 收入，支出，内部转账
     private String categoryType; //零食，居家，娱乐
     private String accountName; //账户名称,
     private String account_id; //账户名称,
-    private float cashflow_in=0; //现金流入总计
-    private float cashflow_out=0; //现金流出总计
+
     private float assets_diff=0; //资产差值
     private float liabilities_diff=0; //负债差值
     private  List<CheckDetailBean> data=new LinkedList<>();
@@ -69,8 +71,19 @@ public class DetailGroupBean implements Serializable {
                 liabilities_diff+=detail.getMoney();
             }
 
-        }else if(detail.getBalanceType().equals(BalanceName.Inner)){
-            total_inner+=detail.getMoney();
+        }else if(detail.getBalanceType().equals(BalanceName.Inflow)){
+            //TODO 要计算流入流出是否影响资产负债表
+            cashflow_in+=detail.getMoney();
+            assets_diff+=detail.getMoney();
+            if(detail.getIsCreditcard()!=0){ //是负债，计入负债中
+                liabilities_diff+=detail.getMoney();
+            }
+        }else if(detail.getBalanceType().equals(BalanceName.Outflow)){
+            assets_diff-=detail.getMoney();
+            cashflow_out+=detail.getMoney();
+            if(detail.getIsCreditcard()!=0){ //是负债，负债也要减少
+                liabilities_diff-=detail.getMoney();
+            }
         }
         if(balanceType ==null)
             balanceType =detail.getBalanceType();
@@ -173,14 +186,6 @@ public class DetailGroupBean implements Serializable {
         this.data = data;
     }
 
-    public float getTotal_inner() {
-        return total_inner;
-    }
-
-    public void setTotal_inner(float total_inner) {
-        this.total_inner = total_inner;
-    }
-
     public float getMoney(){
         float money=0;
         switch (this.getBalanceType()){
@@ -190,8 +195,11 @@ public class DetailGroupBean implements Serializable {
             case BalanceName.Income:
                 money=getTotal_income();
                 break;
-            case BalanceName.Inner:
-                money=getTotal_inner();
+            case BalanceName.Inflow:
+                money= getCashflow_in();
+                break;
+            case BalanceName.Outflow:
+                money= getCashflow_out();
                 break;
         }
         return money;

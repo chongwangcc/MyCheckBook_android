@@ -172,7 +172,9 @@ public class CategoriesIconTool {
             case BalanceName.Income:
                 Len=2;
                 break;
-            case BalanceName.Inner:
+            case BalanceName.Inflow:
+                break;
+            case BalanceName.Outflow:
                 break;
         }
         return Len;
@@ -189,7 +191,10 @@ public class CategoriesIconTool {
                 case BalanceName.Expend:
                     names =getSpentType(i);
                     break;
-                case BalanceName.Inner:
+                //TODO 流入流出的类别
+                case BalanceName.Inflow:
+                    break;
+                case BalanceName.Outflow:
                     break;
             }
             namesList.add(names);
@@ -214,8 +219,11 @@ public class CategoriesIconTool {
             case BalanceName.Income:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GREEN));
                 break;
-            case BalanceName.Inner:
+            case BalanceName.Inflow:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.BLUE));
+                break;
+            case BalanceName.Outflow:
+                tintDrawable(drawable_temp,ColorStateList.valueOf(Color.YELLOW));
                 break;
             default:
                 tintDrawable(drawable_temp,ColorStateList.valueOf(Color.GRAY));

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.CategoryLeaderBoadAdapter;
 import com.ccmm.cc.mycheckbook.Adapter.CategoryMultiGroupAdapter;
@@ -60,7 +59,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
 
     double total_income_money =1.0;
     double total_spent_money =1.0;
-    double total_inner_money =1.0;
+    double total_inflow_money =1.0;
+    double total_outflow_money =1.0;
 
     public static CategoryFragment newInstance() {
         Bundle args = new Bundle();
@@ -131,7 +131,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 CheckDetailsTools.getDetals_month());
         detail_group_income =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Income);
         detail_group_spend =  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Expend);
-        detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Inner);
+        detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Inflow);
+        detail_group_inner=  CheckDetailsTools.detailsGroupByCategory(llBan, BalanceName.Outflow);
         //2.设置pieVie中的数据
         setPieViewData();
     }
@@ -157,9 +158,14 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 title+="总收入";
                 mColors_temp= CategoryColorEnum.mColors_income;
                 break;
-            case BalanceName.Inner:
-                title+="内部转账";
-                mColors_temp=CategoryColorEnum.mColors_inner;
+            case BalanceName.Inflow:
+                title+="总流入";
+                mColors_temp=CategoryColorEnum.mColors_inFlow;
+                break;
+            case BalanceName.Outflow:
+                title+="总流出";
+                mColors_temp=CategoryColorEnum.mColors_outFlow;
+                break;
         }
         if(groupBeans!=null && groupBeans.size()>0){
             itemGroup.id=balanceName; //设置id
@@ -201,8 +207,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 case BalanceName.Income:
                     total_income_money =totalMoney;
                     break;
-                case BalanceName.Inner:
-                    total_inner_money =totalMoney;
+                case BalanceName.Inflow:
+                    total_inflow_money =totalMoney;
+                    break;
+                case BalanceName.Outflow:
+                    total_outflow_money =totalMoney;
                     break;
             }
 
@@ -270,8 +279,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
         if(itemGourp!=null){
             itemGroups.add(itemGourp);
         }
-        //设置内部转账组别
-        itemGourp = genItemGroup(detail_group_inner,BalanceName.Inner);
+        //设置流入组别
+        itemGourp = genItemGroup(detail_group_inner,BalanceName.Inflow);
+        if(itemGourp!=null){
+            itemGroups.add(itemGourp);
+        }
+        //设置流出组别
+        itemGourp = genItemGroup(detail_group_inner,BalanceName.Outflow);
         if(itemGourp!=null){
             itemGroups.add(itemGourp);
         }
@@ -323,9 +337,12 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                     percent = money/ total_spent_money;
                     leaderboard_title+="消費排行榜";
                     break;
-                case BalanceName.Inner:
-                    percent = money/ total_inner_money;
-                    leaderboard_title+="内部转账排行榜";
+                case BalanceName.Inflow:
+                    percent = money/ total_inflow_money;
+                    leaderboard_title+="流入排行榜";
+                case BalanceName.Outflow:
+                    percent = money/ total_outflow_money;
+                    leaderboard_title+="流出排行榜";
             }
             String percent_str=String.format("%.2f", percent*100);
             String description = category +"   " +(percent_str)+"%";
@@ -365,8 +382,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                         case BalanceName.Income:
                             totalMoney= total_income_money;
                             break;
-                        case BalanceName.Inner:
-                            totalMoney= total_inner_money;
+                        case BalanceName.Inflow:
+                            totalMoney= total_inflow_money;
+                            break;
+                        case BalanceName.Outflow:
+                            totalMoney= total_outflow_money;
                             break;
                     }
                     //2.打开界面展示明细数据
@@ -396,8 +416,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                 case BalanceName.Income:
                     totalMoney= total_income_money;
                     break;
-                case BalanceName.Inner:
-                    totalMoney= total_inner_money;
+                case BalanceName.Inflow:
+                    totalMoney= total_inflow_money;
+                    break;
+                case BalanceName.Outflow:
+                    totalMoney= total_outflow_money;
                     break;
             }
             daAdapter.setTotalMoney(totalMoney);
@@ -422,8 +445,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener,P
                         case BalanceName.Income:
                             totalMoney= total_income_money;
                             break;
-                        case BalanceName.Inner:
-                            totalMoney= total_inner_money;
+                        case BalanceName.Inflow:
+                            totalMoney= total_inflow_money;
+                            break;
+                        case BalanceName.Outflow:
+                            totalMoney= total_outflow_money;
                             break;
                     }
                     intent.setClass(context, CategoryDetailsActivity.class);
