@@ -25,5 +25,6 @@
         <activity android:name=".activity.DetailAddingActivity" />
         <activity android:name=".activity.DetailInfoActivity" />
         <activity android:name=".activity.CategoryDetailsActivity" />
+        <activity android:name=".activity.AccountDetailsActivity" />
     </application>
 </manifest>

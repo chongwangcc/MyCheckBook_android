@@ -71,8 +71,6 @@ public class AccountDescriptionListAdapter extends BaseAdapter {
             parentListItem = (InnerListItem) convertView.getTag();
         }
         //2.设置控件文本内容
-        //TODO 设置文字
-
         parentListItem.text_title.setText(data_list.get(position).getAccountName());
         AccountBean bean = AccountTools.getAccountByID(data_list.get(position).getAccount_id());
         double assets_num = bean.getAssets_nums()+data_list.get(position).getAssets_diff();
@@ -111,10 +109,10 @@ public class AccountDescriptionListAdapter extends BaseAdapter {
     /**
      * Inner列表类中的控件
      */
-    public class InnerListItem {
-        ImageView item_icon;
-        TextView text_title, text_subtitle;
-        TextView text_money_in, text_money_out;
+    public static class InnerListItem {
+        public ImageView item_icon;
+        public TextView text_title, text_subtitle;
+        public TextView text_money_in, text_money_out;
     }
 
     public List<DetailGroupBean> getData_list() {
