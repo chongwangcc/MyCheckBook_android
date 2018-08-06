@@ -112,6 +112,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("你想干啥？");
         menu.add(0, 0, Menu.NONE, "删除");
+        menu.add(0, 1, Menu.NONE, "添加");
     }
 
     @Override
@@ -130,6 +131,17 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                     //2.更新界面
                     updateData();
                     break;
+                case 1: //添加一条
+                    CheckDetailBean bean_add = new CheckDetailBean();
+                    bean_add.setDate(CheckDetailsTools.getDeleteDetails_cacher().getDate());
+                    bean_add.setMoney(0);
+                    bean_add.setDescription("");
+                    Intent intent = new Intent();
+                    intent.putExtra("detailBean",bean_add);
+                    intent.putExtra("newOrModefy",false);
+                    intent.setClass(this.getActivity(), DetailAddingActivity.class);
+                    startActivity(intent);
+
                 default :
 
             }

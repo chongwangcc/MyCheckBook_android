@@ -514,6 +514,7 @@ public class DetailAddingActivity extends AppCompatActivity {
         }else{
             newOrModefy=true;
         }
+        newOrModefy = intent.getBooleanExtra("newOrModefy",newOrModefy);
 
         for(String name:lis){
             CategoriesChoice cc = new CategoriesChoice(this, CategoriesIconTool.getAllCategoryNames(name));
