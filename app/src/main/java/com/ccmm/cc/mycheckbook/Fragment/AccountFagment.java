@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.ccmm.cc.mycheckbook.Adapter.AccountDescriptionListAdapter;
 import com.ccmm.cc.mycheckbook.MyControl.AddAccountDialog;
 import com.ccmm.cc.mycheckbook.MyControl.ChooseMonthDialog;
+import com.ccmm.cc.mycheckbook.MyControl.EditAccountDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.AccountDetailsActivity;
 import com.ccmm.cc.mycheckbook.activity.CategoryDetailsActivity;
@@ -128,9 +129,13 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
             //处理菜单的点击事件
             switch (item.getItemId()) {
                 case 0: //查看账户
+
                     Toast.makeText(this.getContext(),"查看账户....",Toast.LENGTH_SHORT).show();
                     break;
                 case 1: //编辑明细
+                    EditAccountDialog dialog = new EditAccountDialog(this.getContext());
+                    //TODO 设置账户数据
+                    dialog.show();
                     Toast.makeText(this.getContext(),"编辑明细....",Toast.LENGTH_SHORT).show();
                     break;
                 case 2: //删除账户
