@@ -134,7 +134,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                 case 1: //添加一条
                     CheckDetailBean bean_add = new CheckDetailBean();
                     bean_add.setDate(CheckDetailsTools.getDeleteDetails_cacher().getDate());
-                    bean_add.setMoney(0);
+                    bean_add.setMoneyStr("0");
                     bean_add.setDescription("");
                     Intent intent = new Intent();
                     intent.putExtra("detailBean",bean_add);
