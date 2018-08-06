@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,8 +15,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.ccmm.cc.mycheckbook.Adapter.DetailsInnerListAdapter;
 import com.ccmm.cc.mycheckbook.R;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
+import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
@@ -100,6 +106,15 @@ public class CheckbookSelectActivity extends Activity {
                 startActivity(intent);
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //1.获得明细数据,缓存
+                CheckbookEntity checkbook =  CheckbookTools.getCheckbookByIndex(LoginTools.getLoginUser(),position);
+                CheckbookTools.setDeleteCheckbook_cacher(checkbook);
+                return false;
+            }
+        });
 
         //5.设置返回登录界面按钮
         returnloginButton=this.findViewById(R.id.button21);
@@ -113,6 +128,35 @@ public class CheckbookSelectActivity extends Activity {
             }
         };
         returnloginButton.setOnClickListener(returnlonginButtonHandler );
+        this.registerForContextMenu(listView);
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("你想干啥？");
+        menu.add(0, 0, Menu.NONE, "删除");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
+            AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            //处理菜单的点击事件
+            switch (item.getItemId()) {
+                case 0: //删除对话框
+                    //1.删除数据
+                    CheckbookEntity bean = CheckbookTools.getDeleteCheckbook_cacher();
+                    CheckbookTools.deleteCheckbookByID(LoginTools.getLoginUser(),bean);
+                    Toast.makeText(this.getApplicationContext(),"删除记账本...."+bean.getCheckbookID()+"",Toast.LENGTH_SHORT).show();
+                    //mTextView.setText(item.getTitle().toString() + menuInfo.position);
+                    updateCheckbookData();
+                    break;
+                default :
+            }
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

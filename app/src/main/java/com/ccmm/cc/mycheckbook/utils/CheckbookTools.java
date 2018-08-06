@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import com.ccmm.cc.mycheckbook.Enum.SqliteTableName;
 import com.ccmm.cc.mycheckbook.MyApplication;
+import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
 import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.UserEntity;
 
@@ -33,6 +34,7 @@ public class CheckbookTools {
     private static Map<UserEntity,List<CheckbookEntity>> checkbookMap=new HashMap<>();
     //选中的记账本
     private static CheckbookEntity selectedCheckbook=null;
+    private static CheckbookEntity deleteCheckbook_cacher;
 
     /***
      * 获得用户加入的所有记账本清单
@@ -192,14 +194,15 @@ public class CheckbookTools {
      * 删除sqlite中一个记账本
      * @return
      */
-    static public boolean deleteCheckbookByID(){
+    static public boolean deleteCheckbookByID(UserEntity user,CheckbookEntity checkbook){
         //1.自己是笔记本的创造者
         //TODO 删除本地记账本，
         //TODO 删除云端记账本
         //TODO 通知其他用户删除他们本地的副本
         //2.如果自己只是加入一个记账本中
         //TODO 删除checkbook和用户的对应关系
-
+        String sql = "delete from "+SqliteTableName.UserCheckbookMap+" where checkbook_id='"+checkbook.getCheckbookID()+"' and user_name='"+user.getName()+"'";
+        write_db.execSQL(sql);
         return true;
     }
 
@@ -251,5 +254,13 @@ public class CheckbookTools {
         if(in==null) return null;
         Bitmap bmpout= BitmapFactory.decodeByteArray(in,0,in.length);
         return bmpout;
+    }
+
+    public static void setDeleteCheckbook_cacher(CheckbookEntity deleteCheckbook_cacher) {
+        CheckbookTools.deleteCheckbook_cacher = deleteCheckbook_cacher;
+    }
+
+    public static CheckbookEntity getDeleteCheckbook_cacher() {
+        return deleteCheckbook_cacher;
     }
 }

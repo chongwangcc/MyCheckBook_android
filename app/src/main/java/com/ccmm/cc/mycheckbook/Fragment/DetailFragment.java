@@ -141,7 +141,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
                     intent.putExtra("newOrModefy",false);
                     intent.setClass(this.getActivity(), DetailAddingActivity.class);
                     startActivity(intent);
-
+                    break;
                 default :
 
             }
