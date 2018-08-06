@@ -153,7 +153,7 @@ public class CheckDetailsTools {
         for(CheckDetailBean detail : detailsList){
             if(detail.getBalanceType().equals(balanceType)
                     || (balanceType.equals(BalanceName.Inflow) && detail.getBalanceType().equals(BalanceName.Income) &&detail.getIsCreditcard()!=0)
-                    || (balanceType.equals(BalanceName.Outflow) && detail.getBalanceType().equals(BalanceName.Expend )&&detail.getIsCreditcard()!=0) ){
+                    || (balanceType.equals(BalanceName.Outflow) && detail.getBalanceType().equals(BalanceName.Expend )&&detail.getIsCreditcard()==0) ){
                 String key = detail.getCategory();
                 DetailGroupBean detailGroup =tempMap.get(key);
                 if(detailGroup==null){
