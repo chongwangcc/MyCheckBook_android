@@ -227,6 +227,21 @@ public class CheckDetailsTools {
             detailGroup.addOneDetailBean(detail);
         }
 
+        // 4.添加其他账户，当月没有消费的账户
+        List<AccountBean> accountList_all = AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
+        for(AccountBean account_bean : accountList_all ){
+            String account_name_whole = AccountTools.concatAccountName(account_bean.getAccount_id());
+            DetailGroupBean detailGroup =tempMap.get(account_name_whole);
+            if(detailGroup==null){
+                detailGroup=new DetailGroupBean();
+                detailGroup.setAccountName(account_name_whole);
+                detailGroup.setAccount_id(account_bean.getAccount_id());
+                detailGroup.setAssets_diff(0);
+                detailGroup.setLiabilities_diff(0);
+                tempMap.put(account_name_whole,detailGroup);
+            }
+        }
+
         //3.按照日期排序tempMap
         for(String key:tempMap.keySet()){
             DetailGroupBean detailGroup =tempMap.get(key);
