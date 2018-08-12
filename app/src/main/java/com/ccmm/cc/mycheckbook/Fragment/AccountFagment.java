@@ -72,6 +72,12 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateData();
+    }
+
     private void updateData() {
         //1.读数据库,获得最新明细数据
         llBan = CheckDetailsTools.getAllDetailsInMonth(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
@@ -111,13 +117,14 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
                 selfDialog.show();
                 break;
         }
+        updateData();
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("你想干啥？");
-        menu.add(0, 0, Menu.NONE, "查看");
+        //menu.add(0, 0, Menu.NONE, "查看");
         menu.add(0, 1, Menu.NONE, "编辑");
         menu.add(0, 2, Menu.NONE, "删除");
 
@@ -129,22 +136,28 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
         if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
             AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             //处理菜单的点击事件
+            DetailGroupBean selected_group = AccountFagment.getSelected_item();
+            AccountBean accountBean = AccountTools.getAccountByID(selected_group.getAccount_id());
             switch (item.getItemId()) {
                 case 0: //查看账户
-
                     Toast.makeText(this.getContext(),"查看账户....",Toast.LENGTH_SHORT).show();
                     break;
                 case 1: //编辑账户
+
                     AddAccountDialog dialog = new AddAccountDialog(this.getContext());
-                    DetailGroupBean selected_group = AccountFagment.getSelected_item();
-                    AccountBean accountBean = AccountTools.getAccountByID(selected_group.getAccount_id());
                     dialog.setAccountbean(accountBean);
                     dialog.setSelected_group(selected_group);
-                    //TODO 设置账户数据
                     dialog.show();
-                    Toast.makeText(this.getContext(),"编辑明细....",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this.getContext(),"编辑明细....",Toast.LENGTH_SHORT).show();
                     break;
                 case 2: //删除账户
+                    //获得默认的未分类账户
+                    if(accountBean.getName().equals("未分类")){
+                        Toast.makeText(this.getContext(),"无法删除“未分类”账户....",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    AccountBean defaultBean = AccountTools.getDefaultAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID());
+                    AccountTools.deleteAccount(accountBean,defaultBean);
                     Toast.makeText(this.getContext(),"删除账户....",Toast.LENGTH_SHORT).show();
                     break;
                 default :
@@ -152,6 +165,7 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
             }
 
         }
+        updateData();
         return super.onContextItemSelected(item);
     }
 

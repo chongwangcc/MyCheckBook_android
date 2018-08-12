@@ -62,6 +62,24 @@ public class AccountTools {
     }
 
     /***
+     * 获得未分类账户的Accoutn
+     * @param checkbook_id
+     * @return
+     */
+    public static AccountBean getDefaultAccount(String checkbook_id){
+        String sql="select * from "+SqliteTableName.CheckbookAccountMap+" where checkbook_id='"+checkbook_id+"'";
+        Cursor userCheckbookMapCursor = read_db.rawQuery(sql,null);
+        while (userCheckbookMapCursor.moveToNext()){
+            String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("account_id"));
+            AccountBean entity = getAccountByID(id);
+            if(entity!=null && entity.getAccount_id()!=null && !entity.getAccount_id().isEmpty() && entity.getName().equals("未分类"))
+                return entity;
+        }
+        return null;
+    }
+
+
+    /***
      * 都数据库,获得account信息
      * @param account_id
      * @return
@@ -140,6 +158,25 @@ public class AccountTools {
     }
 
     /***
+     * 解除account与checkbook的关系
+     * @param checkbook_id
+     * @param account_id
+     */
+    public static void unrelatedAccountWithCheckbook(String checkbook_id, String account_id){
+        String sql = "delete from "+SqliteTableName.CheckbookAccountMap+" where account_id='"+account_id+"' and checkbook_id ='"+checkbook_id+"'";
+        write_db.execSQL(sql);
+    }
+
+    /***
+     * 删除account
+     * @param account_id
+     */
+    public static void deleteAcccountById(String account_id){
+        String sql = "delete from "+SqliteTableName.AccountInfo+" where account_id='"+account_id+"'";
+        write_db.execSQL(sql);
+    }
+
+    /***
      * 账户名称是否被使用过
      * @param account_name
      * @param accountBeans
@@ -172,7 +209,6 @@ public class AccountTools {
         return null;
     }
 
-
     public static String concatAccountName(String account_id){
         String name="";
         AccountBean bean=  getAccountByID(account_id);
@@ -189,5 +225,39 @@ public class AccountTools {
 
     public static void setDeleteAccountCacher(AccountBean deleteAccountCacher) {
         AccountTools.deleteAccountCacher = deleteAccountCacher;
+    }
+
+    /****
+     * 刪除賬戶
+     * @param deleteAccount
+     * @param defaultAccount
+     */
+    public static boolean deleteAccount(AccountBean deleteAccount, AccountBean defaultAccount){
+        //1.不能刪除“未分類賬戶”
+        if(deleteAccount == null || deleteAccount.getName()==null ||
+                deleteAccount.getName().equals("未分类")){
+            return false;
+        }
+
+        //2. 替换明细还是删除明细
+        if(defaultAccount==null){
+            //删除明细中账户的内容
+            CheckDetailsTools.DeleteAllDetailsByAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                    deleteAccount.getAccount_id());
+        }else{
+            //替换明细中内容
+            CheckDetailsTools.updateAllDetailsAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                    deleteAccount.getAccount_id(),
+                    defaultAccount.getAccount_id());
+        }
+        //3. 解除checkbook和account的关系
+        unrelatedAccountWithCheckbook(CheckbookTools.getSelectedCheckbook().getCheckbookID(),
+                deleteAccount.getAccount_id());
+
+        // 删除account实体
+        deleteAcccountById(deleteAccount.getAccount_id());
+
+        return true;
+
     }
 }

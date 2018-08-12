@@ -110,6 +110,27 @@ public class CheckDetailsTools {
         return result;
     }
 
+    /***
+     * 删除某类账户的所有明细
+     * @param checkbook_id
+     * @param account_id
+     * @return
+     */
+    public static boolean DeleteAllDetailsByAccount(String checkbook_id,String account_id){
+        String sql = "delete from "+ SqliteTableName.CheckDetails+" where checkbook_id='"+checkbook_id+"' and account_id='"+account_id+"'";
+        write_db.execSQL(sql);
+        return true;
+
+    }
+
+    public static boolean updateAllDetailsAccount(String checkbook_id,String account_id,String new_account_id){
+        ContentValues values = new ContentValues();
+        values.put("account_id",(new_account_id));
+        int nums = write_db.update(SqliteTableName.CheckDetails,values,
+                "checkbook_id='"+checkbook_id+"' and account_id='"+account_id+"'",null);
+        return true;
+    }
+
     /**
      * 获得明细的分组结果，按天获得组
      * @return
