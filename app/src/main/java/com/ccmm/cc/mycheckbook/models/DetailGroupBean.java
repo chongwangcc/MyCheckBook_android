@@ -188,7 +188,11 @@ public class DetailGroupBean implements Serializable {
 
     public float getMoney(){
         float money=0;
+        if(this.getBalanceType() == null){
+            return money;
+        }
         switch (this.getBalanceType()){
+
             case BalanceName.Expend:
                 money= getTotal_spent();
                 break;

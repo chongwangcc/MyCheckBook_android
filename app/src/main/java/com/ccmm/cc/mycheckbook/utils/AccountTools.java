@@ -117,7 +117,7 @@ public class AccountTools {
         values.put("assets_nums",account.getAssets_nums());
         values.put("liabilities_nums",account.getLiablities_num());
 
-        write_db.insert(SqliteTableName.AccountInfo,null,values);
+        write_db.replace(SqliteTableName.AccountInfo,null,values);
         account.setAccount_id(strid);
         return strid;
     }

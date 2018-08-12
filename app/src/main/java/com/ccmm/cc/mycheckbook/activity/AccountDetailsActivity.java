@@ -76,13 +76,8 @@ public class AccountDetailsActivity extends AppCompatActivity implements Adapter
         for(CheckDetailBean detailBean: this.m_bean.getData()){
             CheckDetailBean beanDetail=CheckDetailsTools.queryCheckDetail(CheckbookTools.getSelectedCheckbook().getCheckbookID(),detailBean);
             new_bean_group.addOneDetailBean(beanDetail);
+            this.m_bean=new_bean_group;
         }
-
-        //2.更新totoal_Income
-        double money_old=this.m_bean.getMoney();
-        double money_new=new_bean_group.getMoney();
-        this.m_bean=new_bean_group;
-
     }
 
     /***
