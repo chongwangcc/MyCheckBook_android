@@ -18,20 +18,20 @@ import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.Adapter.AccountDescriptionListAdapter;
 import com.ccmm.cc.mycheckbook.MyControl.AddAccountDialog;
-import com.ccmm.cc.mycheckbook.MyControl.ChooseMonthDialog;
-import com.ccmm.cc.mycheckbook.MyControl.EditAccountDialog;
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.activity.AccountDetailsActivity;
-import com.ccmm.cc.mycheckbook.activity.CategoryDetailsActivity;
-import com.ccmm.cc.mycheckbook.activity.DetailAddingActivity;
+import com.ccmm.cc.mycheckbook.models.AccountBean;
 import com.ccmm.cc.mycheckbook.models.CheckDetailBean;
+import com.ccmm.cc.mycheckbook.models.CheckbookEntity;
 import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
+import com.ccmm.cc.mycheckbook.utils.AccountTools;
 import com.ccmm.cc.mycheckbook.utils.CheckDetailsTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
+import com.ccmm.cc.mycheckbook.utils.LoginTools;
 
 import java.util.List;
 
-public class AccountFagment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class AccountFagment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private Context context;
     protected boolean isCreated = false;
     ListView lv_account_description ;
@@ -39,6 +39,7 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
     List<DetailGroupBean> groupBeans;
     List<CheckDetailBean> llBan;
     private AddAccountDialog selfDialog;
+    static private DetailGroupBean selected_item;
 
 
     public static AccountFagment newInstance() {
@@ -64,6 +65,7 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
         this.registerForContextMenu(lv_account_description);
         //2.设置处理点击处理事件
         lv_account_description.setOnItemClickListener(this);
+        lv_account_description.setOnItemLongClickListener(this);
         bt_add_account.setOnClickListener(this);
         //3.更新数据
         updateData();
@@ -132,8 +134,12 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
 
                     Toast.makeText(this.getContext(),"查看账户....",Toast.LENGTH_SHORT).show();
                     break;
-                case 1: //编辑明细
-                    EditAccountDialog dialog = new EditAccountDialog(this.getContext());
+                case 1: //编辑账户
+                    AddAccountDialog dialog = new AddAccountDialog(this.getContext());
+                    DetailGroupBean selected_group = AccountFagment.getSelected_item();
+                    AccountBean accountBean = AccountTools.getAccountByID(selected_group.getAccount_id());
+                    dialog.setAccountbean(accountBean);
+                    dialog.setSelected_group(selected_group);
                     //TODO 设置账户数据
                     dialog.show();
                     Toast.makeText(this.getContext(),"编辑明细....",Toast.LENGTH_SHORT).show();
@@ -147,5 +153,20 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
 
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        // 1.保存选中的账户
+        AccountFagment.setSelected_item(groupBeans.get(position));
+        return false;
+    }
+
+    public static DetailGroupBean getSelected_item() {
+        return selected_item;
+    }
+
+    public static void setSelected_item(DetailGroupBean selected_item) {
+        AccountFagment.selected_item = selected_item;
     }
 }

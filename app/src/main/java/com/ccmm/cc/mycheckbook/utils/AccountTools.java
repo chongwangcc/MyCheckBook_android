@@ -15,6 +15,8 @@ public class AccountTools {
     static private SQLiteDatabase write_db=helper.getWritableDatabase();   //写数据库
     static private SQLiteDatabase read_db=helper.getReadableDatabase();   //读数据库
     static public  AccountBean defaultAccount ;
+    static public AccountBean deleteAccountCacher;
+
     static{
         getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
     }
@@ -179,5 +181,13 @@ public class AccountTools {
         if(parent !=null)
             name=parent.getName()+"-"+name;
         return name;
+    }
+
+    public static AccountBean getDeleteAccountCacher() {
+        return deleteAccountCacher;
+    }
+
+    public static void setDeleteAccountCacher(AccountBean deleteAccountCacher) {
+        AccountTools.deleteAccountCacher = deleteAccountCacher;
     }
 }

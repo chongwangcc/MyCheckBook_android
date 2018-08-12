@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.ccmm.cc.mycheckbook.R;
 import com.ccmm.cc.mycheckbook.models.AccountBean;
+import com.ccmm.cc.mycheckbook.models.DetailGroupBean;
 import com.ccmm.cc.mycheckbook.utils.AccountTools;
 import com.ccmm.cc.mycheckbook.utils.CheckbookTools;
 import com.ccmm.cc.mycheckbook.utils.ZaTools;
@@ -41,6 +42,8 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
     private Button noButton;
 
     Context context;
+
+    private  DetailGroupBean selected_group;
     private AccountBean accountbean;
     List<AccountBean> allAccounts;
     List<AccountBean> topAccounts = new LinkedList<>();
@@ -73,10 +76,6 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                     String errorInfo="账户名称不能为空!!!";
                     ZaTools.showErrorMessage(context,errorInfo);
                     return;
-                }else if (AccountTools.isNamesUsed(name,allAccounts) || name.equals("未分类")){
-                    String errorInfo="账户名称已被使用!!!";
-                    ZaTools.showErrorMessage(context,errorInfo);
-                    return;
                 }
                 if(assets_str==null || assets_str.isEmpty()){
                     assets_str="0";
@@ -84,22 +83,41 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
                 if(liablities_str==null || liablities_str.isEmpty()){
                     liablities_str="0";
                 }
-                //1.新建账户类,保存到数据库
                 AccountBean account = new AccountBean();
+                if(accountbean==null || accountbean.getAccount_id()==null || accountbean.getAccount_id().isEmpty()) {
+                    if (AccountTools.isNamesUsed(name, allAccounts) || name.equals("未分类")) {
+                        String errorInfo = "账户名称已被使用!!!";
+                        ZaTools.showErrorMessage(context, errorInfo);
+                        return;
+                    }
+                }else {
+                    if ((AccountTools.isNamesUsed(name,allAccounts) && !accountbean.getName().equals(name)) || name.equals("未分类")){
+                        String errorInfo="账户名称已被使用!!!";
+                        ZaTools.showErrorMessage(context,errorInfo);
+                        return;
+                    }
+                    account=accountbean;
+                }
+                //1.新建账户类,保存到数据库
                 account.setName(name);
                 account.setAssets_nums(Double.valueOf(assets_str.toString()));
                 account.setLiablities_num(Double.valueOf(liablities_str.toString()));
-                if(topAccount==null || topAccount.getAccount_id()==null || topAccount.getAccount_id().isEmpty() || topAccount.getName().equals("未分类")){
+                if (topAccount == null || topAccount.getAccount_id() == null || topAccount.getAccount_id().isEmpty() || topAccount.getName().equals("未分类")) {
                     account.setParent_id("");
                     account.setLevel(1);
-                }else{
+                } else {
                     account.setParent_id(topAccount.getAccount_id());
-                    account.setLevel(topAccount.getLevel()+1);
-                    account.setKey(topAccount.getParent_id()+"-");
+                    account.setLevel(topAccount.getLevel() + 1);
+                    account.setKey(topAccount.getParent_id() + "-");
                 }
-                AccountTools.addOneAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID(),account);
+                if(accountbean==null || accountbean.getAccount_id()==null || accountbean.getAccount_id().isEmpty()) {
+                    AccountTools.addOneAccount(CheckbookTools.getSelectedCheckbook().getCheckbookID(), account);
+                }else{
+                    AccountTools.saveAccountToSqlite(account,false);
+                }
                 //退出
                 cancel();
+
             }
         });
 
@@ -110,26 +128,35 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
      * 初始化界面控件的显示数据
      */
     private void initData() {
-        //如果用户自定了title和message
-        if(accountbean==null || accountbean.getAccount_id()==null || accountbean.getAccount_id().isEmpty()){
-            //新增账户信息
-            tv_title.setText("新增账户");
-        }else{
-            tv_title.setText("修改账户");
-        }
         //1.设置子账户列表
-       allAccounts =  AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
+        allAccounts =  AccountTools.getAccountList(CheckbookTools.getSelectedCheckbook().getCheckbookID());
 
         for(AccountBean account : allAccounts){
             if(account.getLevel()==1){
                 topAccounts.add(account);
             }
         }
-
         ArrayAdapter<AccountBean> myAdapter=new ArrayAdapter<AccountBean>(this.getContext(),
                 android.R.layout.simple_spinner_item, topAccounts);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(myAdapter);
+
+        //如果用户自定了title和message
+        if(accountbean==null || accountbean.getAccount_id()==null || accountbean.getAccount_id().isEmpty()){
+            //新增账户信息
+            tv_title.setText("新增账户");
+
+        }else{
+            tv_title.setText("修改账户");
+            ev_account_name.setText(accountbean.getName());
+            ev_assets_money.setText(String.format("%.2f",accountbean.getAssets_nums()));
+            ev_liabilities_money.setText(String.format("%.2f",accountbean.getLiablities_num()));
+            for(int i=0;i< allAccounts.size() && accountbean.getLevel()!=1;i++){
+                if(allAccounts.get(i).getAccount_id().equals(accountbean.getParent_id())){
+                    spinner.setSelection(i);
+                }
+            }
+        }
     }
 
     /**
@@ -186,5 +213,11 @@ public class AddAccountDialog extends Dialog implements  AdapterView.OnItemSelec
     }
 
 
+    public DetailGroupBean getSelected_group() {
+        return selected_group;
+    }
 
+    public void setSelected_group(DetailGroupBean selected_group) {
+        this.selected_group = selected_group;
+    }
 }
