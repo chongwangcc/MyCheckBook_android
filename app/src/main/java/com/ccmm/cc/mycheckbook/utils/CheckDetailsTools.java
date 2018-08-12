@@ -246,6 +246,18 @@ public class CheckDetailsTools {
                 tempMap.put(key,detailGroup);
             }
             detailGroup.addOneDetailBean(detail);
+            //2. 添加到其母账户中一份
+            AccountBean parent_bean = AccountTools.getAccountByID(detail.getAccount_id());
+            parent_bean = AccountTools.getAccountByID(parent_bean.getParent_id());
+            if(parent_bean !=null){
+                String key_parent = AccountTools.concatAccountName(parent_bean.getAccount_id());
+                DetailGroupBean detailGroup_parent =tempMap.get(key_parent);
+                if(detailGroup_parent==null){
+                    detailGroup_parent=new DetailGroupBean();
+                    tempMap.put(key_parent,detailGroup_parent);
+                }
+                detailGroup_parent.addOneDetailBean(detail);
+            }
         }
 
         // 4.添加其他账户，当月没有消费的账户
@@ -263,9 +275,10 @@ public class CheckDetailsTools {
             }
         }
 
-        //3.按照日期排序tempMap
+        //3.转成列表
         for(String key:tempMap.keySet()){
             DetailGroupBean detailGroup =tempMap.get(key);
+            detailGroup.setAccountName(key);
             list.add(detailGroup);
         }
         return list;
