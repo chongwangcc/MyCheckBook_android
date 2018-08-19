@@ -92,7 +92,6 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //TODO 处理account点击事件
         //查看此账户下的所有明细
         //1.点击的是哪一个账户
         DetailGroupBean groupBean = (DetailGroupBean)adapterView.getItemAtPosition(i);
@@ -105,7 +104,6 @@ public class AccountFagment extends Fragment implements View.OnClickListener, Ad
         intent.putExtra("title","账户明细详情");
         intent.putExtra("total",1);
         context.startActivity(intent);
-
     }
 
     @Override

@@ -171,7 +171,6 @@ public class PieGraphView extends View {
 
     private void getAttributes(Context context, AttributeSet attrs) {
         if (attrs == null) return;
-        // TODO 设置各种xml attributes
     }
 
     private void setRotation(int value) {

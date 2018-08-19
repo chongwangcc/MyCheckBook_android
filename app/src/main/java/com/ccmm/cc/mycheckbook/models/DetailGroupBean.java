@@ -72,7 +72,7 @@ public class DetailGroupBean implements Serializable {
             }
 
         }else if(detail.getBalanceType().equals(BalanceName.Inflow)){
-            //TODO 要计算流入流出是否影响资产负债表
+            //要计算流入流出是否影响资产负债表
             cashflow_in+=detail.getMoney();
             assets_diff+=detail.getMoney();
             if(detail.getIsCreditcard()!=0){ //是负债，计入负债中

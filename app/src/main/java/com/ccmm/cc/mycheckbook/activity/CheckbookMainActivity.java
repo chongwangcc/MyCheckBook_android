@@ -126,6 +126,7 @@ public class CheckbookMainActivity extends AppCompatActivity {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO 点击profile弹出配置界面
                 Toast.makeText(CheckbookMainActivity.this,"profile clicked",Toast.LENGTH_SHORT).show();
             }
         });

@@ -206,7 +206,7 @@ public class CheckDetailsTools {
                         n1=t1.getTotal_income();
                         n2=t2.getTotal_income();
                         break;
-                    //TODO 处理流入、流出表
+                    //处理流入、流出表
                     case BalanceName.Inflow:
                         n1=t1.getCashflow_in();
                         n2=t2.getCashflow_in();
