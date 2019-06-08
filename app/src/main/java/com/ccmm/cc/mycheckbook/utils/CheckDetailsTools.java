@@ -59,8 +59,10 @@ public class CheckDetailsTools {
                 String account_id = detailsCursor.getString(detailsCursor.getColumnIndex("account_id"));
                 // 获得account_
                 AccountBean account_bean = AccountTools.getAccountByID(account_id);
+                detailsCursor.close();
                 return account_bean;
             }
+            detailsCursor.close();
         }catch(Exception e){
 
         }
@@ -107,6 +109,7 @@ public class CheckDetailsTools {
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
             result.add(entity);
         }
+        detailsCursor.close();
         return result;
     }
 
@@ -391,6 +394,7 @@ public class CheckDetailsTools {
 
             entity.setDate(detailsCursor.getString(detailsCursor.getColumnIndex("date_str")));
         }
+        detailsCursor.close();
         return entity;
     }
 

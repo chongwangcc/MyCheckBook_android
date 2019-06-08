@@ -59,6 +59,7 @@ public class CheckbookTools {
                 CheckbookEntity entity = getCheckbookByID(id);
                 result.add(entity);
             }
+            userCheckbookMapCursor.close();
         }catch (Exception e){
             e.printStackTrace();
 
@@ -185,8 +186,10 @@ public class CheckbookTools {
             byte[] in=tempCursor.getBlob(tempCursor.getColumnIndex("coverImage"));
             checkbookEntity.setPic(in);
             //加入到返回的列表中
+            tempCursor.close();
             return checkbookEntity;
         }
+        tempCursor.close();
         return null;
     }
 

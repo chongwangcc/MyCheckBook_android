@@ -73,8 +73,10 @@ public class AccountTools {
             String id = userCheckbookMapCursor.getString(userCheckbookMapCursor.getColumnIndex("account_id"));
             AccountBean entity = getAccountByID(id);
             if(entity!=null && entity.getAccount_id()!=null && !entity.getAccount_id().isEmpty() && entity.getName().equals("未分类"))
+                userCheckbookMapCursor.close();
                 return entity;
         }
+        userCheckbookMapCursor.close();
         return null;
     }
 
@@ -99,7 +101,9 @@ public class AccountTools {
             bean.setKey(temp.getString(temp.getColumnIndex("key")));
             bean.setAssets_nums(temp.getFloat(temp.getColumnIndex("assets_nums")));
             bean.setLiablities_num(temp.getFloat(temp.getColumnIndex("liabilities_nums")));
+            temp.close();
         }
+
         return bean;
     }
 
